@@ -11,7 +11,8 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 
 void	setwinhook()
 {
-	handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, NULL, 0);
+	hinst = GetModuleHandle(NULL);
+	handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hinst, 0);
 	if (handlekeyboard == NULL)
 		printf("c'est nul\n");
 	else
@@ -21,6 +22,13 @@ void	setwinhook()
 
 int	main(void)
 {
+	MSG msg;
+
 	setwinhook();
-	return (0);
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return (msg.wParam);
 }
