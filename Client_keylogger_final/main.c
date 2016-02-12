@@ -4,15 +4,27 @@ HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
 
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
-{
+{	
 	printf("i pressed a key!\n");
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
 
 void	setwinhook()
 {
-	hinst = GetModuleHandle(NULL);
-	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hinst, 0)) == NULL)
+	STARTUPINFO startup;
+	PROCESS_INFORMATION process;
+	
+	SecureZeroMemory(&startup, sizeof(startup));
+	SecureZeroMemory(&process, sizeof(process));
+	startup.cb = sizeof(startup);
+	if (CreateProcess(L"pcsx2 - r5875.exe", L"\"C:\\Program Files (x86)\\PCSX2 1.2.1\\\"", NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startup, &process) == 0)
+	{
+		printf("%s\n", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+		printf("Createprocess ne marche pas\n");
+		return;
+	}
+//	hinst = GetModuleHandle(NULL);
+	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, GetModuleHandle(process.hProcess), 0)) == NULL)
 		return;
 }
 
