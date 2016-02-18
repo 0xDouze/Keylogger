@@ -19,17 +19,16 @@ void  save_data (char *buffer)
 
 }
 
-int main () 
-{
+/* int main () */
+/* { */
 
-  char buffer[42] = "coucou";
+/*   char buffer[42] = "coucou"; */
 
-//  for (int i = 0; i<42; i++)
-  //  buffer[i] = " test ";
-  
-  save_data (buffer);
+/* //  for (int i = 0; i<42; i++) */
+/*   //  buffer[i] = " test "; */
 
-  return 0;
+/*   save_data (buffer); */
 
-}
+/*   return 0; */
 
+/* } */
