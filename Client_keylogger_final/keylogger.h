@@ -4,5 +4,3 @@
 #include <stdlib.h>
 #include <Windows.h>
 #include <io.h>
-#include <stdarg.h>
-#include <time.h>
