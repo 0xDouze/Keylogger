@@ -18,7 +18,7 @@ void server() {
   hints.ai_addr = NULL;
   hints.ai_next = NULL;
 
-  getaddrinfo(NULL, "4242", &hints, &resinfo);
+  getaddrinfo(NULL, "4343", &hints, &resinfo);
 
   if((sock_fd = socket(resinfo->ai_family, resinfo->ai_socktype, resinfo->ai_protocol)) > 0)
     printf("the socket is created\n");
@@ -32,12 +32,18 @@ void server() {
   while(1) {
     new_fd= accept(sock_fd, (struct sockaddr *) NULL, NULL);
     if(new_fd > 0)
-      printf("accept");
-
-    recv(new_fd, buffer, 256, 0);
-    printf("%s\n", buffer);
-    write(new_fd, "hello\n", 6);
-    close(new_fd);
+      printf("accept\n");
+    if(fork()) { 
+      close(new_fd);
+      continue;
+    }
+    else {
+      close(sock_fd);
+      while(recv(new_fd, buffer, strlen(buffer), 0) > 0)
+	printf("%s", buffer); 
+      close(new_fd);
+      return;
+    }
   }
   close(sock_fd);
 }
