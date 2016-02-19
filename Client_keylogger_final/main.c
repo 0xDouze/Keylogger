@@ -3,6 +3,11 @@
 HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
 
+LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
+{
+	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
+}
+
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {	
 	printf("i pressed a key!\n");
@@ -17,10 +22,8 @@ void	setwinhook()
 	SecureZeroMemory(&startup, sizeof(startup));
 	SecureZeroMemory(&process, sizeof(process));
 	startup.cb = sizeof(startup);
-	if (CreateProcess(L"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", NULL, NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &startup, &process) == 0)
+	if (CreateProcess(L"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", NULL, NULL, NULL, TRUE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startup, &process) == 0)
 		return;
-	//WaitForSingleObject(process.hProcess, INFINITE);
-//	hinst = GetModuleHandle(NULL);
 	hinst = GetModuleHandle(L"chrome.exe");
 	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, hinst, 0)) == NULL)
 		return;
