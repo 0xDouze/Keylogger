@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <io.h>
 #include <WS2tcpip.h>
 
