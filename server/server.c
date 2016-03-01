@@ -5,7 +5,7 @@
 
 void server() {
   int sock_fd; //socket ecoutee
-  int new_fd, reuse = 1, n;  //nouvelle connexion
+  int new_fd, reuse = 1;  //nouvelle connexion
   char buffer[256];
   struct addrinfo hints, *resinfo= NULL;
   
@@ -18,7 +18,6 @@ void server() {
   memset(fds, 0, sizeof(fds));
   
   //set up initial socket
-  fds.fd[0]= sock_fd;
   fds[0].events= POLLIN;
 
   hints.ai_family = AF_INET;    /* Allow IPv4 or IPv6 */
@@ -26,48 +25,53 @@ void server() {
   hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;    /* For wildcard IP address */
   hints.ai_protocol = 0;          /* Any protocol */
 
-  if (getaddrinfo(NULL, "4242", &hints, &resinfo) != 0)
+  if (getaddrinfo(NULL, "4243", &hints, &resinfo) != 0)
     err(1, "err getaddrinfo");
   
-  if((sock_fd = socket(resinfo->ai_family, resinfo->ai_socktype, resinfo->ai_protocol)) > 0)
+  if((sock_fd= socket(resinfo->ai_family, resinfo->ai_socktype, resinfo->ai_protocol)) > 0)
     printf("the socket is created\n");
   
-  freeaddrinfo(resinfo);
-  
-  if (setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) == -1)
+  if(setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) == -1)
     err(1, "setsockopt problem");
   
   if(bind(sock_fd, resinfo->ai_addr, resinfo->ai_addrlen) == 0)
     printf("binding socket\n");
-  
-  if(listen(sock_fd, 10)) {
-    printf("listening");
+
+  freeaddrinfo(resinfo); 
+  if(!listen(sock_fd, 100)) {
+    printf("listening\n");
     //loop for poll
-    poll(fds, reuse, 3*60);
+    if(poll(fds, reuse, 3*60) < 0)
+      perror("poll error");
   }
-  for(int i=0; i < nfds; i++) {
-    if(fds[i].revents == 0)
-      continue;
+  else 
+    printf("%d\n", sock_fd);
 
-  while(1) {
-    new_fd= accept(sock_fd, (struct sockaddr *) NULL, NULL);
+  for(int i= 0; i < reuse; i++) {
+    if(fds[i].revents != POLLIN)
+      perror("error revents");
 
-    if (fork())
-      {
-	close(new_fd);
-	continue;
+    if(fds[i].fd == fds[0].fd) {
+      while(1) {
+	printf("coucou\n");
+    	if((new_fd= accept(sock_fd, (struct sockaddr *) NULL, NULL)) != -1) {
+	  //incoming co to pollfdstruc
+	  fds[reuse].fd= new_fd;
+	  fds[reuse].events= POLLIN;
+	  reuse++;
+	  break;
+	}
       }
-    else
-      {
-	close(sock_fd);
-	while ((n = read(new_fd,buffer, 256)) > 0)
-	  {
-	    if (write(new_fd, buffer, n) == -1)
-	      err(1, "erreur write");
-	  }
-	close(new_fd);
-	return;
+    }
+    
+    else {
+      while(recv(fds[i].fd, buffer, strlen(buffer), 0)) {
+	printf("%s\n", buffer);
+	if (write(fds[reuse].fd, buffer, strlen(buffer)) == -1)
+	  err(1, "erreur write");
       }
+      close(fds[reuse].fd);
+    }	
   }
   close(sock_fd);
     /*   if(new_fd > 0) */
