@@ -1,4 +1,8 @@
 #pragma once
+
+#define _XOPEN_SOURCE
+#define _GNU_SOURCE 1
+
 #include <err.h>
 #include <netdb.h>
 #include <stdio.h>
