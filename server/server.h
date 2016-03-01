@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <poll.h>
 
 void save_data (char *buffer);
 void server();

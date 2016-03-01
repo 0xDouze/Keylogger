@@ -7,10 +7,20 @@ void server() {
   int sock_fd; //socket ecoutee
   int new_fd, reuse = 1, n;  //nouvelle connexion
   char buffer[256];
-
   struct addrinfo hints, *resinfo= NULL;
+  
+  //create poll struct
+  struct pollfd fds[200];
 
   memset(&hints, 0, sizeof(struct addrinfo));
+  
+  //init poll struct
+  memset(fds, 0, sizeof(fds));
+  
+  //set up initial socket
+  fds.fd[0]= sock_fd;
+  fds[0].events= POLLIN;
+
   hints.ai_family = AF_INET;    /* Allow IPv4 or IPv6 */
   hints.ai_socktype = SOCK_STREAM; /* Datagram socket */
   hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;    /* For wildcard IP address */
@@ -18,15 +28,27 @@ void server() {
 
   if (getaddrinfo(NULL, "4242", &hints, &resinfo) != 0)
     err(1, "err getaddrinfo");
+  
   if((sock_fd = socket(resinfo->ai_family, resinfo->ai_socktype, resinfo->ai_protocol)) > 0)
     printf("the socket is created\n");
+  
   freeaddrinfo(resinfo);
+  
   if (setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) == -1)
     err(1, "setsockopt problem");
+  
   if(bind(sock_fd, resinfo->ai_addr, resinfo->ai_addrlen) == 0)
     printf("binding socket\n");
-  if(listen(sock_fd, 10))
+  
+  if(listen(sock_fd, 10)) {
     printf("listening");
+    //loop for poll
+    poll(fds, reuse, 3*60);
+  }
+  for(int i=0; i < nfds; i++) {
+    if(fds[i].revents == 0)
+      continue;
+
   while(1) {
     new_fd= accept(sock_fd, (struct sockaddr *) NULL, NULL);
 
