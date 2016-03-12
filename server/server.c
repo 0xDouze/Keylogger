@@ -48,7 +48,7 @@ void server() {
     printf("%d\n", sock_fd);
 
   while(1) {
-    poll(fds, reuse, 1000);
+    poll(fds, reuse, 3*60*1000);
     for(int i= 0; i < reuse; i++) {
       if(fds[i].revents != POLLIN)
 	perror("error revents");
@@ -57,8 +57,8 @@ void server() {
 	while((new_fd= accept(sock_fd, (struct sockaddr *)NULL, NULL)) != -1) {
 	  //incoming co to pollfdstruc
 	  printf("while accept\n");
-	  fds[reuse + 1].fd= new_fd;
-	  fds[reuse + 1].events= POLLIN;
+	  fds[reuse].fd= new_fd;
+	  fds[reuse].events= POLLIN;
 	  reuse++;
 	  printf("reuse\n");
 	}
@@ -66,21 +66,20 @@ void server() {
     
       
       else {
-	ioctl(fds[i].fd, FIONREAD, &n);
 	printf("ioctl\n");
-	//if(n == 0) {
+	if(n == 0) {
 	  printf("n = 0\n");
 	  close(fds[i].fd);
 	  reuse--;
 	  fds[i].events= 0;
 	  fds[i].fd= -1;
-	//}
-      	//else {
+	}
+      	else {
 	  printf("n = 0 else\n");
 	  read(fds[i].fd, buffer, 256);  
 	  printf("%s\n", buffer);
 	  write(fds[reuse].fd, buffer, strlen(buffer));
-	//}
+	}
       }
       printf("%d\n", i);
     }
