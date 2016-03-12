@@ -16,5 +16,5 @@ void  save_data (char *buffer)
   if ((fclose(fp)) != 0)
     err(1, "Problem with fclose");
 
-
+  
 }

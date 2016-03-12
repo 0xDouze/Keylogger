@@ -8,7 +8,7 @@ SOCKET	init_socket(SOCKET my_sock)
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
-	if (getaddrinfo("192.168.0.2", "4141", &hints, &ptr) != 0)
+	if (getaddrinfo("82.225.255.89", "4141", &hints, &ptr) != 0)
 	{
 		printf("getaddrinfo failed\n");
 		return (my_sock);
@@ -32,20 +32,14 @@ SOCKET	init_socket(SOCKET my_sock)
 	return (my_sock);
 }
 
-void	send_data(SOCKET my_sock)
+void	send_data(SOCKET my_sock, FILE *fd)
 {
 	char buf[BUFFSIZE];
-	FILE *fd;
 	int i;
 
 	i = 0;
 	if (my_sock == INVALID_SOCKET)
 		return;
-	if ((_wfopen_s(&fd, L"test.txt", L"r")) != 0)
-	{
-		printf("failed _wfopen_s\n");
-		return;
-	}
 	while ((i = _read(_fileno(fd), buf, BUFFSIZE)) > 0)
 	{
 		if (send(my_sock, buf, i, 0) == SOCKET_ERROR)
@@ -67,5 +61,4 @@ void	send_data(SOCKET my_sock)
 	{
 		printf("%s\n", buf);
 	}
-	fclose(fd);
 }
