@@ -69,18 +69,25 @@ void server() {
         } while (new_fd != -1);
       }
       else {
-	while(1) {
-	  if((n = read(fds[i].fd, buffer, 256)) < 0)
-	    close(fds[i].fd);
-	  printf("%s\n", buffer);
-	  memset(buffer, 0, 256);
-	}
+				while(1) {
+	  			if((n = read(fds[i].fd, buffer, 256)) < 0) {
+						close(fds[i].fd);
+					}
+	  			printf("%s\n", buffer);
+	  			memset(buffer, 0, 256);
+				}
       }
     }
   }
 }
 
+void sigint_handler(int sig) {
+  warnx("Get signal %d, dying", sig);
+  _exit(sig);
+}
+
 int main() {
   server();
+	signal(SIGINT, sigint_handler);
   return 0;
 }
