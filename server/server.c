@@ -24,12 +24,12 @@ void server() {
   hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;    /* For wildcard IP address */
   hints.ai_protocol = 0;          /* Any protocol */
 
-  if (getaddrinfo(NULL, "4243", &hints, &resinfo) != 0)
+  if (getaddrinfo(NULL, "4242", &hints, &resinfo) != 0)
     err(1, "err getaddrinfo");
 
   if((sock_fd= socket(resinfo->ai_family, resinfo->ai_socktype, resinfo->ai_protocol)) < 0)
     err(1, "err socket");
- 
+
   if(setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) == -1)
     err(1, "setsockopt problem");
 
@@ -37,26 +37,29 @@ void server() {
     err(1, "err bind");
 
   freeaddrinfo(resinfo);
-  
+
   if(!listen(sock_fd, 100)) {
     if(poll(fds, reuse, 1000) < 0)
       perror("poll error");
   }
   else
     printf("%d\n", sock_fd);
-
   while(1) {
-    fds[0].fd= sock_fd;
+    fds[0].fd = sock_fd;
+    fds[0].events = POLLIN;
+    ioctl(fds[0].fd, FIONBIO, &io);
     poll(fds, reuse, 1000000);
-    
     for(int i = 0; i < reuse; i++) {
-      if (fds[i].revents != POLLIN)
-      	perror("pollin error");
-      
-      ioctl(fds[0].fd, FIONBIO, &io);
-      
+      if (fds[i].revents == 0)
+        continue;
+      if (fds[i].revents != POLLIN && fds[i].revents != POLLPRI)
+        {
+          printf("%d\n", i);
+          perror("pollin error");
+        }
+
       if (fds[i].fd == fds[0].fd) {
-      	do {     
+      	do {
           new_fd = accept(fds[0].fd, (struct sockaddr*)NULL, NULL);
           if (new_fd == -1)
              break;
@@ -67,11 +70,11 @@ void server() {
       }
       else {
 	while(1) {
-	  if((n = read(fds[i].fd, buffer, 256)) < 0)   
+	  if((n = read(fds[i].fd, buffer, 256)) < 0)
 	    close(fds[i].fd);
 	  printf("%s\n", buffer);
 	  memset(buffer, 0, 256);
-	}		
+	}
       }
     }
   }
