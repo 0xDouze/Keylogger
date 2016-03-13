@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <fcntl.h>
 #include "server.h"
 
 void server() {
@@ -50,32 +51,38 @@ void server() {
     ioctl(fds[0].fd, FIONBIO, &io);
     poll(fds, reuse, 1000000);
     for(int i = 0; i < reuse; i++) {
-      if (fds[i].revents == 0)
+      if(fds[i].revents == POLLHUP) {
+	close(fds[i].fd);
+	continue;
+      }
+      else if (fds[i].revents == 0)
         continue;
-      if (fds[i].revents != POLLIN && fds[i].revents != POLLPRI)
-        {
-          printf("%d\n", i);
-          perror("pollin error");
-        }
+      if (fds[i].revents != POLLIN && fds[i].revents != POLLPRI) {
+	printf("%d\n", i);
+        perror("pollin error");
+      }
 
       if (fds[i].fd == fds[0].fd) {
       	do {
           new_fd = accept(fds[0].fd, (struct sockaddr*)NULL, NULL);
           if (new_fd == -1)
              break;
-          fds[reuse].fd = new_fd;
+          printf("new inc %d\n", new_fd);
+	  fds[reuse].fd = new_fd;
           fds[reuse].events = POLLIN;
           reuse++;
         } while (new_fd != -1);
       }
       else {
-				while(1) {
-	  			if((n = read(fds[i].fd, buffer, 256)) < 0) {
-						close(fds[i].fd);
-					}
-	  			printf("%s\n", buffer);
-	  			memset(buffer, 0, 256);
-				}
+	while((n= read(fds[i].fd, buffer, 256)) > 0) {
+	  fcntl(fds[i].fd, F_SETFL, O_NONBLOCK);
+	  printf("%s\n", buffer);
+	  memset(buffer, 0, 256);
+	  if(errno != EAGAIN || errno != EWOULDBLOCK)
+	    close(fds[i].fd);
+	  else
+	    continue;
+	}
       }
     }
   }
