@@ -4,4 +4,6 @@
 #include <stdlib.h>
 #include <Windows.h>
 #include <io.h>
-#include <time.h>
+
+void	setwinhook();
+void	save_data(char);
