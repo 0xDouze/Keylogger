@@ -43,15 +43,25 @@ void	save_data(char data)
 {
 	static int nbChar;
 
-	/* test time
-	static char timeBefore[9];
+	// test time
+
+	/* static char timeBefore[9];
+
+	char time[9];
 
 	errno_t err;
 	_tzset();
 	err = _strtime_s(time, 9);
-	printf("OS time:\t\t\t\t%s\n", time);
+	printf("OS time:\t\t\t\t%s\n", time); 
 
-	*/
+	static time_t timet1;
+
+	time_t timet2;
+
+	time(&timet2); */
+
+
+	// end test time
 
 	FILE *file;
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
@@ -66,10 +76,16 @@ void	save_data(char data)
 		nbChar = 0;
 	}
 
+	// test time
+
+
+	// end test time
+
 	if (fclose(file) != 0)
 		_wperror(L" Close file failed ");
 
 	nbChar++;
+
 }
 
 int	main(void)
