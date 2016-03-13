@@ -26,7 +26,7 @@ void server() {
   hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;    /* For wildcard IP address */
   hints.ai_protocol = 0;          /* Any protocol */
 
-  if (getaddrinfo(NULL, "4243", &hints, &resinfo) != 0)
+  if (getaddrinfo(NULL, "4141", &hints, &resinfo) != 0)
     err(1, "err getaddrinfo");
 
   if((sock_fd= socket(resinfo->ai_family, resinfo->ai_socktype, resinfo->ai_protocol)) > 0)

