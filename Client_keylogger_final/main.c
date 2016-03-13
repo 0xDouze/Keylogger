@@ -5,12 +5,20 @@ static HHOOK handlekeyboard = NULL;
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
+	LPKBDLLHOOKSTRUCT kb;
+
+	kb = (LPKBDLLHOOKSTRUCT)lparam;
+	printf("%u\n", kb->vkCode);
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
 
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {	
-	printf("i pressed a key!\n");
+	LPKBDLLHOOKSTRUCT kb;
+
+	kb = (LPKBDLLHOOKSTRUCT)lparam;
+	if (kb->vkCode >= 65 && kb->vkCode <= 90)
+		printf("%c\n", (char)kb->vkCode);
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 }
 
