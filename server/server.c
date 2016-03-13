@@ -2,31 +2,39 @@
 #include <fcntl.h>
 #include "server.h"
 
-void server() {
-  int sock_fd;
-  int io= 1;
-  int new_fd, n;
-  nfds_t reuse = 1;
-  char buffer[BUFFSIZE];
-  struct addrinfo hints, *resinfo= NULL;
-  struct pollfd fds[200];
+int			init_socket(nfds_t *reuse)
+{
+  struct addrinfo	hints, *resinfo = NULL;
+  int			sock = -1;
 
   memset(&hints, 0, sizeof(struct addrinfo));
-  memset(fds, 0, sizeof(fds));
-  fds[0].events= POLLIN;
   hints.ai_family = AF_INET;
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
   hints.ai_protocol = 0;
-  if (getaddrinfo(NULL, "4141", &hints, &resinfo) != 0)
-    err(1, "err getaddrinfo");
-  if((sock_fd= socket(resinfo->ai_family, resinfo->ai_socktype, resinfo->ai_protocol)) < 0)
-    err(1, "err socket");
-  if(setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) == -1)
-    err(1, "setsockopt problem");
-  if(bind(sock_fd, resinfo->ai_addr, resinfo->ai_addrlen) != 0)
-    err(1, "err bind");
+  if (getaddrinfo(NULL, PORT, &hints, &resinfo) != 0)
+    err(3, "Getaddrinfo error");
+  if ((sock = socket(resinfo->ai_family, resinfo->ai_socktype, resinfo->ai_protocol)) < 0)
+    err(3, "Socket error");
+  if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, reuse, sizeof(*reuse)) == -1)
+    err(3, "Setsockopt error");
+  if (bind(sock, resinfo->ai_addr, resinfo->ai_addrlen) != 0)
+    err(3, "Bind error");
   freeaddrinfo(resinfo);
+  return (sock);
+}
+
+void		server() {
+  int		sock_fd;
+  int		io= 1;
+  int		new_fd, n;
+  nfds_t	reuse = 1;
+  char		buffer[BUFFSIZE];
+  struct pollfd fds[200];
+
+  sock_fd = init_socket(&reuse);
+  memset(fds, 0, sizeof(fds));
+  fds[0].events= POLLIN;
   if(!listen(sock_fd, 100)) {
     if(poll(fds, reuse, 1000) < 0)
       perror("poll error");
@@ -37,7 +45,8 @@ void server() {
     fds[0].fd = sock_fd;
     fds[0].events = POLLIN;
     ioctl(fds[0].fd, FIONBIO, &io);
-    poll(fds, reuse, 1000000);
+    if (poll(fds, reuse, 1000000) < 0)
+      perror("Poll error");
     for(nfds_t i = 0; i < reuse; i++) {
       if (fds[i].revents & POLLERR || fds[i].revents & POLLNVAL)
 	{

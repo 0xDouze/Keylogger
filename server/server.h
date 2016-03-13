@@ -13,7 +13,9 @@
 #include <poll.h>
 #include <stropts.h>
 
-void save_data (char *buffer);
-void server();
+void	save_data (char *buffer);
+void	server();
+int	init_socket(nfds_t*);
 
 #define BUFFSIZE 1024
+#define PORT "4141"
