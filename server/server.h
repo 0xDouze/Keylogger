@@ -15,3 +15,5 @@
 
 void save_data (char *buffer);
 void server();
+
+#define BUFFSIZE 1024
