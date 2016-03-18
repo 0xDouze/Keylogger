@@ -48,11 +48,13 @@ void		server() {
     if (poll(fds, reuse, 1000000) < 0)
       perror("Poll error");
     for(nfds_t i = 0; i < reuse; i++) {
-      if (fds[i].revents & POLLERR || fds[i].revents & POLLNVAL)
-	{
-	  close(fds[i].fd);
-	  continue;
-	}
+      if(fds[i].revents & POLLNVAL)
+	continue;
+      
+      if (fds[i].revents & POLLERR) {
+	close(fds[i].fd);
+	continue;
+      }
       if(fds[i].revents == POLLHUP || fds[i].revents == POLLERR) {
 	close(fds[i].fd);
 	continue;
@@ -74,21 +76,20 @@ void		server() {
           reuse++;
         } while (new_fd != -1);
       }
-      else 
-	{
-	while((n= read(fds[i].fd, buffer, 256)) > 0) 
-	  {
-	    fcntl(fds[i].fd, F_SETFL, O_NONBLOCK);
-	    save_data("\n\n");
-	    save_data(buffer);
-	    printf("Data sent: %s\n", buffer);
-	    memset(buffer, 0, 256);
-	  }
+      else {
+	while((n= read(fds[i].fd, buffer, 256)) > 0) {
+	  fcntl(fds[i].fd, F_SETFL, O_NONBLOCK);
+	  save_data("\n\n");
+	  save_data(buffer);
+	  printf("Data sent: %s\n", buffer);
+	  memset(buffer, 0, 256);
+	}
+
 	if(n < 0 && (errno != EAGAIN && errno != EWOULDBLOCK))
 	  close(fds[i].fd);
 	else
 	  continue;
-	}
+      }
     }
   }
 }
