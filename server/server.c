@@ -24,7 +24,8 @@ int			init_socket(nfds_t *reuse)
   return (sock);
 }
 
-void		server() {
+void		server(struct sockaddr_in *addr) {
+  socklen_t socklen= sizeof(struct sockaddr_in);
   int		sock_fd;
   int		io= 1;
   int		new_fd, n;
@@ -67,7 +68,7 @@ void		server() {
 
       if (fds[i].fd == fds[0].fd) {
       	do {
-          new_fd = accept(fds[0].fd, (struct sockaddr*)NULL, NULL);
+          new_fd = accept(fds[0].fd, (struct sockaddr*)&addr[i], &socklen);
           if (new_fd == -1)
              break;
           printf("new client fd = %d\n", new_fd);
@@ -100,7 +101,9 @@ void sigint_handler(int sig) {
 }
 
 int main() {
+  struct sockaddr_in *addr= calloc(100, sizeof(struct sockaddr_in));
   signal(SIGINT, sigint_handler);
-  server();
+  server(addr);
+  free(addr);
   return 0;
 }
