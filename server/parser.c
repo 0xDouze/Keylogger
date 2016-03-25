@@ -126,6 +126,8 @@ char** parser (char* buffer)
   size_t i = 0;
   size_t j = 0;
 
+  // Compte le nb de mots contenus dans le buffer 
+
   while (*buffer != '\0')
   {
     if (*buffer == 32) // code ASCII de SPACE en decimal
@@ -133,6 +135,7 @@ char** parser (char* buffer)
     buffer++;
   }
 
+  // Initialisation du tableau
 
   trad = calloc(cpt, sizeof(char*)); // tableau qui contient un mot (en dec) sur chaque ligne
   if (trad == NULL)  
@@ -147,7 +150,8 @@ char** parser (char* buffer)
     col --;
   }
 
-  
+  // Remplissage du tableau
+
   while (*buffer != '\0')
   {
     while (*buffer |= 32)
