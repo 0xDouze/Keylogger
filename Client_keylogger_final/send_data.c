@@ -59,7 +59,7 @@ void	send_data(SOCKET my_sock, FILE *fd)
 			printf("failed send\n");
 			closesocket(my_sock);
 			my_sock = INVALID_SOCKET;
-			return;
+			return; 
 		}
 		SecureZeroMemory(buf, BUFFSIZE);
 	}
