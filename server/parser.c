@@ -172,26 +172,32 @@ char** parser (char* buffer)
   trad = calloc(cpt, sizeof(char*)); // tableau qui contient un mot (en dec) sur chaque ligne
   if (trad == NULL)
     err(-1,"Problem with 1st calloc");
-
-  for (int i = 0; i <= cpt; i++)
+	
+	int k = 0;
+  for (k = 0; k <= cpt; k++)
     {
-      trad[i] = calloc(5, sizeof(char));
+      trad[k] = calloc(5, sizeof(char));
+	if (trad[k] == NULL)
+		err(-1, "Problem with 2nd calloc");
     }
-   // Remplissage du tableau
+  
+ // Remplissage du tableau
 
-  /*while (*buffer != '\0')
+  while (*buffer != '\0')
   { 
 
-    while (*buffer |= 'y')
+    if (*buffer != ' ')
    { 
-     trad[i][j] = *buffer;
-     printf("trad[i][j] = %d, %d, %c \n", i,j,trad[i][j]);
+    printf("buffer = %c \n", *buffer);
+	trad[i][j] = *buffer;
+     printf("trad[i][j] = %ld, %ld, %c \n", i,j,trad[i][j]);
     j++;
-  }
-  j = 0;
-  i++;
+ 	} else {
+		j =0;
+	i++;
+	} 
   buffer++;
-  }*/
+  }
 
   /* while (buffer[aux])
   {
