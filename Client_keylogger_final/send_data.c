@@ -3,6 +3,7 @@
 SOCKET	init_socket(SOCKET my_sock)
 {
 	struct addrinfo *ptr, *result, hints;
+	u_long io = 1;
 
 	SecureZeroMemory(&hints, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
@@ -26,12 +27,17 @@ SOCKET	init_socket(SOCKET my_sock)
 			{
 				printf("failed shutdown\n");
 				closesocket(my_sock);
+				return (my_sock);
+			}
+			closesocket(my_sock);
 			my_sock = INVALID_SOCKET;
 			continue;
 		}
 		break;
 	}
 	freeaddrinfo(result);
+	if ((ioctlsocket(my_sock, FIONBIO, &io)) != NO_ERROR)
+		WSAGetLastError();
 	return (my_sock);
 }
 
@@ -39,7 +45,9 @@ void	send_data(SOCKET my_sock, FILE *fd)
 {
 	char buf[BUFFSIZE];
 	int i;
+
 	i = 0;
+	SecureZeroMemory(buf, BUFFSIZE);
 	if (my_sock == INVALID_SOCKET)
 		return;
 	if ((fseek(fd, 0, SEEK_SET)) == -1)
@@ -50,19 +58,11 @@ void	send_data(SOCKET my_sock, FILE *fd)
 		{
 			printf("failed send\n");
 			closesocket(my_sock);
+			my_sock = INVALID_SOCKET;
 			return;
 		}
 		SecureZeroMemory(buf, BUFFSIZE);
 	}
-#if 0
-	if (shutdown(my_sock, SD_SEND) == SOCKET_ERROR)
-	{
-		printf("failed shutdown\n");
-		closesocket(my_sock);
-		return;
-	}
-#endif // 0
-	printf("je suis juste avant le recv\n");
 	while (recv(my_sock, buf, BUFFSIZE, 0) > 0)
 	{
 		SecureZeroMemory(buf, BUFFSIZE);
