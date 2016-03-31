@@ -7,7 +7,8 @@ NAME	=	server
 CFLAGS	+=	-Wall -Wextra -Werror -std=c99 -pedantic -D_GNU_SOURCE 
 
 SRCS	=	server.c \
-		save_data.c
+				save_data.c \
+				parser.c
 
 OBJS	=	$(SRCS:.c=.o)
 

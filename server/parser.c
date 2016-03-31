@@ -118,42 +118,13 @@ struct keyboard
 };
 
 
-/* char **parser(char *buffer) */
-/* { */
-/*   int i, j, k, cpt; */
-/*   char **trad; */
-
-/*   i = 0, j = 0, k = 0, cpt = 0; */
-
-/*   while (buffer[i]) */
-/*     { */
-/*       if (buffer[i] == ' ') */
-/* 	cpt++; */
-/*       i++; */
-/*     } */
-/*   i = 0; */
-/*   if ((trad = calloc(cpt, sizeof(char *))) == NULL) */
-/*       return (NULL); */
-/*   while (i <= cpt) */
-/*     { */
-/*       if ((trad[i] = calloc(5, sizeof(char))) == NULL) */
-/* 	return (NULL); */
-/*       i++; */
-/*     } */
-/*   trad[1][2] = 'c'; */
-/*   printf("%c\n", trad[1][2]); */
-/*   return (trad); */
-/* } */
-
 char** parser (char* buffer)
 {
   char **trad;
   size_t cpt = 1;
-  size_t col;
   size_t i = 0;
   size_t j = 0;
-  size_t aux = 0;
-  size_t aux2 = 0;
+
   // Compte le nb de mots contenus dans le buffer
 
   char *tmp = buffer;
@@ -173,7 +144,7 @@ char** parser (char* buffer)
   if (trad == NULL)
     err(-1,"Problem with 1st calloc");
 	
-	int k = 0;
+	size_t k = 0;
   for (k = 0; k <= cpt; k++)
     {
       trad[k] = calloc(5, sizeof(char));
@@ -199,30 +170,14 @@ char** parser (char* buffer)
     buffer++;
   }
 
-  /* while (buffer[aux])
-  {
-      printf("buffer[aux] = %c\n", buffer[aux]);
-      aux2 = aux;
-      while (buffer[aux2] != ' ')
-      {
-        printf("Test\n");
-        trad[i][j] = buffer[aux2];
-        aux2++;
-        printf("aux = %ld \n", aux2);
-      }
-      j = 0;
-      printf(" buffer= %c \n", buffer[aux]);
-      i++;
-      aux++;
-  } */
-
   return trad;
 }
 
-int main ()
+/*int main ()
 {
   char* buffer = "aze rty uoo";
   char** tab = parser(buffer);
-  //printf("%s \n", tab[1]);
+
+  printf("tab[4] : %s \n tab[1] : %s \n", tab[4],tab[1]);
   return 0;
-}
+}*/
