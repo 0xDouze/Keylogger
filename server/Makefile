@@ -4,7 +4,7 @@ RM	=	rm -f
 
 NAME	=	server
 
-CFLAGS	+=	-Wall -Wextra -Werror -std=c99 -pedantic -D_GNU_SOURCE 
+CFLAGS	+=	-Wall -Wextra -Werror -std=c99 -pedantic -D_GNU_SOURCE -lsqlite3 
 
 SRCS	=	server.c \
 				save_data.c \

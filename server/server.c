@@ -69,6 +69,7 @@ void		server(struct sockaddr_in *addr) {
       if (fds[i].fd == fds[0].fd) {
       	do {
           new_fd = accept(fds[0].fd, (struct sockaddr*)&addr[i], &socklen);
+	  printf("%s\n", inet_ntoa(addr[i].sin_addr));
           if (new_fd == -1)
              break;
           printf("new client fd = %d\n", new_fd);
