@@ -12,6 +12,8 @@
 #include <sys/ioctl.h>
 #include <poll.h>
 #include <stropts.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 void	save_data (char *buffer);
 void	server();
