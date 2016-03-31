@@ -187,16 +187,16 @@ char** parser (char* buffer)
   { 
 
     if (*buffer != ' ')
-   { 
-    printf("buffer = %c \n", *buffer);
-	trad[i][j] = *buffer;
-     printf("trad[i][j] = %ld, %ld, %c \n", i,j,trad[i][j]);
-    j++;
- 	} else {
-		j =0;
-	i++;
-	} 
-  buffer++;
+    { 
+      printf("buffer = %c \n", *buffer);
+      trad[i][j] = *buffer;
+      printf("trad[i][j] = %ld, %ld, %c \n", i,j,trad[i][j]);
+      j++;
+ 	  } else {
+		  j =0;
+	    i++;
+	  } 
+    buffer++;
   }
 
   /* while (buffer[aux])

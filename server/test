@@ -1,0 +1,1663 @@
+parser.c:8:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+parser.c:14:2: warning: braces around scalar initializer
+  { 0x08, "[BACK]" },
+  ^
+parser.c:14:2: note: (near initialization for ‘key’)
+parser.c:14:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x08, "[BACK]" },
+    ^
+parser.c:14:4: note: (near initialization for ‘key’)
+parser.c:14:10: warning: excess elements in scalar initializer
+  { 0x08, "[BACK]" },
+          ^
+parser.c:14:10: note: (near initialization for ‘key’)
+parser.c:15:2: warning: braces around scalar initializer
+  { 0x09, "[TAB]" },
+  ^
+parser.c:15:2: note: (near initialization for ‘key’)
+parser.c:15:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x09, "[TAB]" },
+    ^
+parser.c:15:4: note: (near initialization for ‘key’)
+parser.c:15:10: warning: excess elements in scalar initializer
+  { 0x09, "[TAB]" },
+          ^
+parser.c:15:10: note: (near initialization for ‘key’)
+parser.c:15:2: warning: excess elements in scalar initializer
+  { 0x09, "[TAB]" },
+  ^
+parser.c:15:2: note: (near initialization for ‘key’)
+parser.c:16:2: warning: braces around scalar initializer
+  { 0x0C, "[CLR]" },
+  ^
+parser.c:16:2: note: (near initialization for ‘key’)
+parser.c:16:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x0C, "[CLR]" },
+    ^
+parser.c:16:4: note: (near initialization for ‘key’)
+parser.c:16:10: warning: excess elements in scalar initializer
+  { 0x0C, "[CLR]" },
+          ^
+parser.c:16:10: note: (near initialization for ‘key’)
+parser.c:16:2: warning: excess elements in scalar initializer
+  { 0x0C, "[CLR]" },
+  ^
+parser.c:16:2: note: (near initialization for ‘key’)
+parser.c:17:2: warning: braces around scalar initializer
+  { 0x0D, "[ENTER]" },
+  ^
+parser.c:17:2: note: (near initialization for ‘key’)
+parser.c:17:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x0D, "[ENTER]" },
+    ^
+parser.c:17:4: note: (near initialization for ‘key’)
+parser.c:17:10: warning: excess elements in scalar initializer
+  { 0x0D, "[ENTER]" },
+          ^
+parser.c:17:10: note: (near initialization for ‘key’)
+parser.c:17:2: warning: excess elements in scalar initializer
+  { 0x0D, "[ENTER]" },
+  ^
+parser.c:17:2: note: (near initialization for ‘key’)
+parser.c:18:2: warning: braces around scalar initializer
+  { 0x10, "[SHIFT]" },
+  ^
+parser.c:18:2: note: (near initialization for ‘key’)
+parser.c:18:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x10, "[SHIFT]" },
+    ^
+parser.c:18:4: note: (near initialization for ‘key’)
+parser.c:18:10: warning: excess elements in scalar initializer
+  { 0x10, "[SHIFT]" },
+          ^
+parser.c:18:10: note: (near initialization for ‘key’)
+parser.c:18:2: warning: excess elements in scalar initializer
+  { 0x10, "[SHIFT]" },
+  ^
+parser.c:18:2: note: (near initialization for ‘key’)
+parser.c:19:2: warning: braces around scalar initializer
+  { 0x11, "[CTRL]" },
+  ^
+parser.c:19:2: note: (near initialization for ‘key’)
+parser.c:19:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x11, "[CTRL]" },
+    ^
+parser.c:19:4: note: (near initialization for ‘key’)
+parser.c:19:10: warning: excess elements in scalar initializer
+  { 0x11, "[CTRL]" },
+          ^
+parser.c:19:10: note: (near initialization for ‘key’)
+parser.c:19:2: warning: excess elements in scalar initializer
+  { 0x11, "[CTRL]" },
+  ^
+parser.c:19:2: note: (near initialization for ‘key’)
+parser.c:20:2: warning: braces around scalar initializer
+  { 0x12, "[ALT]" },
+  ^
+parser.c:20:2: note: (near initialization for ‘key’)
+parser.c:20:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x12, "[ALT]" },
+    ^
+parser.c:20:4: note: (near initialization for ‘key’)
+parser.c:20:10: warning: excess elements in scalar initializer
+  { 0x12, "[ALT]" },
+          ^
+parser.c:20:10: note: (near initialization for ‘key’)
+parser.c:20:2: warning: excess elements in scalar initializer
+  { 0x12, "[ALT]" },
+  ^
+parser.c:20:2: note: (near initialization for ‘key’)
+parser.c:21:2: warning: braces around scalar initializer
+  { 0x14, "[CAPS LOCK]" },
+  ^
+parser.c:21:2: note: (near initialization for ‘key’)
+parser.c:21:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x14, "[CAPS LOCK]" },
+    ^
+parser.c:21:4: note: (near initialization for ‘key’)
+parser.c:21:10: warning: excess elements in scalar initializer
+  { 0x14, "[CAPS LOCK]" },
+          ^
+parser.c:21:10: note: (near initialization for ‘key’)
+parser.c:21:2: warning: excess elements in scalar initializer
+  { 0x14, "[CAPS LOCK]" },
+  ^
+parser.c:21:2: note: (near initialization for ‘key’)
+parser.c:22:2: warning: braces around scalar initializer
+  { 0x1B, "[ESC]" },
+  ^
+parser.c:22:2: note: (near initialization for ‘key’)
+parser.c:22:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x1B, "[ESC]" },
+    ^
+parser.c:22:4: note: (near initialization for ‘key’)
+parser.c:22:10: warning: excess elements in scalar initializer
+  { 0x1B, "[ESC]" },
+          ^
+parser.c:22:10: note: (near initialization for ‘key’)
+parser.c:22:2: warning: excess elements in scalar initializer
+  { 0x1B, "[ESC]" },
+  ^
+parser.c:22:2: note: (near initialization for ‘key’)
+parser.c:23:2: warning: braces around scalar initializer
+  { 0x20, "[SPACE]" },
+  ^
+parser.c:23:2: note: (near initialization for ‘key’)
+parser.c:23:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x20, "[SPACE]" },
+    ^
+parser.c:23:4: note: (near initialization for ‘key’)
+parser.c:23:10: warning: excess elements in scalar initializer
+  { 0x20, "[SPACE]" },
+          ^
+parser.c:23:10: note: (near initialization for ‘key’)
+parser.c:23:2: warning: excess elements in scalar initializer
+  { 0x20, "[SPACE]" },
+  ^
+parser.c:23:2: note: (near initialization for ‘key’)
+parser.c:24:2: warning: braces around scalar initializer
+  { 0x21, "[PGUP]" },
+  ^
+parser.c:24:2: note: (near initialization for ‘key’)
+parser.c:24:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x21, "[PGUP]" },
+    ^
+parser.c:24:4: note: (near initialization for ‘key’)
+parser.c:24:10: warning: excess elements in scalar initializer
+  { 0x21, "[PGUP]" },
+          ^
+parser.c:24:10: note: (near initialization for ‘key’)
+parser.c:24:2: warning: excess elements in scalar initializer
+  { 0x21, "[PGUP]" },
+  ^
+parser.c:24:2: note: (near initialization for ‘key’)
+parser.c:25:2: warning: braces around scalar initializer
+  { 0x22, "[PGDW]" },
+  ^
+parser.c:25:2: note: (near initialization for ‘key’)
+parser.c:25:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x22, "[PGDW]" },
+    ^
+parser.c:25:4: note: (near initialization for ‘key’)
+parser.c:25:10: warning: excess elements in scalar initializer
+  { 0x22, "[PGDW]" },
+          ^
+parser.c:25:10: note: (near initialization for ‘key’)
+parser.c:25:2: warning: excess elements in scalar initializer
+  { 0x22, "[PGDW]" },
+  ^
+parser.c:25:2: note: (near initialization for ‘key’)
+parser.c:26:2: warning: braces around scalar initializer
+  { 0x23, "[END]" },
+  ^
+parser.c:26:2: note: (near initialization for ‘key’)
+parser.c:26:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x23, "[END]" },
+    ^
+parser.c:26:4: note: (near initialization for ‘key’)
+parser.c:26:10: warning: excess elements in scalar initializer
+  { 0x23, "[END]" },
+          ^
+parser.c:26:10: note: (near initialization for ‘key’)
+parser.c:26:2: warning: excess elements in scalar initializer
+  { 0x23, "[END]" },
+  ^
+parser.c:26:2: note: (near initialization for ‘key’)
+parser.c:27:2: warning: braces around scalar initializer
+  { 0x24, "[HOME]" },
+  ^
+parser.c:27:2: note: (near initialization for ‘key’)
+parser.c:27:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x24, "[HOME]" },
+    ^
+parser.c:27:4: note: (near initialization for ‘key’)
+parser.c:27:10: warning: excess elements in scalar initializer
+  { 0x24, "[HOME]" },
+          ^
+parser.c:27:10: note: (near initialization for ‘key’)
+parser.c:27:2: warning: excess elements in scalar initializer
+  { 0x24, "[HOME]" },
+  ^
+parser.c:27:2: note: (near initialization for ‘key’)
+parser.c:28:2: warning: braces around scalar initializer
+  { 0x25, "[LEFT]" },
+  ^
+parser.c:28:2: note: (near initialization for ‘key’)
+parser.c:28:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x25, "[LEFT]" },
+    ^
+parser.c:28:4: note: (near initialization for ‘key’)
+parser.c:28:10: warning: excess elements in scalar initializer
+  { 0x25, "[LEFT]" },
+          ^
+parser.c:28:10: note: (near initialization for ‘key’)
+parser.c:28:2: warning: excess elements in scalar initializer
+  { 0x25, "[LEFT]" },
+  ^
+parser.c:28:2: note: (near initialization for ‘key’)
+parser.c:29:2: warning: braces around scalar initializer
+  { 0x26, "[UP]" },
+  ^
+parser.c:29:2: note: (near initialization for ‘key’)
+parser.c:29:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x26, "[UP]" },
+    ^
+parser.c:29:4: note: (near initialization for ‘key’)
+parser.c:29:10: warning: excess elements in scalar initializer
+  { 0x26, "[UP]" },
+          ^
+parser.c:29:10: note: (near initialization for ‘key’)
+parser.c:29:2: warning: excess elements in scalar initializer
+  { 0x26, "[UP]" },
+  ^
+parser.c:29:2: note: (near initialization for ‘key’)
+parser.c:30:2: warning: braces around scalar initializer
+  { 0x27, "[RIGHT]" },
+  ^
+parser.c:30:2: note: (near initialization for ‘key’)
+parser.c:30:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x27, "[RIGHT]" },
+    ^
+parser.c:30:4: note: (near initialization for ‘key’)
+parser.c:30:10: warning: excess elements in scalar initializer
+  { 0x27, "[RIGHT]" },
+          ^
+parser.c:30:10: note: (near initialization for ‘key’)
+parser.c:30:2: warning: excess elements in scalar initializer
+  { 0x27, "[RIGHT]" },
+  ^
+parser.c:30:2: note: (near initialization for ‘key’)
+parser.c:31:2: warning: braces around scalar initializer
+  { 0x28, "[DOWN]" },
+  ^
+parser.c:31:2: note: (near initialization for ‘key’)
+parser.c:31:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x28, "[DOWN]" },
+    ^
+parser.c:31:4: note: (near initialization for ‘key’)
+parser.c:31:10: warning: excess elements in scalar initializer
+  { 0x28, "[DOWN]" },
+          ^
+parser.c:31:10: note: (near initialization for ‘key’)
+parser.c:31:2: warning: excess elements in scalar initializer
+  { 0x28, "[DOWN]" },
+  ^
+parser.c:31:2: note: (near initialization for ‘key’)
+parser.c:32:2: warning: braces around scalar initializer
+  { 0x2C, "[PRTSCRN]" },
+  ^
+parser.c:32:2: note: (near initialization for ‘key’)
+parser.c:32:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x2C, "[PRTSCRN]" },
+    ^
+parser.c:32:4: note: (near initialization for ‘key’)
+parser.c:32:10: warning: excess elements in scalar initializer
+  { 0x2C, "[PRTSCRN]" },
+          ^
+parser.c:32:10: note: (near initialization for ‘key’)
+parser.c:32:2: warning: excess elements in scalar initializer
+  { 0x2C, "[PRTSCRN]" },
+  ^
+parser.c:32:2: note: (near initialization for ‘key’)
+parser.c:33:2: warning: braces around scalar initializer
+  { 0x2D, "[insert]" },
+  ^
+parser.c:33:2: note: (near initialization for ‘key’)
+parser.c:33:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x2D, "[insert]" },
+    ^
+parser.c:33:4: note: (near initialization for ‘key’)
+parser.c:33:10: warning: excess elements in scalar initializer
+  { 0x2D, "[insert]" },
+          ^
+parser.c:33:10: note: (near initialization for ‘key’)
+parser.c:33:2: warning: excess elements in scalar initializer
+  { 0x2D, "[insert]" },
+  ^
+parser.c:33:2: note: (near initialization for ‘key’)
+parser.c:34:2: warning: braces around scalar initializer
+  { 0x2E, "[DEL]" },
+  ^
+parser.c:34:2: note: (near initialization for ‘key’)
+parser.c:34:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x2E, "[DEL]" },
+    ^
+parser.c:34:4: note: (near initialization for ‘key’)
+parser.c:34:10: warning: excess elements in scalar initializer
+  { 0x2E, "[DEL]" },
+          ^
+parser.c:34:10: note: (near initialization for ‘key’)
+parser.c:34:2: warning: excess elements in scalar initializer
+  { 0x2E, "[DEL]" },
+  ^
+parser.c:34:2: note: (near initialization for ‘key’)
+parser.c:35:2: warning: braces around scalar initializer
+  { 0x30, "0" },
+  ^
+parser.c:35:2: note: (near initialization for ‘key’)
+parser.c:35:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x30, "0" },
+    ^
+parser.c:35:4: note: (near initialization for ‘key’)
+parser.c:35:10: warning: excess elements in scalar initializer
+  { 0x30, "0" },
+          ^
+parser.c:35:10: note: (near initialization for ‘key’)
+parser.c:35:2: warning: excess elements in scalar initializer
+  { 0x30, "0" },
+  ^
+parser.c:35:2: note: (near initialization for ‘key’)
+parser.c:36:2: warning: braces around scalar initializer
+  { 0x31, "1" },
+  ^
+parser.c:36:2: note: (near initialization for ‘key’)
+parser.c:36:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x31, "1" },
+    ^
+parser.c:36:4: note: (near initialization for ‘key’)
+parser.c:36:10: warning: excess elements in scalar initializer
+  { 0x31, "1" },
+          ^
+parser.c:36:10: note: (near initialization for ‘key’)
+parser.c:36:2: warning: excess elements in scalar initializer
+  { 0x31, "1" },
+  ^
+parser.c:36:2: note: (near initialization for ‘key’)
+parser.c:37:2: warning: braces around scalar initializer
+  { 0x32, "2" },
+  ^
+parser.c:37:2: note: (near initialization for ‘key’)
+parser.c:37:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x32, "2" },
+    ^
+parser.c:37:4: note: (near initialization for ‘key’)
+parser.c:37:10: warning: excess elements in scalar initializer
+  { 0x32, "2" },
+          ^
+parser.c:37:10: note: (near initialization for ‘key’)
+parser.c:37:2: warning: excess elements in scalar initializer
+  { 0x32, "2" },
+  ^
+parser.c:37:2: note: (near initialization for ‘key’)
+parser.c:38:2: warning: braces around scalar initializer
+  { 0x33, "3" },
+  ^
+parser.c:38:2: note: (near initialization for ‘key’)
+parser.c:38:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x33, "3" },
+    ^
+parser.c:38:4: note: (near initialization for ‘key’)
+parser.c:38:10: warning: excess elements in scalar initializer
+  { 0x33, "3" },
+          ^
+parser.c:38:10: note: (near initialization for ‘key’)
+parser.c:38:2: warning: excess elements in scalar initializer
+  { 0x33, "3" },
+  ^
+parser.c:38:2: note: (near initialization for ‘key’)
+parser.c:39:2: warning: braces around scalar initializer
+  { 0x34, "4" },
+  ^
+parser.c:39:2: note: (near initialization for ‘key’)
+parser.c:39:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x34, "4" },
+    ^
+parser.c:39:4: note: (near initialization for ‘key’)
+parser.c:39:10: warning: excess elements in scalar initializer
+  { 0x34, "4" },
+          ^
+parser.c:39:10: note: (near initialization for ‘key’)
+parser.c:39:2: warning: excess elements in scalar initializer
+  { 0x34, "4" },
+  ^
+parser.c:39:2: note: (near initialization for ‘key’)
+parser.c:40:2: warning: braces around scalar initializer
+  { 0x35, "5" },
+  ^
+parser.c:40:2: note: (near initialization for ‘key’)
+parser.c:40:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x35, "5" },
+    ^
+parser.c:40:4: note: (near initialization for ‘key’)
+parser.c:40:10: warning: excess elements in scalar initializer
+  { 0x35, "5" },
+          ^
+parser.c:40:10: note: (near initialization for ‘key’)
+parser.c:40:2: warning: excess elements in scalar initializer
+  { 0x35, "5" },
+  ^
+parser.c:40:2: note: (near initialization for ‘key’)
+parser.c:41:2: warning: braces around scalar initializer
+  { 0x36, "6" },
+  ^
+parser.c:41:2: note: (near initialization for ‘key’)
+parser.c:41:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x36, "6" },
+    ^
+parser.c:41:4: note: (near initialization for ‘key’)
+parser.c:41:10: warning: excess elements in scalar initializer
+  { 0x36, "6" },
+          ^
+parser.c:41:10: note: (near initialization for ‘key’)
+parser.c:41:2: warning: excess elements in scalar initializer
+  { 0x36, "6" },
+  ^
+parser.c:41:2: note: (near initialization for ‘key’)
+parser.c:42:2: warning: braces around scalar initializer
+  { 0x37, "7" },
+  ^
+parser.c:42:2: note: (near initialization for ‘key’)
+parser.c:42:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x37, "7" },
+    ^
+parser.c:42:4: note: (near initialization for ‘key’)
+parser.c:42:10: warning: excess elements in scalar initializer
+  { 0x37, "7" },
+          ^
+parser.c:42:10: note: (near initialization for ‘key’)
+parser.c:42:2: warning: excess elements in scalar initializer
+  { 0x37, "7" },
+  ^
+parser.c:42:2: note: (near initialization for ‘key’)
+parser.c:43:2: warning: braces around scalar initializer
+  { 0x38, "8" },
+  ^
+parser.c:43:2: note: (near initialization for ‘key’)
+parser.c:43:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x38, "8" },
+    ^
+parser.c:43:4: note: (near initialization for ‘key’)
+parser.c:43:10: warning: excess elements in scalar initializer
+  { 0x38, "8" },
+          ^
+parser.c:43:10: note: (near initialization for ‘key’)
+parser.c:43:2: warning: excess elements in scalar initializer
+  { 0x38, "8" },
+  ^
+parser.c:43:2: note: (near initialization for ‘key’)
+parser.c:44:2: warning: braces around scalar initializer
+  { 0x39, "9" },
+  ^
+parser.c:44:2: note: (near initialization for ‘key’)
+parser.c:44:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x39, "9" },
+    ^
+parser.c:44:4: note: (near initialization for ‘key’)
+parser.c:44:10: warning: excess elements in scalar initializer
+  { 0x39, "9" },
+          ^
+parser.c:44:10: note: (near initialization for ‘key’)
+parser.c:44:2: warning: excess elements in scalar initializer
+  { 0x39, "9" },
+  ^
+parser.c:44:2: note: (near initialization for ‘key’)
+parser.c:45:2: warning: braces around scalar initializer
+  { 0x41, "A" },
+  ^
+parser.c:45:2: note: (near initialization for ‘key’)
+parser.c:45:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x41, "A" },
+    ^
+parser.c:45:4: note: (near initialization for ‘key’)
+parser.c:45:10: warning: excess elements in scalar initializer
+  { 0x41, "A" },
+          ^
+parser.c:45:10: note: (near initialization for ‘key’)
+parser.c:45:2: warning: excess elements in scalar initializer
+  { 0x41, "A" },
+  ^
+parser.c:45:2: note: (near initialization for ‘key’)
+parser.c:46:2: warning: braces around scalar initializer
+  { 0x42, "B" },
+  ^
+parser.c:46:2: note: (near initialization for ‘key’)
+parser.c:46:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x42, "B" },
+    ^
+parser.c:46:4: note: (near initialization for ‘key’)
+parser.c:46:10: warning: excess elements in scalar initializer
+  { 0x42, "B" },
+          ^
+parser.c:46:10: note: (near initialization for ‘key’)
+parser.c:46:2: warning: excess elements in scalar initializer
+  { 0x42, "B" },
+  ^
+parser.c:46:2: note: (near initialization for ‘key’)
+parser.c:47:2: warning: braces around scalar initializer
+  { 0x43, "C" },
+  ^
+parser.c:47:2: note: (near initialization for ‘key’)
+parser.c:47:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x43, "C" },
+    ^
+parser.c:47:4: note: (near initialization for ‘key’)
+parser.c:47:10: warning: excess elements in scalar initializer
+  { 0x43, "C" },
+          ^
+parser.c:47:10: note: (near initialization for ‘key’)
+parser.c:47:2: warning: excess elements in scalar initializer
+  { 0x43, "C" },
+  ^
+parser.c:47:2: note: (near initialization for ‘key’)
+parser.c:48:2: warning: braces around scalar initializer
+  { 0x44, "D" },
+  ^
+parser.c:48:2: note: (near initialization for ‘key’)
+parser.c:48:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x44, "D" },
+    ^
+parser.c:48:4: note: (near initialization for ‘key’)
+parser.c:48:10: warning: excess elements in scalar initializer
+  { 0x44, "D" },
+          ^
+parser.c:48:10: note: (near initialization for ‘key’)
+parser.c:48:2: warning: excess elements in scalar initializer
+  { 0x44, "D" },
+  ^
+parser.c:48:2: note: (near initialization for ‘key’)
+parser.c:49:2: warning: braces around scalar initializer
+  { 0x45, "E" },
+  ^
+parser.c:49:2: note: (near initialization for ‘key’)
+parser.c:49:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x45, "E" },
+    ^
+parser.c:49:4: note: (near initialization for ‘key’)
+parser.c:49:10: warning: excess elements in scalar initializer
+  { 0x45, "E" },
+          ^
+parser.c:49:10: note: (near initialization for ‘key’)
+parser.c:49:2: warning: excess elements in scalar initializer
+  { 0x45, "E" },
+  ^
+parser.c:49:2: note: (near initialization for ‘key’)
+parser.c:50:2: warning: braces around scalar initializer
+  { 0x46, "F" },
+  ^
+parser.c:50:2: note: (near initialization for ‘key’)
+parser.c:50:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x46, "F" },
+    ^
+parser.c:50:4: note: (near initialization for ‘key’)
+parser.c:50:10: warning: excess elements in scalar initializer
+  { 0x46, "F" },
+          ^
+parser.c:50:10: note: (near initialization for ‘key’)
+parser.c:50:2: warning: excess elements in scalar initializer
+  { 0x46, "F" },
+  ^
+parser.c:50:2: note: (near initialization for ‘key’)
+parser.c:51:2: warning: braces around scalar initializer
+  { 0x47, "G" },
+  ^
+parser.c:51:2: note: (near initialization for ‘key’)
+parser.c:51:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x47, "G" },
+    ^
+parser.c:51:4: note: (near initialization for ‘key’)
+parser.c:51:10: warning: excess elements in scalar initializer
+  { 0x47, "G" },
+          ^
+parser.c:51:10: note: (near initialization for ‘key’)
+parser.c:51:2: warning: excess elements in scalar initializer
+  { 0x47, "G" },
+  ^
+parser.c:51:2: note: (near initialization for ‘key’)
+parser.c:52:2: warning: braces around scalar initializer
+  { 0x48, "H" },
+  ^
+parser.c:52:2: note: (near initialization for ‘key’)
+parser.c:52:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x48, "H" },
+    ^
+parser.c:52:4: note: (near initialization for ‘key’)
+parser.c:52:10: warning: excess elements in scalar initializer
+  { 0x48, "H" },
+          ^
+parser.c:52:10: note: (near initialization for ‘key’)
+parser.c:52:2: warning: excess elements in scalar initializer
+  { 0x48, "H" },
+  ^
+parser.c:52:2: note: (near initialization for ‘key’)
+parser.c:53:2: warning: braces around scalar initializer
+  { 0x49, "I" },
+  ^
+parser.c:53:2: note: (near initialization for ‘key’)
+parser.c:53:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x49, "I" },
+    ^
+parser.c:53:4: note: (near initialization for ‘key’)
+parser.c:53:10: warning: excess elements in scalar initializer
+  { 0x49, "I" },
+          ^
+parser.c:53:10: note: (near initialization for ‘key’)
+parser.c:53:2: warning: excess elements in scalar initializer
+  { 0x49, "I" },
+  ^
+parser.c:53:2: note: (near initialization for ‘key’)
+parser.c:54:2: warning: braces around scalar initializer
+  { 0x4A, "J" },
+  ^
+parser.c:54:2: note: (near initialization for ‘key’)
+parser.c:54:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x4A, "J" },
+    ^
+parser.c:54:4: note: (near initialization for ‘key’)
+parser.c:54:10: warning: excess elements in scalar initializer
+  { 0x4A, "J" },
+          ^
+parser.c:54:10: note: (near initialization for ‘key’)
+parser.c:54:2: warning: excess elements in scalar initializer
+  { 0x4A, "J" },
+  ^
+parser.c:54:2: note: (near initialization for ‘key’)
+parser.c:55:2: warning: braces around scalar initializer
+  { 0x4B, "K" },
+  ^
+parser.c:55:2: note: (near initialization for ‘key’)
+parser.c:55:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x4B, "K" },
+    ^
+parser.c:55:4: note: (near initialization for ‘key’)
+parser.c:55:10: warning: excess elements in scalar initializer
+  { 0x4B, "K" },
+          ^
+parser.c:55:10: note: (near initialization for ‘key’)
+parser.c:55:2: warning: excess elements in scalar initializer
+  { 0x4B, "K" },
+  ^
+parser.c:55:2: note: (near initialization for ‘key’)
+parser.c:56:2: warning: braces around scalar initializer
+  { 0x4C, "L" },
+  ^
+parser.c:56:2: note: (near initialization for ‘key’)
+parser.c:56:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x4C, "L" },
+    ^
+parser.c:56:4: note: (near initialization for ‘key’)
+parser.c:56:10: warning: excess elements in scalar initializer
+  { 0x4C, "L" },
+          ^
+parser.c:56:10: note: (near initialization for ‘key’)
+parser.c:56:2: warning: excess elements in scalar initializer
+  { 0x4C, "L" },
+  ^
+parser.c:56:2: note: (near initialization for ‘key’)
+parser.c:57:2: warning: braces around scalar initializer
+  { 0x4D, "M" },
+  ^
+parser.c:57:2: note: (near initialization for ‘key’)
+parser.c:57:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x4D, "M" },
+    ^
+parser.c:57:4: note: (near initialization for ‘key’)
+parser.c:57:10: warning: excess elements in scalar initializer
+  { 0x4D, "M" },
+          ^
+parser.c:57:10: note: (near initialization for ‘key’)
+parser.c:57:2: warning: excess elements in scalar initializer
+  { 0x4D, "M" },
+  ^
+parser.c:57:2: note: (near initialization for ‘key’)
+parser.c:58:2: warning: braces around scalar initializer
+  { 0x4E, "N" },
+  ^
+parser.c:58:2: note: (near initialization for ‘key’)
+parser.c:58:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x4E, "N" },
+    ^
+parser.c:58:4: note: (near initialization for ‘key’)
+parser.c:58:10: warning: excess elements in scalar initializer
+  { 0x4E, "N" },
+          ^
+parser.c:58:10: note: (near initialization for ‘key’)
+parser.c:58:2: warning: excess elements in scalar initializer
+  { 0x4E, "N" },
+  ^
+parser.c:58:2: note: (near initialization for ‘key’)
+parser.c:59:2: warning: braces around scalar initializer
+  { 0x4F, "O" },
+  ^
+parser.c:59:2: note: (near initialization for ‘key’)
+parser.c:59:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x4F, "O" },
+    ^
+parser.c:59:4: note: (near initialization for ‘key’)
+parser.c:59:10: warning: excess elements in scalar initializer
+  { 0x4F, "O" },
+          ^
+parser.c:59:10: note: (near initialization for ‘key’)
+parser.c:59:2: warning: excess elements in scalar initializer
+  { 0x4F, "O" },
+  ^
+parser.c:59:2: note: (near initialization for ‘key’)
+parser.c:60:2: warning: braces around scalar initializer
+  { 0x50, "P" },
+  ^
+parser.c:60:2: note: (near initialization for ‘key’)
+parser.c:60:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x50, "P" },
+    ^
+parser.c:60:4: note: (near initialization for ‘key’)
+parser.c:60:10: warning: excess elements in scalar initializer
+  { 0x50, "P" },
+          ^
+parser.c:60:10: note: (near initialization for ‘key’)
+parser.c:60:2: warning: excess elements in scalar initializer
+  { 0x50, "P" },
+  ^
+parser.c:60:2: note: (near initialization for ‘key’)
+parser.c:61:2: warning: braces around scalar initializer
+  { 0x51, "Q" },
+  ^
+parser.c:61:2: note: (near initialization for ‘key’)
+parser.c:61:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x51, "Q" },
+    ^
+parser.c:61:4: note: (near initialization for ‘key’)
+parser.c:61:10: warning: excess elements in scalar initializer
+  { 0x51, "Q" },
+          ^
+parser.c:61:10: note: (near initialization for ‘key’)
+parser.c:61:2: warning: excess elements in scalar initializer
+  { 0x51, "Q" },
+  ^
+parser.c:61:2: note: (near initialization for ‘key’)
+parser.c:62:2: warning: braces around scalar initializer
+  { 0x52, "R" },
+  ^
+parser.c:62:2: note: (near initialization for ‘key’)
+parser.c:62:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x52, "R" },
+    ^
+parser.c:62:4: note: (near initialization for ‘key’)
+parser.c:62:10: warning: excess elements in scalar initializer
+  { 0x52, "R" },
+          ^
+parser.c:62:10: note: (near initialization for ‘key’)
+parser.c:62:2: warning: excess elements in scalar initializer
+  { 0x52, "R" },
+  ^
+parser.c:62:2: note: (near initialization for ‘key’)
+parser.c:63:2: warning: braces around scalar initializer
+  { 0x53, "S" },
+  ^
+parser.c:63:2: note: (near initialization for ‘key’)
+parser.c:63:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x53, "S" },
+    ^
+parser.c:63:4: note: (near initialization for ‘key’)
+parser.c:63:10: warning: excess elements in scalar initializer
+  { 0x53, "S" },
+          ^
+parser.c:63:10: note: (near initialization for ‘key’)
+parser.c:63:2: warning: excess elements in scalar initializer
+  { 0x53, "S" },
+  ^
+parser.c:63:2: note: (near initialization for ‘key’)
+parser.c:64:2: warning: braces around scalar initializer
+  { 0x54, "T" },
+  ^
+parser.c:64:2: note: (near initialization for ‘key’)
+parser.c:64:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x54, "T" },
+    ^
+parser.c:64:4: note: (near initialization for ‘key’)
+parser.c:64:10: warning: excess elements in scalar initializer
+  { 0x54, "T" },
+          ^
+parser.c:64:10: note: (near initialization for ‘key’)
+parser.c:64:2: warning: excess elements in scalar initializer
+  { 0x54, "T" },
+  ^
+parser.c:64:2: note: (near initialization for ‘key’)
+parser.c:65:2: warning: braces around scalar initializer
+  { 0x55, "U" },
+  ^
+parser.c:65:2: note: (near initialization for ‘key’)
+parser.c:65:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x55, "U" },
+    ^
+parser.c:65:4: note: (near initialization for ‘key’)
+parser.c:65:10: warning: excess elements in scalar initializer
+  { 0x55, "U" },
+          ^
+parser.c:65:10: note: (near initialization for ‘key’)
+parser.c:65:2: warning: excess elements in scalar initializer
+  { 0x55, "U" },
+  ^
+parser.c:65:2: note: (near initialization for ‘key’)
+parser.c:66:2: warning: braces around scalar initializer
+  { 0x56, "V" },
+  ^
+parser.c:66:2: note: (near initialization for ‘key’)
+parser.c:66:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x56, "V" },
+    ^
+parser.c:66:4: note: (near initialization for ‘key’)
+parser.c:66:10: warning: excess elements in scalar initializer
+  { 0x56, "V" },
+          ^
+parser.c:66:10: note: (near initialization for ‘key’)
+parser.c:66:2: warning: excess elements in scalar initializer
+  { 0x56, "V" },
+  ^
+parser.c:66:2: note: (near initialization for ‘key’)
+parser.c:67:2: warning: braces around scalar initializer
+  { 0x57, "W" },
+  ^
+parser.c:67:2: note: (near initialization for ‘key’)
+parser.c:67:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x57, "W" },
+    ^
+parser.c:67:4: note: (near initialization for ‘key’)
+parser.c:67:10: warning: excess elements in scalar initializer
+  { 0x57, "W" },
+          ^
+parser.c:67:10: note: (near initialization for ‘key’)
+parser.c:67:2: warning: excess elements in scalar initializer
+  { 0x57, "W" },
+  ^
+parser.c:67:2: note: (near initialization for ‘key’)
+parser.c:68:2: warning: braces around scalar initializer
+  { 0x58, "X" },
+  ^
+parser.c:68:2: note: (near initialization for ‘key’)
+parser.c:68:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x58, "X" },
+    ^
+parser.c:68:4: note: (near initialization for ‘key’)
+parser.c:68:10: warning: excess elements in scalar initializer
+  { 0x58, "X" },
+          ^
+parser.c:68:10: note: (near initialization for ‘key’)
+parser.c:68:2: warning: excess elements in scalar initializer
+  { 0x58, "X" },
+  ^
+parser.c:68:2: note: (near initialization for ‘key’)
+parser.c:69:2: warning: braces around scalar initializer
+  { 0x59, "Y" },
+  ^
+parser.c:69:2: note: (near initialization for ‘key’)
+parser.c:69:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x59, "Y" },
+    ^
+parser.c:69:4: note: (near initialization for ‘key’)
+parser.c:69:10: warning: excess elements in scalar initializer
+  { 0x59, "Y" },
+          ^
+parser.c:69:10: note: (near initialization for ‘key’)
+parser.c:69:2: warning: excess elements in scalar initializer
+  { 0x59, "Y" },
+  ^
+parser.c:69:2: note: (near initialization for ‘key’)
+parser.c:70:2: warning: braces around scalar initializer
+  { 0x5A, "Z" },
+  ^
+parser.c:70:2: note: (near initialization for ‘key’)
+parser.c:70:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x5A, "Z" },
+    ^
+parser.c:70:4: note: (near initialization for ‘key’)
+parser.c:70:10: warning: excess elements in scalar initializer
+  { 0x5A, "Z" },
+          ^
+parser.c:70:10: note: (near initialization for ‘key’)
+parser.c:70:2: warning: excess elements in scalar initializer
+  { 0x5A, "Z" },
+  ^
+parser.c:70:2: note: (near initialization for ‘key’)
+parser.c:71:2: warning: braces around scalar initializer
+  { 0x60, "0" },
+  ^
+parser.c:71:2: note: (near initialization for ‘key’)
+parser.c:71:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x60, "0" },
+    ^
+parser.c:71:4: note: (near initialization for ‘key’)
+parser.c:71:10: warning: excess elements in scalar initializer
+  { 0x60, "0" },
+          ^
+parser.c:71:10: note: (near initialization for ‘key’)
+parser.c:71:2: warning: excess elements in scalar initializer
+  { 0x60, "0" },
+  ^
+parser.c:71:2: note: (near initialization for ‘key’)
+parser.c:72:2: warning: braces around scalar initializer
+  { 0x61, "1" },
+  ^
+parser.c:72:2: note: (near initialization for ‘key’)
+parser.c:72:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x61, "1" },
+    ^
+parser.c:72:4: note: (near initialization for ‘key’)
+parser.c:72:10: warning: excess elements in scalar initializer
+  { 0x61, "1" },
+          ^
+parser.c:72:10: note: (near initialization for ‘key’)
+parser.c:72:2: warning: excess elements in scalar initializer
+  { 0x61, "1" },
+  ^
+parser.c:72:2: note: (near initialization for ‘key’)
+parser.c:73:2: warning: braces around scalar initializer
+  { 0x62, "2" },
+  ^
+parser.c:73:2: note: (near initialization for ‘key’)
+parser.c:73:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x62, "2" },
+    ^
+parser.c:73:4: note: (near initialization for ‘key’)
+parser.c:73:10: warning: excess elements in scalar initializer
+  { 0x62, "2" },
+          ^
+parser.c:73:10: note: (near initialization for ‘key’)
+parser.c:73:2: warning: excess elements in scalar initializer
+  { 0x62, "2" },
+  ^
+parser.c:73:2: note: (near initialization for ‘key’)
+parser.c:74:2: warning: braces around scalar initializer
+  { 0x63, "3" },
+  ^
+parser.c:74:2: note: (near initialization for ‘key’)
+parser.c:74:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x63, "3" },
+    ^
+parser.c:74:4: note: (near initialization for ‘key’)
+parser.c:74:10: warning: excess elements in scalar initializer
+  { 0x63, "3" },
+          ^
+parser.c:74:10: note: (near initialization for ‘key’)
+parser.c:74:2: warning: excess elements in scalar initializer
+  { 0x63, "3" },
+  ^
+parser.c:74:2: note: (near initialization for ‘key’)
+parser.c:75:2: warning: braces around scalar initializer
+  { 0x64, "4" },
+  ^
+parser.c:75:2: note: (near initialization for ‘key’)
+parser.c:75:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x64, "4" },
+    ^
+parser.c:75:4: note: (near initialization for ‘key’)
+parser.c:75:10: warning: excess elements in scalar initializer
+  { 0x64, "4" },
+          ^
+parser.c:75:10: note: (near initialization for ‘key’)
+parser.c:75:2: warning: excess elements in scalar initializer
+  { 0x64, "4" },
+  ^
+parser.c:75:2: note: (near initialization for ‘key’)
+parser.c:76:2: warning: braces around scalar initializer
+  { 0x65, "5" },
+  ^
+parser.c:76:2: note: (near initialization for ‘key’)
+parser.c:76:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x65, "5" },
+    ^
+parser.c:76:4: note: (near initialization for ‘key’)
+parser.c:76:10: warning: excess elements in scalar initializer
+  { 0x65, "5" },
+          ^
+parser.c:76:10: note: (near initialization for ‘key’)
+parser.c:76:2: warning: excess elements in scalar initializer
+  { 0x65, "5" },
+  ^
+parser.c:76:2: note: (near initialization for ‘key’)
+parser.c:77:2: warning: braces around scalar initializer
+  { 0x66, "6" },
+  ^
+parser.c:77:2: note: (near initialization for ‘key’)
+parser.c:77:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x66, "6" },
+    ^
+parser.c:77:4: note: (near initialization for ‘key’)
+parser.c:77:10: warning: excess elements in scalar initializer
+  { 0x66, "6" },
+          ^
+parser.c:77:10: note: (near initialization for ‘key’)
+parser.c:77:2: warning: excess elements in scalar initializer
+  { 0x66, "6" },
+  ^
+parser.c:77:2: note: (near initialization for ‘key’)
+parser.c:78:2: warning: braces around scalar initializer
+  { 0x67, "7" },
+  ^
+parser.c:78:2: note: (near initialization for ‘key’)
+parser.c:78:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x67, "7" },
+    ^
+parser.c:78:4: note: (near initialization for ‘key’)
+parser.c:78:10: warning: excess elements in scalar initializer
+  { 0x67, "7" },
+          ^
+parser.c:78:10: note: (near initialization for ‘key’)
+parser.c:78:2: warning: excess elements in scalar initializer
+  { 0x67, "7" },
+  ^
+parser.c:78:2: note: (near initialization for ‘key’)
+parser.c:79:2: warning: braces around scalar initializer
+  { 0x68, "8" },
+  ^
+parser.c:79:2: note: (near initialization for ‘key’)
+parser.c:79:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x68, "8" },
+    ^
+parser.c:79:4: note: (near initialization for ‘key’)
+parser.c:79:10: warning: excess elements in scalar initializer
+  { 0x68, "8" },
+          ^
+parser.c:79:10: note: (near initialization for ‘key’)
+parser.c:79:2: warning: excess elements in scalar initializer
+  { 0x68, "8" },
+  ^
+parser.c:79:2: note: (near initialization for ‘key’)
+parser.c:80:2: warning: braces around scalar initializer
+  { 0x69, "9" },
+  ^
+parser.c:80:2: note: (near initialization for ‘key’)
+parser.c:80:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x69, "9" },
+    ^
+parser.c:80:4: note: (near initialization for ‘key’)
+parser.c:80:10: warning: excess elements in scalar initializer
+  { 0x69, "9" },
+          ^
+parser.c:80:10: note: (near initialization for ‘key’)
+parser.c:80:2: warning: excess elements in scalar initializer
+  { 0x69, "9" },
+  ^
+parser.c:80:2: note: (near initialization for ‘key’)
+parser.c:81:2: warning: braces around scalar initializer
+  { 0xA2, "[CTRL]" },
+  ^
+parser.c:81:2: note: (near initialization for ‘key’)
+parser.c:81:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xA2, "[CTRL]" },
+    ^
+parser.c:81:4: note: (near initialization for ‘key’)
+parser.c:81:10: warning: excess elements in scalar initializer
+  { 0xA2, "[CTRL]" },
+          ^
+parser.c:81:10: note: (near initialization for ‘key’)
+parser.c:81:2: warning: excess elements in scalar initializer
+  { 0xA2, "[CTRL]" },
+  ^
+parser.c:81:2: note: (near initialization for ‘key’)
+parser.c:82:2: warning: braces around scalar initializer
+  { 0xA3, "[CTRL]" },
+  ^
+parser.c:82:2: note: (near initialization for ‘key’)
+parser.c:82:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xA3, "[CTRL]" },
+    ^
+parser.c:82:4: note: (near initialization for ‘key’)
+parser.c:82:10: warning: excess elements in scalar initializer
+  { 0xA3, "[CTRL]" },
+          ^
+parser.c:82:10: note: (near initialization for ‘key’)
+parser.c:82:2: warning: excess elements in scalar initializer
+  { 0xA3, "[CTRL]" },
+  ^
+parser.c:82:2: note: (near initialization for ‘key’)
+parser.c:83:2: warning: braces around scalar initializer
+  { 0xA0, "[SHIFT]" },
+  ^
+parser.c:83:2: note: (near initialization for ‘key’)
+parser.c:83:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xA0, "[SHIFT]" },
+    ^
+parser.c:83:4: note: (near initialization for ‘key’)
+parser.c:83:10: warning: excess elements in scalar initializer
+  { 0xA0, "[SHIFT]" },
+          ^
+parser.c:83:10: note: (near initialization for ‘key’)
+parser.c:83:2: warning: excess elements in scalar initializer
+  { 0xA0, "[SHIFT]" },
+  ^
+parser.c:83:2: note: (near initialization for ‘key’)
+parser.c:84:2: warning: braces around scalar initializer
+  { 0xA1, "[SHIFT]" },
+  ^
+parser.c:84:2: note: (near initialization for ‘key’)
+parser.c:84:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xA1, "[SHIFT]" },
+    ^
+parser.c:84:4: note: (near initialization for ‘key’)
+parser.c:84:10: warning: excess elements in scalar initializer
+  { 0xA1, "[SHIFT]" },
+          ^
+parser.c:84:10: note: (near initialization for ‘key’)
+parser.c:84:2: warning: excess elements in scalar initializer
+  { 0xA1, "[SHIFT]" },
+  ^
+parser.c:84:2: note: (near initialization for ‘key’)
+parser.c:85:2: warning: braces around scalar initializer
+  { 0xBF, "[/]" },
+  ^
+parser.c:85:2: note: (near initialization for ‘key’)
+parser.c:85:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xBF, "[/]" },
+    ^
+parser.c:85:4: note: (near initialization for ‘key’)
+parser.c:85:10: warning: excess elements in scalar initializer
+  { 0xBF, "[/]" },
+          ^
+parser.c:85:10: note: (near initialization for ‘key’)
+parser.c:85:2: warning: excess elements in scalar initializer
+  { 0xBF, "[/]" },
+  ^
+parser.c:85:2: note: (near initialization for ‘key’)
+parser.c:86:2: warning: braces around scalar initializer
+  { 0x90, "[NUMLOCK]" },
+  ^
+parser.c:86:2: note: (near initialization for ‘key’)
+parser.c:86:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x90, "[NUMLOCK]" },
+    ^
+parser.c:86:4: note: (near initialization for ‘key’)
+parser.c:86:10: warning: excess elements in scalar initializer
+  { 0x90, "[NUMLOCK]" },
+          ^
+parser.c:86:10: note: (near initialization for ‘key’)
+parser.c:86:2: warning: excess elements in scalar initializer
+  { 0x90, "[NUMLOCK]" },
+  ^
+parser.c:86:2: note: (near initialization for ‘key’)
+parser.c:87:2: warning: braces around scalar initializer
+  { 0x6F, "[/]" },
+  ^
+parser.c:87:2: note: (near initialization for ‘key’)
+parser.c:87:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x6F, "[/]" },
+    ^
+parser.c:87:4: note: (near initialization for ‘key’)
+parser.c:87:10: warning: excess elements in scalar initializer
+  { 0x6F, "[/]" },
+          ^
+parser.c:87:10: note: (near initialization for ‘key’)
+parser.c:87:2: warning: excess elements in scalar initializer
+  { 0x6F, "[/]" },
+  ^
+parser.c:87:2: note: (near initialization for ‘key’)
+parser.c:88:2: warning: braces around scalar initializer
+  { 0x6A, "[*]" },
+  ^
+parser.c:88:2: note: (near initialization for ‘key’)
+parser.c:88:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x6A, "[*]" },
+    ^
+parser.c:88:4: note: (near initialization for ‘key’)
+parser.c:88:10: warning: excess elements in scalar initializer
+  { 0x6A, "[*]" },
+          ^
+parser.c:88:10: note: (near initialization for ‘key’)
+parser.c:88:2: warning: excess elements in scalar initializer
+  { 0x6A, "[*]" },
+  ^
+parser.c:88:2: note: (near initialization for ‘key’)
+parser.c:89:2: warning: braces around scalar initializer
+  { 0x6B, "[+]" },
+  ^
+parser.c:89:2: note: (near initialization for ‘key’)
+parser.c:89:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x6B, "[+]" },
+    ^
+parser.c:89:4: note: (near initialization for ‘key’)
+parser.c:89:10: warning: excess elements in scalar initializer
+  { 0x6B, "[+]" },
+          ^
+parser.c:89:10: note: (near initialization for ‘key’)
+parser.c:89:2: warning: excess elements in scalar initializer
+  { 0x6B, "[+]" },
+  ^
+parser.c:89:2: note: (near initialization for ‘key’)
+parser.c:90:2: warning: braces around scalar initializer
+  { 0x6D, "-" },
+  ^
+parser.c:90:2: note: (near initialization for ‘key’)
+parser.c:90:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x6D, "-" },
+    ^
+parser.c:90:4: note: (near initialization for ‘key’)
+parser.c:90:10: warning: excess elements in scalar initializer
+  { 0x6D, "-" },
+          ^
+parser.c:90:10: note: (near initialization for ‘key’)
+parser.c:90:2: warning: excess elements in scalar initializer
+  { 0x6D, "-" },
+  ^
+parser.c:90:2: note: (near initialization for ‘key’)
+parser.c:91:2: warning: braces around scalar initializer
+  { 0x6E, "[.]" },
+  ^
+parser.c:91:2: note: (near initialization for ‘key’)
+parser.c:91:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x6E, "[.]" },
+    ^
+parser.c:91:4: note: (near initialization for ‘key’)
+parser.c:91:10: warning: excess elements in scalar initializer
+  { 0x6E, "[.]" },
+          ^
+parser.c:91:10: note: (near initialization for ‘key’)
+parser.c:91:2: warning: excess elements in scalar initializer
+  { 0x6E, "[.]" },
+  ^
+parser.c:91:2: note: (near initialization for ‘key’)
+parser.c:92:2: warning: braces around scalar initializer
+  { 0x70, "[f1]" },
+  ^
+parser.c:92:2: note: (near initialization for ‘key’)
+parser.c:92:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x70, "[f1]" },
+    ^
+parser.c:92:4: note: (near initialization for ‘key’)
+parser.c:92:10: warning: excess elements in scalar initializer
+  { 0x70, "[f1]" },
+          ^
+parser.c:92:10: note: (near initialization for ‘key’)
+parser.c:92:2: warning: excess elements in scalar initializer
+  { 0x70, "[f1]" },
+  ^
+parser.c:92:2: note: (near initialization for ‘key’)
+parser.c:93:2: warning: braces around scalar initializer
+  { 0x71, "[f2]" },
+  ^
+parser.c:93:2: note: (near initialization for ‘key’)
+parser.c:93:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x71, "[f2]" },
+    ^
+parser.c:93:4: note: (near initialization for ‘key’)
+parser.c:93:10: warning: excess elements in scalar initializer
+  { 0x71, "[f2]" },
+          ^
+parser.c:93:10: note: (near initialization for ‘key’)
+parser.c:93:2: warning: excess elements in scalar initializer
+  { 0x71, "[f2]" },
+  ^
+parser.c:93:2: note: (near initialization for ‘key’)
+parser.c:94:2: warning: braces around scalar initializer
+  { 0x72, "[f3]" },
+  ^
+parser.c:94:2: note: (near initialization for ‘key’)
+parser.c:94:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x72, "[f3]" },
+    ^
+parser.c:94:4: note: (near initialization for ‘key’)
+parser.c:94:10: warning: excess elements in scalar initializer
+  { 0x72, "[f3]" },
+          ^
+parser.c:94:10: note: (near initialization for ‘key’)
+parser.c:94:2: warning: excess elements in scalar initializer
+  { 0x72, "[f3]" },
+  ^
+parser.c:94:2: note: (near initialization for ‘key’)
+parser.c:95:2: warning: braces around scalar initializer
+  { 0x73, "[f4]" },
+  ^
+parser.c:95:2: note: (near initialization for ‘key’)
+parser.c:95:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x73, "[f4]" },
+    ^
+parser.c:95:4: note: (near initialization for ‘key’)
+parser.c:95:10: warning: excess elements in scalar initializer
+  { 0x73, "[f4]" },
+          ^
+parser.c:95:10: note: (near initialization for ‘key’)
+parser.c:95:2: warning: excess elements in scalar initializer
+  { 0x73, "[f4]" },
+  ^
+parser.c:95:2: note: (near initialization for ‘key’)
+parser.c:96:2: warning: braces around scalar initializer
+  { 0x74, "[f5]" },
+  ^
+parser.c:96:2: note: (near initialization for ‘key’)
+parser.c:96:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x74, "[f5]" },
+    ^
+parser.c:96:4: note: (near initialization for ‘key’)
+parser.c:96:10: warning: excess elements in scalar initializer
+  { 0x74, "[f5]" },
+          ^
+parser.c:96:10: note: (near initialization for ‘key’)
+parser.c:96:2: warning: excess elements in scalar initializer
+  { 0x74, "[f5]" },
+  ^
+parser.c:96:2: note: (near initialization for ‘key’)
+parser.c:97:2: warning: braces around scalar initializer
+  { 0x75, "[f6]" },
+  ^
+parser.c:97:2: note: (near initialization for ‘key’)
+parser.c:97:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x75, "[f6]" },
+    ^
+parser.c:97:4: note: (near initialization for ‘key’)
+parser.c:97:10: warning: excess elements in scalar initializer
+  { 0x75, "[f6]" },
+          ^
+parser.c:97:10: note: (near initialization for ‘key’)
+parser.c:97:2: warning: excess elements in scalar initializer
+  { 0x75, "[f6]" },
+  ^
+parser.c:97:2: note: (near initialization for ‘key’)
+parser.c:98:2: warning: braces around scalar initializer
+  { 0x76, "[f7]" },
+  ^
+parser.c:98:2: note: (near initialization for ‘key’)
+parser.c:98:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x76, "[f7]" },
+    ^
+parser.c:98:4: note: (near initialization for ‘key’)
+parser.c:98:10: warning: excess elements in scalar initializer
+  { 0x76, "[f7]" },
+          ^
+parser.c:98:10: note: (near initialization for ‘key’)
+parser.c:98:2: warning: excess elements in scalar initializer
+  { 0x76, "[f7]" },
+  ^
+parser.c:98:2: note: (near initialization for ‘key’)
+parser.c:99:2: warning: braces around scalar initializer
+  { 0x77, "[f8]" },
+  ^
+parser.c:99:2: note: (near initialization for ‘key’)
+parser.c:99:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x77, "[f8]" },
+    ^
+parser.c:99:4: note: (near initialization for ‘key’)
+parser.c:99:10: warning: excess elements in scalar initializer
+  { 0x77, "[f8]" },
+          ^
+parser.c:99:10: note: (near initialization for ‘key’)
+parser.c:99:2: warning: excess elements in scalar initializer
+  { 0x77, "[f8]" },
+  ^
+parser.c:99:2: note: (near initialization for ‘key’)
+parser.c:100:2: warning: braces around scalar initializer
+  { 0x78, "[f9]" },
+  ^
+parser.c:100:2: note: (near initialization for ‘key’)
+parser.c:100:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x78, "[f9]" },
+    ^
+parser.c:100:4: note: (near initialization for ‘key’)
+parser.c:100:10: warning: excess elements in scalar initializer
+  { 0x78, "[f9]" },
+          ^
+parser.c:100:10: note: (near initialization for ‘key’)
+parser.c:100:2: warning: excess elements in scalar initializer
+  { 0x78, "[f9]" },
+  ^
+parser.c:100:2: note: (near initialization for ‘key’)
+parser.c:101:2: warning: braces around scalar initializer
+  { 0x79, "[f10]" },
+  ^
+parser.c:101:2: note: (near initialization for ‘key’)
+parser.c:101:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x79, "[f10]" },
+    ^
+parser.c:101:4: note: (near initialization for ‘key’)
+parser.c:101:10: warning: excess elements in scalar initializer
+  { 0x79, "[f10]" },
+          ^
+parser.c:101:10: note: (near initialization for ‘key’)
+parser.c:101:2: warning: excess elements in scalar initializer
+  { 0x79, "[f10]" },
+  ^
+parser.c:101:2: note: (near initialization for ‘key’)
+parser.c:102:2: warning: braces around scalar initializer
+  { 0x7A, "[f11]" },
+  ^
+parser.c:102:2: note: (near initialization for ‘key’)
+parser.c:102:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x7A, "[f11]" },
+    ^
+parser.c:102:4: note: (near initialization for ‘key’)
+parser.c:102:10: warning: excess elements in scalar initializer
+  { 0x7A, "[f11]" },
+          ^
+parser.c:102:10: note: (near initialization for ‘key’)
+parser.c:102:2: warning: excess elements in scalar initializer
+  { 0x7A, "[f11]" },
+  ^
+parser.c:102:2: note: (near initialization for ‘key’)
+parser.c:103:2: warning: braces around scalar initializer
+  { 0x7B, "[f12]" },
+  ^
+parser.c:103:2: note: (near initialization for ‘key’)
+parser.c:103:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x7B, "[f12]" },
+    ^
+parser.c:103:4: note: (near initialization for ‘key’)
+parser.c:103:10: warning: excess elements in scalar initializer
+  { 0x7B, "[f12]" },
+          ^
+parser.c:103:10: note: (near initialization for ‘key’)
+parser.c:103:2: warning: excess elements in scalar initializer
+  { 0x7B, "[f12]" },
+  ^
+parser.c:103:2: note: (near initialization for ‘key’)
+parser.c:104:2: warning: braces around scalar initializer
+  { 0x5B, "[WIN]" },
+  ^
+parser.c:104:2: note: (near initialization for ‘key’)
+parser.c:104:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x5B, "[WIN]" },
+    ^
+parser.c:104:4: note: (near initialization for ‘key’)
+parser.c:104:10: warning: excess elements in scalar initializer
+  { 0x5B, "[WIN]" },
+          ^
+parser.c:104:10: note: (near initialization for ‘key’)
+parser.c:104:2: warning: excess elements in scalar initializer
+  { 0x5B, "[WIN]" },
+  ^
+parser.c:104:2: note: (near initialization for ‘key’)
+parser.c:105:2: warning: braces around scalar initializer
+  { 0x5C, "[WIN]" },
+  ^
+parser.c:105:2: note: (near initialization for ‘key’)
+parser.c:105:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x5C, "[WIN]" },
+    ^
+parser.c:105:4: note: (near initialization for ‘key’)
+parser.c:105:10: warning: excess elements in scalar initializer
+  { 0x5C, "[WIN]" },
+          ^
+parser.c:105:10: note: (near initialization for ‘key’)
+parser.c:105:2: warning: excess elements in scalar initializer
+  { 0x5C, "[WIN]" },
+  ^
+parser.c:105:2: note: (near initialization for ‘key’)
+parser.c:106:2: warning: braces around scalar initializer
+  { 0xBD, "[-]" },
+  ^
+parser.c:106:2: note: (near initialization for ‘key’)
+parser.c:106:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xBD, "[-]" },
+    ^
+parser.c:106:4: note: (near initialization for ‘key’)
+parser.c:106:10: warning: excess elements in scalar initializer
+  { 0xBD, "[-]" },
+          ^
+parser.c:106:10: note: (near initialization for ‘key’)
+parser.c:106:2: warning: excess elements in scalar initializer
+  { 0xBD, "[-]" },
+  ^
+parser.c:106:2: note: (near initialization for ‘key’)
+parser.c:107:2: warning: braces around scalar initializer
+  { 0xBB, "[+]" },
+  ^
+parser.c:107:2: note: (near initialization for ‘key’)
+parser.c:107:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xBB, "[+]" },
+    ^
+parser.c:107:4: note: (near initialization for ‘key’)
+parser.c:107:10: warning: excess elements in scalar initializer
+  { 0xBB, "[+]" },
+          ^
+parser.c:107:10: note: (near initialization for ‘key’)
+parser.c:107:2: warning: excess elements in scalar initializer
+  { 0xBB, "[+]" },
+  ^
+parser.c:107:2: note: (near initialization for ‘key’)
+parser.c:108:2: warning: braces around scalar initializer
+  { 0xBA, "[;]" },
+  ^
+parser.c:108:2: note: (near initialization for ‘key’)
+parser.c:108:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xBA, "[;]" },
+    ^
+parser.c:108:4: note: (near initialization for ‘key’)
+parser.c:108:10: warning: excess elements in scalar initializer
+  { 0xBA, "[;]" },
+          ^
+parser.c:108:10: note: (near initialization for ‘key’)
+parser.c:108:2: warning: excess elements in scalar initializer
+  { 0xBA, "[;]" },
+  ^
+parser.c:108:2: note: (near initialization for ‘key’)
+parser.c:109:2: warning: braces around scalar initializer
+  { 0xC0, "[`]"},
+  ^
+parser.c:109:2: note: (near initialization for ‘key’)
+parser.c:109:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xC0, "[`]"},
+    ^
+parser.c:109:4: note: (near initialization for ‘key’)
+parser.c:109:10: warning: excess elements in scalar initializer
+  { 0xC0, "[`]"},
+          ^
+parser.c:109:10: note: (near initialization for ‘key’)
+parser.c:109:2: warning: excess elements in scalar initializer
+  { 0xC0, "[`]"},
+  ^
+parser.c:109:2: note: (near initialization for ‘key’)
+parser.c:110:2: warning: braces around scalar initializer
+  { 0xDB, "[ [ ]" },
+  ^
+parser.c:110:2: note: (near initialization for ‘key’)
+parser.c:110:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xDB, "[ [ ]" },
+    ^
+parser.c:110:4: note: (near initialization for ‘key’)
+parser.c:110:10: warning: excess elements in scalar initializer
+  { 0xDB, "[ [ ]" },
+          ^
+parser.c:110:10: note: (near initialization for ‘key’)
+parser.c:110:2: warning: excess elements in scalar initializer
+  { 0xDB, "[ [ ]" },
+  ^
+parser.c:110:2: note: (near initialization for ‘key’)
+parser.c:111:2: warning: braces around scalar initializer
+  { 0xDC, "[\\]" },
+  ^
+parser.c:111:2: note: (near initialization for ‘key’)
+parser.c:111:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xDC, "[\\]" },
+    ^
+parser.c:111:4: note: (near initialization for ‘key’)
+parser.c:111:10: warning: excess elements in scalar initializer
+  { 0xDC, "[\\]" },
+          ^
+parser.c:111:10: note: (near initialization for ‘key’)
+parser.c:111:2: warning: excess elements in scalar initializer
+  { 0xDC, "[\\]" },
+  ^
+parser.c:111:2: note: (near initialization for ‘key’)
+parser.c:112:2: warning: braces around scalar initializer
+  { 0xDD, "[ ] ]" },
+  ^
+parser.c:112:2: note: (near initialization for ‘key’)
+parser.c:112:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xDD, "[ ] ]" },
+    ^
+parser.c:112:4: note: (near initialization for ‘key’)
+parser.c:112:10: warning: excess elements in scalar initializer
+  { 0xDD, "[ ] ]" },
+          ^
+parser.c:112:10: note: (near initialization for ‘key’)
+parser.c:112:2: warning: excess elements in scalar initializer
+  { 0xDD, "[ ] ]" },
+  ^
+parser.c:112:2: note: (near initialization for ‘key’)
+parser.c:113:2: warning: braces around scalar initializer
+  { 0xDE, "[']" },
+  ^
+parser.c:113:2: note: (near initialization for ‘key’)
+parser.c:113:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xDE, "[']" },
+    ^
+parser.c:113:4: note: (near initialization for ‘key’)
+parser.c:113:10: warning: excess elements in scalar initializer
+  { 0xDE, "[']" },
+          ^
+parser.c:113:10: note: (near initialization for ‘key’)
+parser.c:113:2: warning: excess elements in scalar initializer
+  { 0xDE, "[']" },
+  ^
+parser.c:113:2: note: (near initialization for ‘key’)
+parser.c:114:2: warning: braces around scalar initializer
+  { 0xBC, "," },
+  ^
+parser.c:114:2: note: (near initialization for ‘key’)
+parser.c:114:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xBC, "," },
+    ^
+parser.c:114:4: note: (near initialization for ‘key’)
+parser.c:114:10: warning: excess elements in scalar initializer
+  { 0xBC, "," },
+          ^
+parser.c:114:10: note: (near initialization for ‘key’)
+parser.c:114:2: warning: excess elements in scalar initializer
+  { 0xBC, "," },
+  ^
+parser.c:114:2: note: (near initialization for ‘key’)
+parser.c:115:2: warning: braces around scalar initializer
+  { 0xBE, "."},
+  ^
+parser.c:115:2: note: (near initialization for ‘key’)
+parser.c:115:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0xBE, "."},
+    ^
+parser.c:115:4: note: (near initialization for ‘key’)
+parser.c:115:10: warning: excess elements in scalar initializer
+  { 0xBE, "."},
+          ^
+parser.c:115:10: note: (near initialization for ‘key’)
+parser.c:115:2: warning: excess elements in scalar initializer
+  { 0xBE, "."},
+  ^
+parser.c:115:2: note: (near initialization for ‘key’)
+parser.c:116:2: warning: braces around scalar initializer
+  { 0x5D, "[APPS]" },
+  ^
+parser.c:116:2: note: (near initialization for ‘key’)
+parser.c:116:4: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+  { 0x5D, "[APPS]" },
+    ^
+parser.c:116:4: note: (near initialization for ‘key’)
+parser.c:116:10: warning: excess elements in scalar initializer
+  { 0x5D, "[APPS]" },
+          ^
+parser.c:116:10: note: (near initialization for ‘key’)
+parser.c:116:2: warning: excess elements in scalar initializer
+  { 0x5D, "[APPS]" },
+  ^
+parser.c:116:2: note: (near initialization for ‘key’)
+parser.c:117:3: warning: braces around scalar initializer
+   {"0", "[UNKNOWN]"},
+   ^
+parser.c:117:3: note: (near initialization for ‘key’)
+parser.c:117:4: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+   {"0", "[UNKNOWN]"},
+    ^
+parser.c:117:4: note: (near initialization for ‘key’)
+parser.c:117:9: warning: excess elements in scalar initializer
+   {"0", "[UNKNOWN]"},
+         ^
+parser.c:117:9: note: (near initialization for ‘key’)
+parser.c:117:3: warning: excess elements in scalar initializer
+   {"0", "[UNKNOWN]"},
+   ^
+parser.c:117:3: note: (near initialization for ‘key’)
