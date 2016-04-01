@@ -10,8 +10,10 @@ int main(int argc, char **argv)
 
   /* Variables */
 
-  GtkWidget * MainWindow = NULL;
-
+  GtkWidget *MainWindow = NULL;
+  GtkWidget *Table;
+  GtkWidget *Button[2];
+  GtkWidget *Text_View;
 
   /* Initialisation de GTK+ */
 
@@ -37,22 +39,34 @@ int main(int argc, char **argv)
   gtk_window_set_position(GTK_WINDOW(MainWindow), GTK_WIN_POS_CENTER); // centrage de la fenetre
 
   // ------------------------------------------------------------------------------------------------
+  
+  /* Creation d'une table pour positionner les differents widgets */
 
+  Table = gtk_table_new(7, 5, TRUE);
+  gtk_container_add(GTK_CONTAINER(MainWindow), GTK_WIDGET(Table));
+
+  // ------------------------------------------------------------------------------------------------
+ 
   /* Bouton */
 
-  GtkWidget *ButtonQuit;
+  Button[0] = gtk_button_new_from_stock(GTK_STOCK_GO_BACK);
+  Button[1] = gtk_button_new_with_label("Bouton");
 
-  ButtonQuit = gtk_button_new_with_label("Quitter");
-  gtk_window_set_title(GTK_WINDOW(MainWindow), "Les boutons - Exemple 1");
-  
-  //GtkWidget* gtk_button_new_with_label(const gchar *label); // initialisation du bouton
+  gtk_table_attach(GTK_TABLE(Table), Button[0], 0, 1, 0, 1, GTK_EXPAND, GTK_EXPAND, 0, 0); 
+  gtk_table_attach(GTK_TABLE(Table), Button[1], 2, 3, 2, 3, GTK_EXPAND, GTK_EXPAND, 0, 0);
 
+  // ------------------------------------------------------------------------------------------------
+  /* Creation de la zone de texte */
+
+  //Text_View = gtk_text_view_new();
+  //gtk_box_pack_start(GTK_BOX(main_box), Text_View, TRUE, TRUE, 0);
   // ------------------------------------------------------------------------------------------------
 
   /* Affichage et boucle évènementielle */
 
-  gtk_widget_show(MainWindow);
-  g_signal_connect(G_OBJECT(ButtonQuit), "clicked", G_CALLBACK(gtk_main_quit), NULL); // Quitte lorsque l4utiliqsteur clique sur le bouton
+  gtk_widget_show_all(MainWindow);
+  //gtk_widget_show(ButtonQuit);
+  //g_signal_connect(G_OBJECT(Button[0]), "clicked", G_CALLBACK(gtk_main_quit), NULL); // Quitte lorsque l'utiliqsteur clique sur le bouton
   gtk_main();
 
   return EXIT_SUCCESS;
