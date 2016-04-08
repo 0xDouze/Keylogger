@@ -39,58 +39,57 @@ int main(int argc, char* argv[])
   gtk_main();
   return 0;
 }
- 
- 
+
+
 void saisie(GtkButton *button)
 {
-      GtkWidget *selection;
+  GtkWidget *selection;
            
-          selection = gtk_file_selection_new( g_locale_to_utf8( "Sélectionnez un fichier", -1, NULL, NULL, NULL) );
-              gtk_widget_show(selection);
+  selection = gtk_file_selection_new( g_locale_to_utf8( "Sélectionnez un fichier", -1, NULL, NULL, NULL) );
+  gtk_widget_show(selection);
                    
-                  g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(selection)->ok_button), "clicked", G_CALLBACK(ouvrir_fichier), selection );
+  g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(selection)->ok_button), "clicked", G_CALLBACK(ouvrir_fichier), selection );
                        
-                      g_signal_connect_swapped(G_OBJECT(GTK_FILE_SELECTION(selection)->cancel_button), "clicked", G_CALLBACK(gtk_widget_destroy), selection);
+  g_signal_connect_swapped(G_OBJECT(GTK_FILE_SELECTION(selection)->cancel_button), "clicked", G_CALLBACK(gtk_widget_destroy), selection);
 }
  
 void ouvrir_fichier(GtkWidget *bouton, GtkWidget *file_selection)
 {
-      GtkTextBuffer *buffer;
-          GtkTextIter start;
-              GtkTextIter end;
-                  FILE *fichier;
-                      const gchar *chemin;
-                          gchar lecture[1024];
+  GtkTextBuffer *buffer;
+  GtkTextIter start;
+  GtkTextIter end;
+  FILE *fichier;
+  const gchar *chemin;
+  gchar lecture[1024];
                                
-                              buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
+  buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
                                    
-                                  chemin = gtk_file_selection_get_filename(GTK_FILE_SELECTION (file_selection));
-                                      fichier = fopen(chemin,"rt");
+  chemin = gtk_file_selection_get_filename(GTK_FILE_SELECTION (file_selection));
+  fichier = fopen(chemin,"rt");
                                            
-                                          if(fichier == NULL)
-                                                {
-                                                          GtkWidget *dialog;
+  if(fichier == NULL)
+  {
+  	GtkWidget *dialog;
                                                                    
-                                                                  dialog = gtk_message_dialog_new(GTK_WINDOW(file_selection), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "Impossible d'ouvrir le fichier : \n%s", g_locale_to_utf8(chemin, -1, NULL, NULL, NULL));
-                                                                          gtk_dialog_run(GTK_DIALOG(dialog));
-                                                                                  gtk_widget_destroy(dialog);
-                                                                                          gtk_widget_destroy(file_selection);
-                                                                                                   
-                                                                                                  return;
-                                                                                                      }
-                                           
-                                              gtk_widget_destroy(file_selection);
+  	dialog = gtk_message_dialog_new(GTK_WINDOW(file_selection), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "Impossible d'ouvrir le fichier : \n%s", g_locale_to_utf8(chemin, -1, NULL, NULL, NULL));
+  	gtk_dialog_run(GTK_DIALOG(dialog));
+  	gtk_widget_destroy(dialog);
+  	gtk_widget_destroy(file_selection);
+ 	return;
+  }
+                                        
+  gtk_widget_destroy(file_selection);
                                                    
-                                                  gtk_text_buffer_get_start_iter(buffer,&start);
-                                                      gtk_text_buffer_get_end_iter(buffer,&end);
-                                                          gtk_text_buffer_delete(buffer, &start, &end);
+  gtk_text_buffer_get_start_iter(buffer,&start);
+  gtk_text_buffer_get_end_iter(buffer,&end);
+  gtk_text_buffer_delete(buffer, &start, &end);
                                                                
-                                                              while(fgets(lecture, 1024, fichier))
-                                                                    {
-                                                                              gtk_text_buffer_get_end_iter(buffer,&end);
-                                                                                      gtk_text_buffer_insert(buffer, &end, g_locale_to_utf8(lecture, -1, NULL, NULL, NULL), -1);
-                                                                                          }
+  while(fgets(lecture, 1024, fichier))
+  {
+  gtk_text_buffer_get_end_iter(buffer,&end);
+  gtk_text_buffer_insert(buffer, &end, g_locale_to_utf8(lecture, -1, NULL, NULL, NULL), -1);
+  }
                                                                    
-                                                                  fclose(fichier);
+  fclose(fichier);
 }
 
