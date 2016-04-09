@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 	// Variables
 	GtkWidget *clientWindow;
 	GtkWidget *tableCW;
-	GtkWidget *button[4];
+	GtkWidget *button[5];
 //	GtkWidget *infoClient;
 //	GtkWidget *box;
 //	Data data;
@@ -59,28 +59,29 @@ int main(int argc, char **argv)
 
 	// Creation  des boutons
 	button[0] = gtk_button_new_with_label("GO BACK");
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[0], 0, 2, 0, 1); 	
+	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[0], 0, 2, 0, 1);
 	g_signal_connect(G_OBJECT(button[0]), "clicked", G_CALLBACK(gtk_main_quit), NULL);
-	
+
 	button[1] = gtk_button_new_with_label("Create client");
 	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[1], 0, 1, 2, 3);
 
 	button[2] = gtk_button_new_with_label("Research client");
 	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[2], 0, 1, 3, 4);
 	//g_signal_connect(G_OBJECT(button[2]), "clicked", G_CALLBACK(test_text), (gpointer) &data);
-	
+
 	button[3] = gtk_button_new_with_label("Update client");
 	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[3], 0, 1, 4, 5);
 
 	button[4] = gtk_button_new_with_label("Delete client");
 	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[4], 0, 1, 5, 6);
 
+        button[5] = gtk_button_new_with_label("Coucou");
+        gtk_table_attach_defaults(GTK_TABLE(tableCW), button[5], 5, 7, 2, 5);
 	// Affichage et boucle evenementielle
 	gtk_widget_show_all(clientWindow);
 	gtk_main();
 
 	return EXIT_SUCCESS;
-	
-	
-}
 
+
+}
