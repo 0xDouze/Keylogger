@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//#include "menuBar.h"
+
 /*void test_text ()
 {
 	gchar *test;
@@ -36,48 +38,55 @@ int main(int argc, char **argv)
 	tableCW = gtk_table_new(10, 7, TRUE);
 	gtk_container_add(GTK_CONTAINER(clientWindow), GTK_WIDGET(tableCW));
 
-/*  box=gtk_vbox_new(FALSE,5);
-  gtk_container_add(GTK_CONTAINER(window),box);
+	//Creation de la barre de menu
+        GtkWidget *menuBar;
+        menuBar = gtk_menu_bar_new();
 
-  scrollbar = gtk_scrolled_window_new(NULL, NULL);
-  gtk_box_pack_start(GTK_BOX(box), scrollbar, TRUE, TRUE, 5);
+        	//Menu "File"
+        GtkWidget *menu;
+        GtkWidget *menuItem;
 
-  text_view=gtk_text_view_new();
-  gtk_container_add(GTK_CONTAINER(scrollbar),text_view);
-  gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollbar), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+        menu = gtk_menu_new();
+        menuItem = gtk_menu_item_new_with_mnemonic("_File");
+	gtk_widget_show(menuItem);
+	g_signal_connect(G_OBJECT(menuItem), "activate", G_CALLBACK(gtk_main_quit), NULL);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuItem);
+	gtk_widget_show(menuBar);
+	menuItem = gtk_menu_item_new_with_mnemonic("_Fichier");
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuItem), menu);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menuBar), menuItem);
+        	//Sous-menu File
+        /*GtkWidget *submenuItem;
 
-*/
+        submenuItem = gtk_menu_item_new_with_mnemonic("_Quit");
+        gtk_menu_shell_append(GTK_MENU_SHELL(menuItem), submenuItem);
+	g_signal_connect(G_OBJECT(submenuItem), "activate", G_CALLBACK(gtk_main_quit), NULL);  
+	*/
+        //gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuItem), menu);
+        //gtk_menu_shell_append(GTK_MENU_SHELL(menuBar), menuItem);
 
-/*	box = gtk_vbox_new(FALSE, 5);
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), box, 3, 7, 0, 3);
-	text_view = gtk_text_view_new();
-	gtk_box_pack_start(GTK_BOX(box), TRUE, TRUE, 0);
-
-
-	data.infoClient = gtk_label_new("About the client");
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), data.infoClient, 3, 7, 0, 3); */
+	gtk_table_attach_defaults(GTK_TABLE(tableCW), menuBar, 0, 5, 0, 1);
 
 	// Creation  des boutons
 	button[0] = gtk_button_new_with_label("GO BACK");
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[0], 0, 2, 0, 1);
+	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[0], 0, 2, 1, 2);
 	g_signal_connect(G_OBJECT(button[0]), "clicked", G_CALLBACK(gtk_main_quit), NULL);
 
 	button[1] = gtk_button_new_with_label("Create client");
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[1], 0, 1, 2, 3);
+	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[1], 1, 2, 2, 3);
 
 	button[2] = gtk_button_new_with_label("Research client");
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[2], 0, 1, 3, 4);
+	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[2], 1, 2, 3, 4);
 	//g_signal_connect(G_OBJECT(button[2]), "clicked", G_CALLBACK(test_text), (gpointer) &data);
 
 	button[3] = gtk_button_new_with_label("Update client");
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[3], 0, 1, 4, 5);
+	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[3], 1, 2, 4, 5);
 
 	button[4] = gtk_button_new_with_label("Delete client");
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[4], 0, 1, 5, 6);
+	gtk_table_attach_defaults(GTK_TABLE(tableCW), button[4], 1, 2, 5, 6);
 
-        button[5] = gtk_button_new_with_label("Coucou");
-        gtk_table_attach_defaults(GTK_TABLE(tableCW), button[5], 5, 7, 2, 5);
 	// Affichage et boucle evenementielle
+	gtk_widget_show(menuBar);
 	gtk_widget_show_all(clientWindow);
 	gtk_main();
 
