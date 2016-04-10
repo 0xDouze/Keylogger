@@ -8,10 +8,19 @@ static inline char *itoa(int nb) {
   return res;
 }
 
+static int callback(void *data, int argc, char **argv, char **azColName){
+  int i;
+  if(data == NULL)
+  //fprintf(stderr, "%s: ", (const char*)data);
+    for(i=0; i < argc; i++)
+      printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
+  return 0;
+}
+
 void create_clients(sqlite3 *db, int id_client, char mac_addr[25], char *data) {
   char *sql= "INSERT INTO clients(id, mac_addr, data) "\
 	"VALUES(";
-  char *res= malloc(sizeof(char)*256);
+  char *res= malloc(sizeof(data)+256);
   strcat(res, sql);
   strcat(res, itoa(id_client));
   strcat(res, ", '");
@@ -36,7 +45,7 @@ void research_clients(sqlite3 *db, int id_client) {
   strcat(res, ";");
   printf("%s\n", res);
 
-  if(sqlite3_exec(db, res, NULL, 0, 0 != SQLITE_OK))
+  if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK)
     perror("SQL error\n");
   else
     printf("research success\n");
@@ -44,7 +53,7 @@ void research_clients(sqlite3 *db, int id_client) {
 
 void update_clients(sqlite3 *db, char *data, int id_client) {
   char *sql= "UPDATE clients SET data= '";
-  char *res= malloc(sizeof(char)*256);
+  char *res= malloc(sizeof(data)+256);
   strcat(res, sql);
   strcat(res, data);
   strcat(res, "' WHERE id= ");
@@ -52,7 +61,7 @@ void update_clients(sqlite3 *db, char *data, int id_client) {
   strcat(res, ";");
   printf("%s\n", res);
 
-  if(sqlite3_exec(db, res, NULL, 0, 0 != SQLITE_OK))
+  if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
     perror("SQL error\n");
   else
     printf("update success\n");
@@ -67,7 +76,7 @@ void delete_clients(sqlite3 *db, char *mac_addr) {
   strcat(res, "';");
   printf("%s\n", res);
 
-  if(sqlite3_exec(db, res, NULL, 0, 0 != SQLITE_OK))
+  if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
     perror("SQL error\n");
   else
     printf("delete success\n");
@@ -85,10 +94,10 @@ int main() {
   }
   else
     printf("connection success\n");
-  //create_clients(keylogger, 2, "78.4H.9T.DF.T3.Q5", "blblbl");
-  //research_clients(keylogger, 2);
-  //update_clients(keylogger, "kevin le plus bo", 2);
+  //create_clients(keylogger, 3, "3P.4H.9T.DF.FD.Q7", "nouveau client cree");
+  research_clients(keylogger, 1);
+  //update_clients(keylogger, "bonjour j'update", 1);
   //delete_clients(keylogger, "78.4H.9T.DF.T3.Q5");
-  sqlite3_close(keylogger);
+  //sqlite3_close(keylogger);
   return 0;
 }
