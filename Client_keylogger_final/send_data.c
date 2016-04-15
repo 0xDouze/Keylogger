@@ -8,7 +8,7 @@ SOCKET	init_socket(SOCKET my_sock)
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
-	if (getaddrinfo("192.168.0.2", "4141", &hints, &ptr) != 0)
+	if (getaddrinfo("10.224.55.173", "4141", &hints, &ptr) != 0)
 	{
 		printf("getaddrinfo failed\n");
 		return (my_sock);
@@ -26,7 +26,10 @@ SOCKET	init_socket(SOCKET my_sock)
 			{
 				printf("failed shutdown\n");
 				closesocket(my_sock);
-			my_sock = INVALID_SOCKET;
+				my_sock = INVALID_SOCKET;
+				return (my_sock);
+			}
+			closesocket(my_sock);
 			continue;
 		}
 		break;
@@ -50,19 +53,11 @@ void	send_data(SOCKET my_sock, FILE *fd)
 		{
 			printf("failed send\n");
 			closesocket(my_sock);
+			my_sock = INVALID_SOCKET;
 			return;
 		}
 		SecureZeroMemory(buf, BUFFSIZE);
 	}
-#if 0
-	if (shutdown(my_sock, SD_SEND) == SOCKET_ERROR)
-	{
-		printf("failed shutdown\n");
-		closesocket(my_sock);
-		return;
-	}
-#endif // 0
-	printf("je suis juste avant le recv\n");
 	while (recv(my_sock, buf, BUFFSIZE, 0) > 0)
 	{
 		SecureZeroMemory(buf, BUFFSIZE);
