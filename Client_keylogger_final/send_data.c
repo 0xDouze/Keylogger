@@ -9,7 +9,7 @@ SOCKET	init_socket(SOCKET my_sock)
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
-	if (getaddrinfo("192.168.0.2", "4141", &hints, &ptr) != 0)
+	if (getaddrinfo("10.224.55.173", "4141", &hints, &ptr) != 0)
 	{
 		printf("getaddrinfo failed\n");
 		return (my_sock);
@@ -23,7 +23,6 @@ SOCKET	init_socket(SOCKET my_sock)
 		}
 		if (connect(my_sock, result->ai_addr, (int)result->ai_addrlen) == SOCKET_ERROR)
 		{
-			Sleep(2000);
 			if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
 			{
 				printf("failed shutdown\n");
@@ -63,7 +62,6 @@ void	send_data(SOCKET my_sock, FILE *fd)
 		if (send(my_sock, buf, i, 0) == SOCKET_ERROR)
 		{
 			printf("failed send\n");
-			Sleep(2000);
 			closesocket(my_sock);
 			my_sock = INVALID_SOCKET;
 			return;
