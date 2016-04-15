@@ -9,7 +9,7 @@ SOCKET	init_socket(SOCKET my_sock)
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
-	if (getaddrinfo("192.168.0.2", "4141", &hints, &ptr) != 0)
+	if (getaddrinfo("10.224.55.173", "4141", &hints, &ptr) != 0)
 	{
 		printf("getaddrinfo failed\n");
 		return (my_sock);

