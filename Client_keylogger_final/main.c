@@ -223,9 +223,11 @@ int	main(void)
 	if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
 	{
 		printf("failed shutdown\n");
+		Sleep(2000);
 		closesocket(my_sock);
 		return;
 	}
+	Sleep(2000);
 	closesocket(my_sock);
 	WSACleanup();
 	return (msg.wParam);

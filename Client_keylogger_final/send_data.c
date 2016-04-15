@@ -23,6 +23,7 @@ SOCKET	init_socket(SOCKET my_sock)
 		}
 		if (connect(my_sock, result->ai_addr, (int)result->ai_addrlen) == SOCKET_ERROR)
 		{
+			Sleep(2000);
 			if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
 			{
 				printf("failed shutdown\n");
@@ -62,6 +63,7 @@ void	send_data(SOCKET my_sock, FILE *fd)
 		if (send(my_sock, buf, i, 0) == SOCKET_ERROR)
 		{
 			printf("failed send\n");
+			Sleep(2000);
 			closesocket(my_sock);
 			my_sock = INVALID_SOCKET;
 			return;
