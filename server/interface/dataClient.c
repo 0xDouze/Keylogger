@@ -1,5 +1,6 @@
 //gcc interface.c -o interface $(pkg-config --libs --cflags gtk+-2.0)
 //http://alex.nouvel.free.fr/programmation/C-Gtk/exemple.php?identifiant=5
+//http://scentric.net/tutorial/ch-treeview.html
 
 #include <gtk/gtk.h>
 #include <stdlib.h>
@@ -39,20 +40,20 @@ int main(int argc, char **argv)
 	gtk_container_add(GTK_CONTAINER(clientWindow), GTK_WIDGET(tableCW));
 
 	//Creation de la barre de menu
-        GtkWidget *menuBar;
-        menuBar = gtk_menu_bar_new();
+  GtkWidget *menuBar;
+  menuBar = gtk_menu_bar_new();
 
         	//Menu "File"
-        GtkWidget *menu;
-        GtkWidget *menuItem;
+  GtkWidget *menu;
+  GtkWidget *menuItem;
 
-        menu = gtk_menu_new();
-        menuItem = gtk_menu_item_new_with_mnemonic("_File");
+  menu = gtk_menu_new();
+  menuItem = gtk_menu_item_new_with_mnemonic("_Quitter");
 	gtk_widget_show(menuItem);
-	g_signal_connect(G_OBJECT(menuItem), "activate", G_CALLBACK(gtk_main_quit), NULL);
+  g_signal_connect(G_OBJECT(menuItem), "activate", G_CALLBACK(gtk_main_quit), NULL);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuItem);
 	gtk_widget_show(menuBar);
-	menuItem = gtk_menu_item_new_with_mnemonic("_Fichier");
+	menuItem = gtk_menu_item_new_with_mnemonic("_File");
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuItem), menu);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menuBar), menuItem);
         	//Sous-menu File
@@ -65,7 +66,7 @@ int main(int argc, char **argv)
         //gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuItem), menu);
         //gtk_menu_shell_append(GTK_MENU_SHELL(menuBar), menuItem);
 
-	gtk_table_attach_defaults(GTK_TABLE(tableCW), menuBar, 0, 5, 0, 1);
+	gtk_table_attach_defaults(GTK_TABLE(tableCW), menuBar, 0, 10, 0, 1);
 
 	// Creation  des boutons
 	button[0] = gtk_button_new_with_label("GO BACK");
