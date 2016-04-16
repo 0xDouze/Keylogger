@@ -20,7 +20,9 @@ static int callback(void *data, int argc, char **argv, char **azColName){
 void create_clients(sqlite3 *db, int id_client, char mac_addr[25], char *data) {
   char *sql= "INSERT INTO clients(id, mac_addr, data) "\
 	"VALUES(";
-  char *res= malloc(sizeof(data) + 256);
+  char *res;
+  if ((res = calloc(1024, sizeof(char))) == NULL)
+    return;
   strcat(res, sql);
   strcat(res, itoa(id_client));
   strcat(res, ", '");
@@ -34,6 +36,7 @@ void create_clients(sqlite3 *db, int id_client, char mac_addr[25], char *data) {
     perror("SQL error");
   else
     printf("create success");
+  free(res);
 }
 
 /* void research_clients(sqlite3 *db, int id_client) { */
@@ -62,7 +65,9 @@ void get_all_clients(sqlite3 *db) {
 
 void update_clients(sqlite3 *db, char *data, int id_client) {
   char *sql= "UPDATE clients SET data= '";
-  char *res= malloc(sizeof(data) + 256);
+  char *res;
+  if ((res = calloc(1024, sizeof(char))) == NULL)
+    return;
   strcat(res, sql);
   strcat(res, data);
   strcat(res, "' WHERE id= ");
@@ -74,13 +79,16 @@ void update_clients(sqlite3 *db, char *data, int id_client) {
     perror("SQL error\n");
   else
     printf("update success\n");
+  free(res);
 }
 
 void add_data(sqlite3 *db, char *data, char *mac_addr) {
   char *data_callback;
   char *sql= "SELECT data FROM clients "\
 	      "WHERE mac_addr='";
-  char *res= malloc(sizeof(data) + 256);
+  char *res;
+  if ((res = calloc(1024, sizeof(char))) == NULL)
+    return;
   strcat(res, sql);
   strcat(res, mac_addr);
   strcat(res, "';");
@@ -93,6 +101,7 @@ void add_data(sqlite3 *db, char *data, char *mac_addr) {
     perror("sqlite error\n");
   else
     printf("add data success\n");
+  free(res);
 }
 
 /* void delete_clients(sqlite3 *db, char *mac_addr) { */
