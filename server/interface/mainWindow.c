@@ -7,6 +7,33 @@ enum
 	NUM_COLS
 };
 
+
+void infoClientWindow (void)
+{
+	GtkWidget *mainWindow;
+
+	// Creation de la fenetre principale
+        mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
+        gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
+       	
+	g_signal_connect(G_OBJECT(mainWindow), "delete_event",
+                G_CALLBACK(gtk_main_quit), NULL);
+        gtk_widget_show_all(mainWindow);
+
+        gtk_main();
+
+}
+
+void research_client (GtkWidget *research, gpointer data)
+{
+	// récupération du texte entré par l'utilisateur dans la zone de recherche
+	const gchar *client;
+	client = gtk_entry_get_text(GTK_ENTRY(research));
+	g_print("Donnee entree par l'utilisateur : %s\n", client);
+	infoClientWindow();
+}
+
 void view_popup_menu_onDoSomething (GtkWidget *menuitem, gpointer userdata)
 {
     /* we passed the view as userdata when we connected the signal */
@@ -33,7 +60,7 @@ void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gpointer userd
 	g_signal_connect(stop, "activate",
 			(GCallback) view_popup_menu_onDoSomething, treeview);
 	g_signal_connect(moreInfo, "activate", 
-			(GCallback) view_popup_menu_onDoSomething, treeview);
+			(GCallback) infoClientWindow, treeview);
 
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), start);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), stop);
@@ -131,25 +158,8 @@ static GtkWidget *create_view_model (void)
 	return view;
 }
 
-void infoClientWindow (void)
-{
-	GtkWidget *mainWindow;
-       	
-	// Creation de la fenetre principale
-        mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
-        gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
-       	
-	g_signal_connect(G_OBJECT(mainWindow), "delete_event",
-                G_CALLBACK(gtk_main_quit), NULL);
-        gtk_widget_show_all(mainWindow);
 
-        gtk_main();
-
-}
-
-
-void on_changed(GtkWidget *widget)
+/*void on_changed(GtkWidget *widget)
 {
         GtkTreeIter iter;
         GtkTreeModel *model;
@@ -157,18 +167,18 @@ void on_changed(GtkWidget *widget)
         if (gtk_tree_selection_get_selected(GTK_TREE_SELECTION(widget), &model, &iter)) {
                 infoClientWindow();
         }
-}
+}*/
 
 int main (int argc, char **argv)
 {
+	GtkWidget *boxV, *boxH;
 	GtkTreeIter iter;
 	GtkWidget *listClients;
 	GtkWidget *mainWindow;
 	GtkTreeModel *model;
+	GtkWidget *text;
+	GtkWidget *research;
 	GtkWidget *scrollbar;
-	GtkTreeSelection *selection;
-	GtkWidget *table;
-
 	
 	gtk_init(&argc, &argv);
 
@@ -180,26 +190,35 @@ int main (int argc, char **argv)
 	// Creation de la liste des clients	
 	listClients = create_view_model();
 	scrollbar = gtk_scrolled_window_new(NULL, NULL);
+
+	//Recherche d'un client (texte + zone de saisie)
+	text = gtk_label_new("Research client :");
+	research = gtk_entry_new();
 	
-	// Creation de la table
-	table = gtk_table_new(10, 7, TRUE);
+	// Creation de la box
+	boxV = gtk_vbox_new(FALSE, 0);
+	boxH = gtk_hbox_new(TRUE, 0);
+
+	// Insertion des widgets
+	gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
+	gtk_container_add(GTK_CONTAINER(scrollbar), listClients);
+	
+	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20);
+	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
 
 	// Gestion des detection des clics dans la liste des clients
-	selection  = gtk_tree_view_get_selection(GTK_TREE_VIEW(listClients));
-	//g_signal_connect(selection, "changed", G_CALLBACK(on_changed), NULL);	
     	g_signal_connect(listClients, "button-press-event", (GCallback) 
 		view_onButtonPressed, NULL);
     	g_signal_connect(listClients, "popup-menu", (GCallback) 
 		view_onPopupMenu, NULL);
-	// Insertion des widgets
-	gtk_container_add(GTK_CONTAINER(mainWindow), GTK_WIDGET(table));
-	gtk_container_add(GTK_CONTAINER(scrollbar), listClients);
-	gtk_table_attach_defaults(GTK_TABLE(table), scrollbar, 0, 3, 0, 7);
 
-
+	
 	// Affichage et boucle evenementielle
 	g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
 		G_CALLBACK(gtk_main_quit), NULL);
+	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL);
 	gtk_widget_show_all(mainWindow);
 
 	gtk_main();
