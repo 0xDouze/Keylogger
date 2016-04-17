@@ -1,6 +1,6 @@
 CC= gcc
 NAME= interface
-SRC= dataClient.c
+SRC= mainWindow.c
 CFLAGS += -Wall -Wextra -Werror -std=c99 -pedantic -O3 $(GTK_CFLAGS)
 GTK_CFLAGS = `pkg-config --cflags --libs gtk+-2.0`
 GTK_LDFLAGS = 'pkg-config --libs gtk+-2.0'
