@@ -37,9 +37,9 @@ void create_clients(sqlite3 *db, char mac_addr[25], char *name) {
   free(res);
 }
 
- void research_clients(sqlite3 *db) { 
-   char *sql= "SELECT * FROM clients "\ 
- 	      "WHERE id= "; 
+void research_clients(sqlite3 *db, int id_client) { 
+  char *sql= "SELECT * FROM clients "\
+	      "WHERE id= "; 
    char *res= malloc(sizeof(char) * 256); 
    strcat(res, sql); 
    strcat(res, itoa(id_client)); 
@@ -60,14 +60,14 @@ void get_all_clients(sqlite3 *db) {
     printf("get all success\n");
 }
 
-void update_clients(sqlite3 *db, char *data, int id_client) {
+void update_data(sqlite3 *db, char *data, int id_client) {
   char *sql= "UPDATE clients SET data= '";
   char *res;
   if ((res = calloc(1024, sizeof(char))) == NULL)
     return;
   strcat(res, sql);
   strcat(res, data);
-  strcat(res, "' WHERE id= ");
+  strcat(res, "' WHERE id_client= ");
   strcat(res, itoa(id_client));
   strcat(res, ";");
   printf("%s\n", res);
@@ -101,20 +101,20 @@ void add_data(sqlite3 *db, char *data, char *mac_addr) {
   free(res);
 }
 
-/* void delete_clients(sqlite3 *db, char *mac_addr) { */
-/*   char *sql= "DELETE FROM clients "\ */
-/* 	      "WHERE mac_addr='"; */
-/*   char *res= malloc(sizeof(char) * 256); */
-/*   strcat(res, sql); */
-/*   strcat(res, mac_addr); */
-/*   strcat(res, "';"); */
-/*   printf("%s\n", res); */
+void delete_clients(sqlite3 *db, int id_client) { 
+   char *sql= "DELETE FROM clients "\
+	       "WHERE id="; 
+   char *res= malloc(sizeof(char) * 256); 
+   strcat(res, sql); 
+   strcat(res, itoa(id_client)); 
+   strcat(res, ";"); 
+   printf("%s\n", res); 
 
-/*   if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK) */
-/*     perror("SQL error\n"); */
-/*   else */
-/*     printf("delete success\n"); */
-/* } */
+   if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK) 
+     perror("SQL error\n"); 
+   else 
+   printf("delete success\n"); 
+ } 
  
 /*int main() {
   sqlite3 *keylogger;

@@ -14,6 +14,6 @@ void get_all_clients(sqlite3 *db);
 
 void update_clients(sqlite3 *db, char *data, int id_client);
 
-void delete_clients(sqlite3 *db, char *mac_addr);
+void delete_clients(sqlite3 *db, int id_client);
 
 void add_data(sqlite3 *db, char *data, char *mac_addr);
