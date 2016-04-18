@@ -90,7 +90,7 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  save_data("\n\n");
 	  save_data(buffer);
 	  printf("%s %d\n", inet_ntoa(addr[new_fd].sin_addr), new_fd);
-	  add_data(db, buffer, inet_ntoa(addr[i].sin_addr));
+	  //create_data(db, buffer, inet_ntoa(addr[i].sin_addr));
 	  printf("Data sent: %s\n", buffer);
 	  memset(buffer, 0, 256);
 	}

