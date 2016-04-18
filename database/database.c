@@ -1,6 +1,6 @@
 #include "database.h"
 
-static inline char *itoa(int nb) {
+char *itoa(int nb) {
   char *res= malloc(sizeof(char)*4); 
   sprintf(res, "%d", nb);
   return res;
@@ -17,18 +17,16 @@ static int callback(void *data, int argc, char **argv, char **azColName){
   return 0;
 }
 
-void create_clients(sqlite3 *db, int id_client, char mac_addr[25], char *data) {
-  char *sql= "INSERT INTO clients(id, mac_addr, data) "\
-	"VALUES(";
+void create_clients(sqlite3 *db, char mac_addr[25], char *name) {
+  char *sql= "INSERT INTO clients(id, mac_addr, name) "\
+	"VALUES(NULL, '";
   char *res;
   if ((res = calloc(1024, sizeof(char))) == NULL)
     return;
   strcat(res, sql);
-  strcat(res, itoa(id_client));
-  strcat(res, ", '");
   strcat(res, mac_addr);
   strcat(res, "', '");
-  strcat(res, data);
+  strcat(res, name);
   strcat(res, "');");
   printf("%s\n", res);
 
@@ -39,20 +37,19 @@ void create_clients(sqlite3 *db, int id_client, char mac_addr[25], char *data) {
   free(res);
 }
 
-/* void research_clients(sqlite3 *db, int id_client) { */
-/*   char *sql= "SELECT * FROM clients "\ */
-/* 	      "WHERE id= "; */
-/*   char *res= malloc(sizeof(char) * 256); */
-/*   strcat(res, sql); */
-/*   strcat(res, itoa(id_client)); */
-/*   strcat(res, ";"); */
-/*   printf("%s\n", res); */
-
-/*   if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) */
-/*     perror("sql error\n"); */
-/*   else */
-/*     printf("research success\n"); */
-/* } */
+ void research_clients(sqlite3 *db) { 
+   char *sql= "SELECT * FROM clients "\ 
+ 	      "WHERE id= "; 
+   char *res= malloc(sizeof(char) * 256); 
+   strcat(res, sql); 
+   strcat(res, itoa(id_client)); 
+   strcat(res, ";"); 
+   printf("%s\n", res); 
+   if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) 
+     perror("sql error\n"); 
+   else
+     printf("research success\n");
+ }
 
 void get_all_clients(sqlite3 *db) {
   char *sql= "SELECT mac_addr FROM clients;";

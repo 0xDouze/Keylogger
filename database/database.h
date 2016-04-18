@@ -4,7 +4,9 @@
 #include <sqlite3.h>
 #include "../server/server.h"
 
-void create_clients(sqlite3 *db, int id_client, char mac_addr[25], char *data);
+char *itoa(int  n);
+
+void create_clients(sqlite3 *db, char mac_addr[25], char *data);
 
 void research_clients(sqlite3 *db, int id_client);
 

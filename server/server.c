@@ -33,7 +33,6 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
   nfds_t	reuse = 1;
   char		buffer[BUFFSIZE];
   struct pollfd fds[200];
-  int id= 1;
 
   sock_fd = init_socket(&reuse);
   memset(fds, 0, sizeof(fds));
@@ -74,9 +73,12 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  printf("%s\n", inet_ntoa(addr[i].sin_addr));
           if (new_fd == -1)
              break;
-	  create_clients(db, id, inet_ntoa(addr[i].sin_addr), buffer);
-	  id++;
-          printf("new client fd = %d\n", new_fd);
+	  int num_client= 1;
+	  char name_client[20]= "client ";
+	  strcat(name_client, itoa(num_client));
+	  create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
+          num_client++;
+	  printf("new client fd = %d\n", new_fd);
 	  fds[reuse].fd = new_fd;
           fds[reuse].events = POLLIN;
           reuse++;
