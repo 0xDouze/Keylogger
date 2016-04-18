@@ -25,7 +25,7 @@ void infoClientWindow (void)
 
 }
 
-void research_client (GtkWidget *research, gpointer data)
+void research_client (GtkWidget *research) //, gpointer data)
 {
 	// récupération du texte entré par l'utilisateur dans la zone de recherche
 	const gchar *client;
@@ -34,15 +34,14 @@ void research_client (GtkWidget *research, gpointer data)
 	infoClientWindow();
 }
 
-void view_popup_menu_onDoSomething (GtkWidget *menuitem, gpointer userdata)
+void view_popup_menu_onDoSomething () //(GtkWidget *menuitem, gpointer userdata)
 {
-    /* we passed the view as userdata when we connected the signal */
-    GtkTreeView *treeview = GTK_TREE_VIEW(userdata);
+    //GtkTreeView *treeview = GTK_TREE_VIEW(userdata);
 
     g_print ("Do something!\n");
 }
 
-void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gpointer userdata)
+void view_popup_menu (GtkWidget *treeview, GdkEventButton *event) //, gpointer userdata)
 {
 	GtkWidget *menu;
 	GtkWidget *moreInfo;
@@ -73,7 +72,7 @@ void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gpointer userd
                    gdk_event_get_time((GdkEvent*)event));
 }
 
-gboolean view_onButtonPressed (GtkWidget *treeview, GdkEventButton *event, gpointer userdata)
+gboolean view_onButtonPressed (GtkWidget *treeview, GdkEventButton *event) //, gpointer userdata)
  {
 	GtkTreeModel *model;
 	GtkTreeIter iter;
@@ -97,7 +96,7 @@ gboolean view_onButtonPressed (GtkWidget *treeview, GdkEventButton *event, gpoin
 
       }
 
-      view_popup_menu(treeview, event, userdata);
+      view_popup_menu(treeview, event); //, userdata);
 
       return TRUE;
     }
@@ -105,9 +104,9 @@ gboolean view_onButtonPressed (GtkWidget *treeview, GdkEventButton *event, gpoin
     return FALSE;
 }
 
-gboolean view_onPopupMenu (GtkWidget *treeview, gpointer userdata)
+gboolean view_onPopupMenu (GtkWidget *treeview) //, gpointer userdata)
 {
-    view_popup_menu(treeview, NULL, userdata);
+    view_popup_menu(treeview, NULL); //, userdata);
 
     return TRUE;
 }
@@ -172,10 +171,11 @@ static GtkWidget *create_view_model (void)
 int main (int argc, char **argv)
 {
 	GtkWidget *boxV, *boxH;
-	GtkTreeIter iter;
+	GtkWidget *btnStartAll, *btnStopAll;
+	//GtkTreeIter iter;
 	GtkWidget *listClients;
 	GtkWidget *mainWindow;
-	GtkTreeModel *model;
+	//GtkTreeModel *model;
 	GtkWidget *text;
 	GtkWidget *research;
 	GtkWidget *scrollbar;
@@ -184,6 +184,7 @@ int main (int argc, char **argv)
 
 	// Creation de la fenetre principale
 	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
 	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
 	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
 	
@@ -199,12 +200,18 @@ int main (int argc, char **argv)
 	boxV = gtk_vbox_new(FALSE, 0);
 	boxH = gtk_hbox_new(TRUE, 0);
 
+       //Creation des boutons Start All et Stop All
+	btnStartAll = gtk_button_new_with_label("Start all");
+	btnStopAll = gtk_button_new_with_label("Stop all");
+
 	// Insertion des widgets
 	gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
 	gtk_container_add(GTK_CONTAINER(scrollbar), listClients);
 	
 	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20);
+	gtk_box_pack_start(GTK_BOX(boxH), btnStartAll, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
 
