@@ -76,7 +76,9 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  int num_client= 1;
 	  char name_client[20]= "client ";
 	  strcat(name_client, itoa(num_client));
-	  create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
+	  if(research_clients(db, num_client) == 0)
+	    create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
+	  //create_data(db, 1, num_client, buffer);
           num_client++;
 	  printf("new client fd = %d\n", new_fd);
 	  fds[reuse].fd = new_fd;

@@ -36,7 +36,7 @@ void create_clients(sqlite3 *db, char mac_addr[25], char *name) {
   free(res);
 }
 
-void research_clients(sqlite3 *db, int id_client) { 
+int research_clients(sqlite3 *db, int id_client) { 
   char *sql= "SELECT * FROM clients "\
 	      "WHERE id= "; 
    char *res= malloc(sizeof(char) * 256); 
@@ -44,10 +44,14 @@ void research_clients(sqlite3 *db, int id_client) {
    strcat(res, itoa(id_client)); 
    strcat(res, ";"); 
    printf("%s\n", res); 
-   if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) 
+   if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) {
      perror("sql error\n"); 
-   else
+     return 0;
+   }
+   else {
      printf("research success\n");
+     return 1;
+   }
  }
 
 void get_all_clients(sqlite3 *db) {
@@ -79,7 +83,7 @@ void update_data(sqlite3 *db, char *data, int id_client) {
 }
 
 void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
-  char *sql= "INSERT INTO data(id_server, id_client, data "\
+  char *sql= "INSERT INTO data(id_server, id_client, data) "\
 	      "VALUES(";
   char *res;
   if ((res = calloc(1024, sizeof(char))) == NULL)
@@ -100,13 +104,13 @@ void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
   free(res);
 }
 
-void research_data(sqlite3 *db, int id_client) {
+void research_data(sqlite3 *db) {
   char *sql= "SELECT data FROM data"\
-	      " WHERE id_client= ";
+	      " WHERE id_client in "\
+	      "(SELECT id FROM clients"\
+	      "WHERE id= id_client);";
   char *res= malloc(sizeof(char) * 256);
   strcat(res, sql);
-  strcat(res, itoa(id_client));
-  strcat(res, ";");
   printf("%s\n", res);
 
   if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK)
