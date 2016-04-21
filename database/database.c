@@ -39,7 +39,7 @@ void create_clients(sqlite3 *db, char mac_addr[25], char *name) {
 int research_clients(sqlite3 *db, int id_client) { 
   char *sql= "SELECT * FROM clients "\
 	      "WHERE id= "; 
-   char *res= malloc(sizeof(char) * 256); 
+   char *res= calloc(256, sizeof(char)); 
    strcat(res, sql); 
    strcat(res, itoa(id_client)); 
    strcat(res, ";"); 
@@ -52,6 +52,7 @@ int research_clients(sqlite3 *db, int id_client) {
      printf("research client success\n");
      return 1;
    }
+   free(res);
  }
 
 void get_all_clients(sqlite3 *db) {
@@ -129,7 +130,7 @@ void research_data(sqlite3 *db, int id_client) {
 void delete_clients(sqlite3 *db, int id_client) { 
    char *sql= "DELETE FROM clients "\
 	       "WHERE id="; 
-   char *res= malloc(sizeof(char) * 256); 
+   char *res= calloc(256, sizeof(char)); 
    strcat(res, sql); 
    strcat(res, itoa(id_client)); 
    strcat(res, ";"); 
@@ -138,5 +139,6 @@ void delete_clients(sqlite3 *db, int id_client) {
    if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK) 
      perror("SQL error\n"); 
    else 
-   printf("delete success\n"); 
+     printf("delete success\n"); 
+   free(res);
  } 
