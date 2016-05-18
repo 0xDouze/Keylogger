@@ -2,43 +2,60 @@
 
 #include <gtk/gtk.h>
 #include <stdlib.h>
+
 enum
 {
 	COL_CLIENT = 0,
 	NUM_COLS
 };
 
+void close_window (GtkWidget *window)
+{
+	gtk_widget_destroy(window);
+}
 
 void infoClientWindow (gchar *data)
 {
 
-	GtkWidget *mainWindow;
+	GtkWidget *infoWindow;
+  GtkWidget *boxH;
   GtkWidget *boxV;
+  GtkWidget *btnDeleteClient;
   GtkWidget *btnGoBack;
+  GtkWidget *btnUpdateClient;
+  GtkWidget *pLabel;
 
-	// Creation de la fenetre principale
-  mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
-  gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
-  gtk_window_set_title(GTK_WINDOW(mainWindow), data);    	
-	g_signal_connect(G_OBJECT(mainWindow), "delete_event",
-                G_CALLBACK(gtk_main_quit), NULL);
-  gtk_widget_show_all(mainWindow);
+  // Creation de la fenetre principale
+  infoWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_default_size(GTK_WINDOW(infoWindow), 1000, 700);
+  gtk_window_set_position(GTK_WINDOW(infoWindow), GTK_WIN_POS_CENTER);
+  gtk_window_set_title(GTK_WINDOW(infoWindow), data);
 
-  boxV = gtk_vbox_new(FALSE, 0);
-  //boxH = gtk_hbox_new(TRUE, 0);   
+  boxH = gtk_hbox_new(FALSE, 0);
+  boxV = gtk_vbox_new(TRUE, 0);   
   
+  // Temporaire
+  pLabel = gtk_label_new("Hello world erezrze zer zr zer zer zer zer zr zer zer rezrzerze ezr");
+
   //Creation des boutons
+  btnDeleteClient = gtk_button_new_with_label("Update client");
   btnGoBack = gtk_button_new_with_label("Go back");
-  //btnStopAll = gtk_button_new_with_label("Stop all");  
+  btnUpdateClient = gtk_button_new_with_label("Update client");  
 
   // Insertion des widgets
-  gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
-  
-  gtk_box_pack_start(GTK_BOX(boxV), btnGoBack, FALSE, FALSE, 0);
+  gtk_container_add(GTK_CONTAINER(infoWindow), boxH);
+  gtk_box_pack_start(GTK_BOX(boxH), boxV, TRUE, FALSE, 0); 
+  gtk_box_pack_start(GTK_BOX(boxH), pLabel, FALSE, TRUE, 0);  
+  gtk_box_pack_start(GTK_BOX(boxV), btnGoBack, FALSE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(boxV), btnDeleteClient, TRUE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(boxV), btnUpdateClient, TRUE, FALSE, 0);
 
-  gtk_widget_show_all(mainWindow);
-  gtk_main();
+  // Detection des click
+g_signal_connect_swapped(G_OBJECT(infoWindow), "delete-event", G_CALLBACK(close_window), infoWindow);
+g_signal_connect_swapped(G_OBJECT(btnGoBack), "clicked", G_CALLBACK(close_window), infoWindow);
+  
+  gtk_widget_show_all(infoWindow);
+  //gtk_main();
 
 }
 
