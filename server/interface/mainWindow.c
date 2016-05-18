@@ -17,13 +17,14 @@ void close_window (GtkWidget *window)
 void infoClientWindow (gchar *data)
 {
 
-	GtkWidget *infoWindow;
+  GtkWidget *infoWindow;
   GtkWidget *boxH;
   GtkWidget *boxV;
   GtkWidget *btnDeleteClient;
   GtkWidget *btnGoBack;
   GtkWidget *btnUpdateClient;
   GtkWidget *pLabel;
+  GtkWidget *scrollbar;
 
   // Creation de la fenetre principale
   infoWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -31,24 +32,29 @@ void infoClientWindow (gchar *data)
   gtk_window_set_position(GTK_WINDOW(infoWindow), GTK_WIN_POS_CENTER);
   gtk_window_set_title(GTK_WINDOW(infoWindow), data);
 
-  boxH = gtk_hbox_new(FALSE, 0);
-  boxV = gtk_vbox_new(TRUE, 0);   
+  boxV = gtk_vbox_new(FALSE, 0);
+  boxH = gtk_hbox_new(TRUE, 0);
+
+  scrollbar = gtk_scrolled_window_new(NULL, NULL);
   
   // Temporaire
-  pLabel = gtk_label_new("Hello world erezrze zer zr zer zer zer zer zr zer zer rezrzerze ezr");
+  pLabel = gtk_label_new("Hello world erezrze zer zr zer zer zer zer zr zer zer rezrzerze ezr dddgdd gdffdfd d gfdfgfdd dfgdfgdf ggg g g g g g dgdfgdfg dgf test");
 
   //Creation des boutons
-  btnDeleteClient = gtk_button_new_with_label("Update client");
+  btnDeleteClient = gtk_button_new_with_label("Delete client");
   btnGoBack = gtk_button_new_with_label("Go back");
   btnUpdateClient = gtk_button_new_with_label("Update client");  
 
   // Insertion des widgets
-  gtk_container_add(GTK_CONTAINER(infoWindow), boxH);
-  gtk_box_pack_start(GTK_BOX(boxH), boxV, TRUE, FALSE, 0); 
-  gtk_box_pack_start(GTK_BOX(boxH), pLabel, FALSE, TRUE, 0);  
-  gtk_box_pack_start(GTK_BOX(boxV), btnGoBack, FALSE, TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(boxV), btnDeleteClient, TRUE, FALSE, 0);
-  gtk_box_pack_start(GTK_BOX(boxV), btnUpdateClient, TRUE, FALSE, 0);
+  gtk_container_add(GTK_CONTAINER(infoWindow), boxV);
+  gtk_container_add(GTK_CONTAINER(scrollbar), pLabel);
+
+  gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20); 
+ 
+  gtk_box_pack_start(GTK_BOX(boxH), btnGoBack, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(boxH), btnDeleteClient, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(boxH), btnUpdateClient, FALSE, FALSE, 0);
 
   // Detection des click
 g_signal_connect_swapped(G_OBJECT(infoWindow), "delete-event", G_CALLBACK(close_window), infoWindow);
@@ -218,7 +224,7 @@ int main (int argc, char **argv)
 
 	// Creation de la fenetre principale
 	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
+  	gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
 	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
 	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
 	
@@ -234,7 +240,7 @@ int main (int argc, char **argv)
 	boxV = gtk_vbox_new(FALSE, 0);
 	boxH = gtk_hbox_new(TRUE, 0);
 
-       //Creation des boutons Start All et Stop All
+        //Creation des boutons Start All et Stop All
 	btnStartAll = gtk_button_new_with_label("Start all");
 	btnStopAll = gtk_button_new_with_label("Stop all");
 
