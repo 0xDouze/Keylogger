@@ -9,10 +9,15 @@ char *itoa(int nb) {
 static int callback(void *data, int argc, char **argv, char **azColName){
   int i;
   (void)data;
-    for(i=0; i < argc; i++) {
-      // (char*)data[i]= argv[i];
-      printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
-    }
+  //char *data2= (char *)data;
+  for(i=0; i < argc; i++) {
+    //data2[i]= argv[i];
+    printf("caca\n");
+    printf("%s\n", argv[i]);
+    //sprintf(data2, "%s= %s\n");
+    printf("caca2\n");
+    printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
+  }
   return 0;
 }
 
@@ -105,22 +110,29 @@ void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
   free(res);
 }
 
-void research_data(sqlite3 *db, int id_client) {
+int research_data(sqlite3 *db, int id_client) {
+  //void *data;
   char *sql= "SELECT data FROM data"\
 	      " WHERE id_client= ";
   char *sql2= " in"\
 	      "(SELECT id FROM clients"\
-	      " WHERE id= id_client);";
+	      " WHERE id=";
   char *res= calloc(256, sizeof(char));
   strcat(res, sql);
   strcat(res, itoa(id_client));
   strcat(res, sql2);
+  strcat(res, itoa(id_client));
+  strcat(res, ");");
   printf("%s\n", res);
 
-  if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK)
+  if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) {
     perror("sqlite error\n");
-  else
+    return 0;
+  }
+  else {
     printf("research data success\n");
+    return 1;
+  }
   free(res);
 }
 

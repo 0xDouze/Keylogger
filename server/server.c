@@ -33,7 +33,10 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
   nfds_t	reuse = 1;
   char		buffer[BUFFSIZE];
   struct pollfd fds[200];
+  int num_client= 1;
+  char addr_store[20];
 
+  memset(&addr_store, 0, sizeof(addr_store));
   memset(&buffer, 0, sizeof(buffer));
   sock_fd = init_socket(&reuse);
   memset(fds, 0, sizeof(fds));
@@ -74,28 +77,30 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  printf("%s\n", inet_ntoa(addr[i].sin_addr));
           if (new_fd == -1)
              break;
-	  int num_client= 1;
 	  char name_client[20]= "client ";
 	  strcat(name_client, itoa(num_client));
-	  if(research_clients(db, num_client) == 0)
-	    create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
+	  create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
 	  create_data(db, 1, num_client, buffer);
 	  research_data(db, num_client);
           num_client++;
-	  printf("new client fd = %d\n", new_fd);
+	  //printf("new client fd = %d\n", new_fd);
 	  fds[reuse].fd = new_fd;
           fds[reuse].events = POLLIN;
           reuse++;
+	  printf("sin addr %s\n", inet_ntoa(addr[i].sin_addr));
+	  printf("addr store %s\n", addr_store);
+	  strncpy(addr_store, inet_ntoa(addr[i].sin_addr), 20);
+	  memset(buffer, 0, 256);
         } while (new_fd != -1);
       }
       else {
 	while((n= read(fds[i].fd, buffer, 256)) > 0) {
+	  printf("fds[i] %d\n", fds[i].fd);
 	  fcntl(fds[i].fd, F_SETFL, O_NONBLOCK);
 	  save_data("\n\n");
 	  save_data(buffer);
-	  printf("%s %d\n", inet_ntoa(addr[new_fd].sin_addr), new_fd);
-	  //create_data(db, buffer, inet_ntoa(addr[i].sin_addr));
-	  printf("Data sent: %s\n", buffer);
+	  printf("while before data sent: %s %d\n", addr_store, fds[i].fd);
+	  //printf("Data sent: %s\n", buffer);
 	  memset(buffer, 0, 256);
 	}
 
