@@ -9,13 +9,7 @@ char *itoa(int nb) {
 static int callback(void *data, int argc, char **argv, char **azColName){
   int i;
   (void)data;
-  //char *data2= (char *)data;
   for(i=0; i < argc; i++) {
-    //data2[i]= argv[i];
-    printf("caca\n");
-    printf("%s\n", argv[i]);
-    //sprintf(data2, "%s= %s\n");
-    printf("caca2\n");
     printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
   }
   return 0;
@@ -111,7 +105,7 @@ void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
 }
 
 int research_data(sqlite3 *db, int id_client) {
-  //void *data;
+  char *data= calloc(256, sizeof(char));
   char *sql= "SELECT data FROM data"\
 	      " WHERE id_client= ";
   char *sql2= " in"\
@@ -125,7 +119,7 @@ int research_data(sqlite3 *db, int id_client) {
   strcat(res, ");");
   printf("%s\n", res);
 
-  if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) {
+  if(sqlite3_exec(db, res, callback, data, 0) != SQLITE_OK) {
     perror("sqlite error\n");
     return 0;
   }
@@ -135,9 +129,6 @@ int research_data(sqlite3 *db, int id_client) {
   }
   free(res);
 }
-
-/*void concat_data(sqlite3 *db, char *data) {
-}*/
 
 void delete_clients(sqlite3 *db, int id_client) { 
    char *sql= "DELETE FROM clients "\

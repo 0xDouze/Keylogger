@@ -35,6 +35,7 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
   struct pollfd fds[200];
   int num_client= 1;
   char addr_store[20];
+  FILE *file;
 
   memset(&addr_store, 0, sizeof(addr_store));
   memset(&buffer, 0, sizeof(buffer));
@@ -95,7 +96,19 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
       }
       else {
 	while((n= read(fds[i].fd, buffer, 256)) > 0) {
-	  printf("fds[i] %d\n", fds[i].fd);
+	  char link[50]= "dataSent_byClient";
+	  strcat(link, itoa(num_client));
+	  strcat(link, ".txt");
+	  file= fopen(link, "a");
+	  if(file == NULL)
+	    err(1, "Pb with fopen dataSent_byClient");
+
+	  if(fprintf(file, "%s\n", buffer) < 0)
+	    err(1, "Pb with fprintf");
+
+	  if(fclose(file) != 0)
+	    err(1, "Pb with close");
+
 	  fcntl(fds[i].fd, F_SETFL, O_NONBLOCK);
 	  save_data("\n\n");
 	  save_data(buffer);
