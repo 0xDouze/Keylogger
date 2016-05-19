@@ -46,8 +46,8 @@ void infoClientWindow (gchar *data)
   gtk_box_pack_start(GTK_BOX(boxH), btnUpdateClient, FALSE, FALSE, 0);
 
   // Detection des click
-g_signal_connect_swapped(G_OBJECT(infoWindow), "delete-event", G_CALLBACK(close_window), infoWindow);
-g_signal_connect_swapped(G_OBJECT(btnGoBack), "clicked", G_CALLBACK(close_window), infoWindow);
+  g_signal_connect_swapped(G_OBJECT(infoWindow), "delete-event", G_CALLBACK(close_window), infoWindow);
+  g_signal_connect_swapped(G_OBJECT(btnGoBack), "clicked", G_CALLBACK(close_window), infoWindow);
   
   gtk_widget_show_all(infoWindow);
   //gtk_main();

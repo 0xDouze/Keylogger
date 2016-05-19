@@ -15,9 +15,9 @@ enum
 
 void view_popup_menu_onDoSomething () //(GtkWidget *menuitem, gpointer userdata)
 {
-    //GtkTreeView *treeview = GTK_TREE_VIEW(userdata);
+  //GtkTreeView *treeview = GTK_TREE_VIEW(userdata);
 
-    g_print ("Do something!\n");
+  g_print ("Do something!\n");
 }
 
 void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gchar *data) //, gpointer userdata)
@@ -47,8 +47,8 @@ void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gchar *data) /
 	gtk_widget_show_all(menu);
 	
 	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
-                   (event != NULL) ? event->button : 0,
-                   gdk_event_get_time((GdkEvent*)event));
+      (event != NULL) ? event->button : 0,
+      gdk_event_get_time((GdkEvent*)event));
 }
 
 gboolean view_onButtonPressed (GtkWidget *treeview, GdkEventButton *event) //, gpointer userdata)
@@ -84,9 +84,9 @@ gboolean view_onButtonPressed (GtkWidget *treeview, GdkEventButton *event) //, g
 
 gboolean view_onPopupMenu (GtkWidget *treeview, gchar *data) //, gpointer userdata)
 {
-    view_popup_menu(treeview, NULL, data); //, userdata);
+  view_popup_menu(treeview, NULL, data); //, userdata);
 
-    return TRUE;
+   return TRUE;
 }
 
 static GtkTreeModel *create_fill_list_clients(void)
@@ -149,7 +149,7 @@ int main (int argc, char **argv)
 
 	// Creation de la fenetre principale
 	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  	gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
+  gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
 	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
 	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
 	
@@ -181,15 +181,15 @@ int main (int argc, char **argv)
 	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
 
 	// Gestion des detection des clics dans la liste des clients
-    	g_signal_connect(listClients, "button-press-event", (GCallback) 
-		view_onButtonPressed, NULL);
-    	g_signal_connect(listClients, "popup-menu", (GCallback) 
-		view_onPopupMenu, NULL);
+  g_signal_connect(listClients, "button-press-event", (GCallback) 
+		  view_onButtonPressed, NULL);
+  g_signal_connect(listClients, "popup-menu", (GCallback) 
+		  view_onPopupMenu, NULL);
 
 	
 	// Affichage et boucle evenementielle
 	g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
-		G_CALLBACK(gtk_main_quit), NULL);
+		  G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL);
 	gtk_widget_show_all(mainWindow);
 
