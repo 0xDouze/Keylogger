@@ -96,7 +96,7 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
       }
       else {
 	while((n= read(fds[i].fd, buffer, 256)) > 0) {
-	  char link[50]= "dataSent_byClient";
+	  char link[50]= "../../files/client_files/dataSent_byClient";
 	  strcat(link, itoa(num_client));
 	  strcat(link, ".txt");
 	  file= fopen(link, "a");
