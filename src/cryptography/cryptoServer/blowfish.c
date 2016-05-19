@@ -294,8 +294,22 @@ double chose_key ()
 
 void xor_pArray ()
 {
-	int i = 0;
-	
+	unsigned int i = 0;
+  unsigned int tab[2];
+  
+  int i = 0;
+
+  double key = chose_key();
+
+  tab[0] = key >> 32;  
+  tab[1] = key >> 32;
+  
+  while (i < 14)
+  {
+    tab[0] ^= pbox[i];
+    tab[1] ^= pbox[i+1];
+    i = i+2;
+  }
 }
 
 
