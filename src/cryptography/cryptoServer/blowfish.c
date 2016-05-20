@@ -318,47 +318,44 @@ uint32_t f (struct psBoxes *var_Blowfish, uint32_t xL)
   // cf Wikipedia (en anglais);
 }
 
-void swap (uint32_t xL, uint32_t xR)
+void swap (uint32_t *xL, uint32_t *xR)
 {
-  uint32_t tmp = xL;
-  xL = xR;
-  xR = tmp;
+  uint32_t tmp = *xL;
+  *xL = *xR;
+  *xR = tmp;
 }
 
-void encryption (struct psBoxes *var_Blowfish, uint32_t xL, uint32_t xR)
+void encryption (struct psBoxes *var_Blowfish, uint32_t *xL, uint32_t *xR)
 {
   int i;
 
   for (i = 0; i < 16; i++)
   {
-    xL ^= pbox[i];
-    xR ^= f(var_Blowfish, xL);    
+    *xL ^= pbox[i];
+    *xR ^= f(var_Blowfish, *xL);    
     swap(xL, xR);
   }
-
+  
   swap(xL, xR);
-  xR ^= pbox[16];
-  xL ^= pbox[17];
-  printf("encryption : %d, %d\n", xL, xR);
-
-  //uint64_t x = xL + xR;
+  *xR ^= pbox[16];
+  *xL ^= pbox[17];
 }
 
-void decryption (struct psBoxes *var_Blowfish, uint32_t xL, uint32_t xR)
+void decryption (struct psBoxes *var_Blowfish, uint32_t *xL, uint32_t *xR)
 {
  int i;
 
  for (i = 16; i > 0; i--)
  {
-   xL ^= pbox[i];
-   xR ^= f(var_Blowfish, xL);   
+   *xL ^= pbox[i];
+   *xR ^= f(var_Blowfish, *xL);   
    swap(xL, xR);
  } 
 
  swap(xL, xR);
- xR ^= pbox[1];
- xL ^= pbox[0];
- printf("decription : %d, %d\n", xL, xR);
+ *xR ^= pbox[1];
+ *xL ^= pbox[0];
+ //printf("decription : %d, %d\n", xL, xR);
 
 }
 
@@ -370,7 +367,23 @@ int main ()
   chose_key();
   xor_pArray(&var_blowfish);
   uint32_t xL = 1, xR = 2;
-  encryption(&var_blowfish, xL, xR);
-  decryption(&var_blowfish, xL, xR);
+
+  encryption(&var_blowfish, &xL, &xR);
+  if ((xL == 1) && (xL == 2))
+     printf("Encryption NOT OK\n");
+  else 
+     printf("Encryption OK\n");
+  
+  
+  printf("Encryption : xL = %d, xR = %d\n", xL, xR);
+
+  decryption(&var_blowfish, &xL, &xR);
+  if ((xL == 1) && (xR == 2))
+    printf("Decryption OK\n");
+  else
+    printf("Decryption NOT OK\n");
+  
+  printf("Decryption : xL = %d, xR = %d\n", xL, xR);
+
   return 0;
 }
