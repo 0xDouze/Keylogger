@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,8 +8,8 @@ http://www.herongyang.com/Cryptography/Blowfish-First-8366-Hex-Digits-of-PI.html
 */
 
 struct psBoxes {
-  unsigned int pbox[256];
-  unsigned int sbox[4][256];
+  uint32_t pbox[256];
+  uint32_t sbox[4][256];
 };
 
 const pbox[18] = {
@@ -279,31 +280,29 @@ const sbox[4][256] = {
       0x1948C25C, 0x02FB8A8C, 0x01C36AE4, 0xD6EBE1F9,
       0x90D4F869, 0xA65CDEA0, 0x3F09252D, 0xC208E69F,
       0xB74E6132, 0xCE77E25B, 0x578FDFE3, 0x3AC372E6  
-    };
-} 
+    }
+}; 
   
 void init_struct_psBoxes (struct psBoxes *var_blowfish)
 {
   memset(var_blowfish, 0, sizeof(struct psBoxes));
 }
 
-double chose_key ()
+unsigned long chose_key ()
 {
 	return 123456789;
 }
 
-void xor_pArray ()
+void xor_pArray (struct psBoxes *var_Blowfish)
 {
-	unsigned int i = 0;
+  unsigned int i = 0;
   unsigned int tab[2];
-  
-  int i = 0;
 
-  double key = chose_key();
+  unsigned long key = chose_key();
 
-  tab[0] = key >> 32;  
+  tab[0] = key >> 32;
   tab[1] = key >> 32;
-  
+
   while (i < 14)
   {
     tab[0] ^= pbox[i];
@@ -312,6 +311,56 @@ void xor_pArray ()
   }
 }
 
+uint32_t f (struct psBoxes *var_Blowfish, uint32_t xL)
+{
+  return ((sbox[0][xL>>24] + sbox[1][xL>>16 & 0xFF]) ^
+   sbox[2][xL >> 8 & 0xFF]) + sbox[3][xL & 0xFF];
+  // cf Wikipedia (en anglais);
+}
+
+void swap (uint32_t xL, uint32_t xR)
+{
+  uint32_t tmp = xL;
+  xL = xR;
+  xR = tmp;
+}
+
+void encryption (struct psBoxes *var_Blowfish, uint32_t xL, uint32_t xR)
+{
+  int i;
+
+  for (i = 0; i < 16; i++)
+  {
+    xL ^= pbox[i];
+    xR ^= f(var_Blowfish, xL);    
+    swap(xL, xR);
+  }
+
+  swap(xL, xR);
+  xR ^= pbox[16];
+  xL ^= pbox[17];
+  printf("encryption : %d, %d\n", xL, xR);
+
+  //uint64_t x = xL + xR;
+}
+
+void decryption (struct psBoxes *var_Blowfish, uint32_t xL, uint32_t xR)
+{
+ int i;
+
+ for (i = 16; i > 0; i--)
+ {
+   xL ^= pbox[i];
+   xR ^= f(var_Blowfish, xL);   
+   swap(xL, xR);
+ } 
+
+ swap(xL, xR);
+ xR ^= pbox[1];
+ xL ^= pbox[0];
+ printf("decription : %d, %d\n", xL, xR);
+
+}
 
 int main ()
 {
@@ -319,5 +368,9 @@ int main ()
   struct psBoxes var_blowfish;
   init_struct_psBoxes(&var_blowfish);
   chose_key();
+  xor_pArray(&var_blowfish);
+  uint32_t xL = 1, xR = 2;
+  encryption(&var_blowfish, xL, xR);
+  decryption(&var_blowfish, xL, xR);
   return 0;
 }
