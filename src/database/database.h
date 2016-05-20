@@ -16,6 +16,6 @@ void update_data(sqlite3 *db, char *data, int id_client);
 
 void delete_clients(sqlite3 *db, int id_client);
 
-int research_data(sqlite3 *db);
+int research_data(sqlite3 *db, int id_client);
 
 void create_data(sqlite3 *db, int id_server, int id_client, char *data);

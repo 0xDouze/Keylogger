@@ -33,13 +33,13 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
   nfds_t	reuse = 1;
   char		buffer[BUFFSIZE];
   struct pollfd fds[200];
-  int num_client= 1;
+  int num_client= 0;
   //conserver l'adresse du client dans le while
   char addr_store[20];
   //stocker les donnees du client sous forme de fichier
   FILE *file;
   //fichier qui servira a stocker les donnees
-  char link[50]= "../../files/client_files/dataSent_byClient";
+  char link[60]= "../../files/client_files/dataSent_byClient";
 
   //initialisation de tous les tableaux
   memset(&addr_store, 0, sizeof(addr_store));
@@ -85,6 +85,8 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
       }
 
       if (fds[i].fd == fds[0].fd) {
+	num_client++;
+	printf("num client %d\n", num_client);
       	do {
           new_fd = accept(fds[0].fd, (struct sockaddr*)&addr[i], &socklen);
 	  //printf("client addr: %s\n", inet_ntoa(addr[i].sin_addr));
@@ -95,7 +97,7 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  strcat(name_client, itoa(num_client));
 	  
 	  //creation du client au moment de la connexion au serveur
-	  if(research_clients(db, num_client) == 0)
+	  if(research_clients(db, num_client) == 1)
 	    create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
 
 	  //creation du fichier de donnees pour le client
@@ -112,13 +114,12 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  strncpy(addr_store, inet_ntoa(addr[i].sin_addr), 20);
 	  //reinitialisation du buffer
 	  memset(buffer, 0, 256);
-	  num_client++;
         } while (new_fd != -1);
       }
       else {
 	while((n= read(fds[i].fd, buffer, 256)) > 0) {
-	  printf("num client %d\n", num_client);
-	  if(research_data(db) == 0)
+	  //printf("num client %d\n", num_client);
+	  if(research_data(db, num_client) == 0)
 	    create_data(db, 1, num_client, link);
 	  file= fopen(link, "a");
 	  if(file == NULL)
@@ -137,11 +138,13 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 
 	  //printf("while before data sent: %s %d\n", addr_store, fds[i].fd);
 	  //printf("Data sent: %s\n", buffer);
+	  memset(link, 0, 60);
 	  memset(buffer, 0, 256);
 	}
 
-	if(n < 0 && (errno != EAGAIN && errno != EWOULDBLOCK))
+	if(n < 0 && (errno != EAGAIN && errno != EWOULDBLOCK)) {
 	  close(fds[i].fd);
+	}
 	else
 	  continue;
       }
