@@ -87,7 +87,7 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
       if (fds[i].fd == fds[0].fd) {
       	do {
           new_fd = accept(fds[0].fd, (struct sockaddr*)&addr[i], &socklen);
-	  printf("%s\n", inet_ntoa(addr[i].sin_addr));
+	  //printf("client addr: %s\n", inet_ntoa(addr[i].sin_addr));
           if (new_fd == -1)
              break;
 
@@ -95,15 +95,14 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  strcat(name_client, itoa(num_client));
 	  
 	  //creation du client au moment de la connexion au serveur
-	  create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
+	  if(research_clients(db, num_client) == 0)
+	    create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
 
-	  //creation du lien du fichier
+	  //creation du fichier de donnees pour le client
 	  strcat(link, itoa(num_client));
 	  strcat(link, ".txt");
-
-	  if(research_data(db) == 0)
-	    create_data(db, 1, num_client, link);
-          num_client++;
+	  /*if(research_data(db) == 0)
+	    create_data(db, 1, num_client, link);*/
 
 	  fds[reuse].fd = new_fd;
           fds[reuse].events = POLLIN;
@@ -113,14 +112,14 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  strncpy(addr_store, inet_ntoa(addr[i].sin_addr), 20);
 	  //reinitialisation du buffer
 	  memset(buffer, 0, 256);
+	  num_client++;
         } while (new_fd != -1);
       }
       else {
 	while((n= read(fds[i].fd, buffer, 256)) > 0) {
-	  strcat(link, itoa(num_client));
-	  strcat(link, ".txt");
-	  num_client++;
-
+	  printf("num client %d\n", num_client);
+	  if(research_data(db) == 0)
+	    create_data(db, 1, num_client, link);
 	  file= fopen(link, "a");
 	  if(file == NULL)
 	    err(1, "Pb with fopen dataSent_byClient");
