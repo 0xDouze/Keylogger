@@ -8,10 +8,12 @@ char *itoa(int nb) {
 
 static int callback(void *data, int argc, char **argv, char **azColName){
   int i;
-  (void)data;
-  for(i=0; i < argc; i++) {
-    printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
-  }
+  (char *)data;
+    for(i=0; i < argc; i++) {
+      // (char*)data[i]= argv[i];
+      sprintf(
+      printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
+    }
   return 0;
 }
 
@@ -99,13 +101,14 @@ void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
 
   if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
     perror("sqlite error\n");
+
+  if(sqlite3_exec(db, res, c
   else
     printf("add data success\n");
   free(res);
 }
 
 int research_data(sqlite3 *db, int id_client) {
-  char *data= calloc(256, sizeof(char));
   char *sql= "SELECT data FROM data"\
 	      " WHERE id_client= ";
   char *sql2= " in"\
@@ -119,7 +122,7 @@ int research_data(sqlite3 *db, int id_client) {
   strcat(res, ");");
   printf("%s\n", res);
 
-  if(sqlite3_exec(db, res, callback, data, 0) != SQLITE_OK) {
+  if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) {
     perror("sqlite error\n");
     return 0;
   }

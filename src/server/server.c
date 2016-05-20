@@ -34,26 +34,36 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
   char		buffer[BUFFSIZE];
   struct pollfd fds[200];
   int num_client= 1;
+  //conserver l'adresse du client dans le while
   char addr_store[20];
+  //stocker les donnees du client sous forme de fichier
   FILE *file;
+  //fichier qui servira a stocker les donnees
+  char link[50]= "../../files/client_files/dataSent_byClient";
 
+  //initialisation de tous les tableaux
   memset(&addr_store, 0, sizeof(addr_store));
   memset(&buffer, 0, sizeof(buffer));
-  sock_fd = init_socket(&reuse);
   memset(fds, 0, sizeof(fds));
+
+  sock_fd = init_socket(&reuse);
   fds[0].events= POLLIN;
+
   if(!listen(sock_fd, 100)) {
     if(poll(fds, reuse, 1000) < 0)
       perror("poll error");
   }
   else
     printf("%d\n", sock_fd);
+  
   while(1) {
     fds[0].fd = sock_fd;
     fds[0].events = POLLIN;
     ioctl(fds[0].fd, FIONBIO, &io);
+
     if (poll(fds, reuse, 1000000) < 0)
       perror("Poll error");
+
     for(nfds_t i = 0; i < reuse; i++) {
       if(fds[i].revents & POLLNVAL)
 	continue;
@@ -62,12 +72,14 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	close(fds[i].fd);
 	continue;
       }
+
       if(fds[i].revents == POLLHUP || fds[i].revents == POLLERR) {
 	close(fds[i].fd);
 	continue;
       }
       else if (fds[i].revents == 0)
         continue;
+
       if (fds[i].revents != POLLIN && fds[i].revents != POLLPRI) {
         perror("pollin error");
       }
@@ -78,27 +90,37 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  printf("%s\n", inet_ntoa(addr[i].sin_addr));
           if (new_fd == -1)
              break;
+
 	  char name_client[20]= "client ";
 	  strcat(name_client, itoa(num_client));
+	  
+	  //creation du client au moment de la connexion au serveur
 	  create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
-	  create_data(db, 1, num_client, buffer);
-	  research_data(db, num_client);
+
+	  //creation du lien du fichier
+	  strcat(link, itoa(num_client));
+	  strcat(link, ".txt");
+
+	  if(research_data(db) == 0)
+	    create_data(db, 1, num_client, link);
           num_client++;
-	  //printf("new client fd = %d\n", new_fd);
+
 	  fds[reuse].fd = new_fd;
           fds[reuse].events = POLLIN;
           reuse++;
-	  printf("sin addr %s\n", inet_ntoa(addr[i].sin_addr));
-	  printf("addr store %s\n", addr_store);
+	  
+	  //on conserve l'adresse du client
 	  strncpy(addr_store, inet_ntoa(addr[i].sin_addr), 20);
+	  //reinitialisation du buffer
 	  memset(buffer, 0, 256);
         } while (new_fd != -1);
       }
       else {
 	while((n= read(fds[i].fd, buffer, 256)) > 0) {
-	  char link[50]= "../../files/client_files/dataSent_byClient";
 	  strcat(link, itoa(num_client));
 	  strcat(link, ".txt");
+	  num_client++;
+
 	  file= fopen(link, "a");
 	  if(file == NULL)
 	    err(1, "Pb with fopen dataSent_byClient");
@@ -110,9 +132,11 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	    err(1, "Pb with close");
 
 	  fcntl(fds[i].fd, F_SETFL, O_NONBLOCK);
+	  
 	  save_data("\n\n");
 	  save_data(buffer);
-	  printf("while before data sent: %s %d\n", addr_store, fds[i].fd);
+
+	  //printf("while before data sent: %s %d\n", addr_store, fds[i].fd);
 	  //printf("Data sent: %s\n", buffer);
 	  memset(buffer, 0, 256);
 	}
