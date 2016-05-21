@@ -149,7 +149,8 @@ void *mainWindow (void *arg)
 	GtkWidget *research;
 	GtkWidget *scrollbar;
 	
-	gtk_init(&argc, &argv);
+	gtk_init(0, NULL);
+	(void) arg;
 
 	// Creation de la fenetre principale
 	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -198,6 +199,7 @@ void *mainWindow (void *arg)
 	gtk_widget_show_all(mainWindow);
 
 	gtk_main();
+	return NULL;
 }
 
 /*int main (int argc, char **argv)
