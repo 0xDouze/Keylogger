@@ -139,7 +139,7 @@ GtkWidget *create_view_model (void)
 	return view;
 }
 
-void mainWindow ()
+void *mainWindow (void *arg)
 {
 	GtkWidget *boxV, *boxH;
 	GtkWidget *btnStartAll, *btnStopAll;
