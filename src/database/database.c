@@ -27,7 +27,7 @@ void create_clients(sqlite3 *db, char mac_addr[25], char *name) {
   strcat(res, "', '");
   strcat(res, name);
   strcat(res, "');");
-  printf("%s\n", res);
+  //printf("%s\n", res);
 
   if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
     perror("SQL error create\n");
@@ -43,7 +43,7 @@ int research_clients(sqlite3 *db, int id_client) {
    strcat(res, sql); 
    strcat(res, itoa(id_client)); 
    strcat(res, ";"); 
-   printf("%s\n", res);
+   //printf("%s\n", res);
    if(sqlite3_exec(db, res, callback, 0, 0) == SQLITE_OK) {
      perror("sql error research\n"); 
      return 1;
@@ -96,7 +96,7 @@ void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
   strcat(res, ", '");
   strcat(res, data);
   strcat(res, "');");
-  printf("%s\n", res);
+  //printf("%s\n", res);
 
   if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
     perror("sqlite error data\n");
@@ -113,7 +113,7 @@ int research_data(sqlite3 *db, int id_client) {
   strcat(res, sql);
   strcat(res, itoa(id_client));
   strcat(res, ";");
-  printf("%s\n", res);
+  //printf("%s\n", res);
 
   if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) {
     perror("sqlite error research data\n");
