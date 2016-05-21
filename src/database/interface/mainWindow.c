@@ -1,11 +1,13 @@
 //gcc mainWindow.c -o mainWindow $(pkg-config --libs --cflags gtk+-2.0)
 
-#include <gtk/gtk.h>
+/*#include <gtk/gtk.h>
 #include <stdlib.h>
 
 #include "closeWindow.h"
 #include "infoClientWindow.h"
-#include "researchClient.h"
+#include "researchClient.h"*/
+
+#include "mainWindow.h"
 
 enum
 {
@@ -89,7 +91,8 @@ gboolean view_onPopupMenu (GtkWidget *treeview, gchar *data) //, gpointer userda
    return TRUE;
 }
 
-static GtkTreeModel *create_fill_list_clients(void)
+//static 
+GtkTreeModel *create_fill_list_clients(void)
 {
 	GtkListStore *store;
 	GtkTreeIter iter;
@@ -114,7 +117,8 @@ static GtkTreeModel *create_fill_list_clients(void)
 	return GTK_TREE_MODEL(store);
 }
 
-static GtkWidget *create_view_model (void)
+//static 
+GtkWidget *create_view_model (void)
 {
 	GtkCellRenderer *renderer;
 	GtkTreeModel *model;
@@ -135,65 +139,125 @@ static GtkWidget *create_view_model (void)
 	return view;
 }
 
-/* int main (int argc, char **argv) */
-/* { */
-/* 	GtkWidget *boxV, *boxH; */
-/* 	GtkWidget *btnStartAll, *btnStopAll; */
-/* 	GtkWidget *listClients; */
-/* 	GtkWidget *mainWindow; */
-/* 	GtkWidget *text; */
-/* 	GtkWidget *research; */
-/* 	GtkWidget *scrollbar; */
+void mainWindow ()
+{
+	GtkWidget *boxV, *boxH;
+	GtkWidget *btnStartAll, *btnStopAll;
+	GtkWidget *listClients;
+	GtkWidget *mainWindow;
+	GtkWidget *text;
+	GtkWidget *research;
+	GtkWidget *scrollbar;
+	
+	//gtk_init(&argc, &argv);
 
-/* 	gtk_init(&argc, &argv); */
+	// Creation de la fenetre principale
+	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+ 	gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
+	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
+	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
+	
+	// Creation de la liste des clients	
+	listClients = create_view_model();
+	scrollbar = gtk_scrolled_window_new(NULL, NULL);
 
-/* 	// Creation de la fenetre principale */
-/* 	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL); */
-/*   gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger"); */
-/* 	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700); */
-/* 	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER); */
+	//Recherche d'un client (texte + zone de saisie)
+	text = gtk_label_new("Research client :");
+	research = gtk_entry_new();
+	
+	// Creation de la box
+	boxV = gtk_vbox_new(FALSE, 0);
+	boxH = gtk_hbox_new(TRUE, 0);
 
-/* 	// Creation de la liste des clients	 */
-/* 	listClients = create_view_model(); */
-/* 	scrollbar = gtk_scrolled_window_new(NULL, NULL); */
+        //Creation des boutons Start All et Stop All
+	btnStartAll = gtk_button_new_with_label("Start all");
+	btnStopAll = gtk_button_new_with_label("Stop all");
 
-/* 	//Recherche d'un client (texte + zone de saisie) */
-/* 	text = gtk_label_new("Research client :"); */
-/* 	research = gtk_entry_new(); */
+	// Insertion des widgets
+	gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
+	gtk_container_add(GTK_CONTAINER(scrollbar), listClients);
+	
+	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20);
+	gtk_box_pack_start(GTK_BOX(boxH), btnStartAll, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
 
-/* 	// Creation de la box */
-/* 	boxV = gtk_vbox_new(FALSE, 0); */
-/* 	boxH = gtk_hbox_new(TRUE, 0); */
+	// Gestion des detection des clics dans la liste des clients
+  	g_signal_connect(listClients, "button-press-event", (GCallback) 
+		  view_onButtonPressed, NULL);
+ 	g_signal_connect(listClients, "popup-menu", (GCallback) 
+		  view_onPopupMenu, NULL);
 
-/*         //Creation des boutons Start All et Stop All */
-/* 	btnStartAll = gtk_button_new_with_label("Start all"); */
-/* 	btnStopAll = gtk_button_new_with_label("Stop all"); */
+	
+	// Affichage et boucle evenementielle
+	g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
+		  G_CALLBACK(gtk_main_quit), NULL);
+	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL);
+	gtk_widget_show_all(mainWindow);
 
-/* 	// Insertion des widgets */
-/* 	gtk_container_add(GTK_CONTAINER(mainWindow), boxV); */
-/* 	gtk_container_add(GTK_CONTAINER(scrollbar), listClients); */
+}
 
-/* 	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0); */
-/* 	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20); */
-/* 	gtk_box_pack_start(GTK_BOX(boxH), btnStartAll, FALSE, FALSE, 0); */
-/* 	gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0); */
-/* 	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0); */
-/* 	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0); */
+/*int main (int argc, char **argv)
+{
+	GtkWidget *boxV, *boxH;
+	GtkWidget *btnStartAll, *btnStopAll;
+	GtkWidget *listClients;
+	GtkWidget *mainWindow;
+	GtkWidget *text;
+	GtkWidget *research;
+	GtkWidget *scrollbar;
+	
+	gtk_init(&argc, &argv);
 
-/* 	// Gestion des detection des clics dans la liste des clients */
-/*   g_signal_connect(listClients, "button-press-event", (GCallback)  */
-/* 		  view_onButtonPressed, NULL); */
-/*   g_signal_connect(listClients, "popup-menu", (GCallback)  */
-/* 		  view_onPopupMenu, NULL); */
+	// Creation de la fenetre principale
+	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
+	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
+	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
+	
+	// Creation de la liste des clients	
+	listClients = create_view_model();
+	scrollbar = gtk_scrolled_window_new(NULL, NULL);
 
+	//Recherche d'un client (texte + zone de saisie)
+	text = gtk_label_new("Research client :");
+	research = gtk_entry_new();
+	
+	// Creation de la box
+	boxV = gtk_vbox_new(FALSE, 0);
+	boxH = gtk_hbox_new(TRUE, 0);
 
-/* 	// Affichage et boucle evenementielle */
-/* 	g_signal_connect(G_OBJECT(mainWindow), "delete_event",  */
-/* 		  G_CALLBACK(gtk_main_quit), NULL); */
-/* 	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL); */
-/* 	gtk_widget_show_all(mainWindow); */
+        //Creation des boutons Start All et Stop All
+	btnStartAll = gtk_button_new_with_label("Start all");
+	btnStopAll = gtk_button_new_with_label("Stop all");
 
-/* 	gtk_main(); */
+	// Insertion des widgets
+	gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
+	gtk_container_add(GTK_CONTAINER(scrollbar), listClients);
+	
+	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20);
+	gtk_box_pack_start(GTK_BOX(boxH), btnStartAll, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
 
-/* 	return 0; */
-/* } */
+	// Gestion des detection des clics dans la liste des clients
+  g_signal_connect(listClients, "button-press-event", (GCallback) 
+		  view_onButtonPressed, NULL);
+  g_signal_connect(listClients, "popup-menu", (GCallback) 
+		  view_onPopupMenu, NULL);
+
+	
+	// Affichage et boucle evenementielle
+	g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
+		  G_CALLBACK(gtk_main_quit), NULL);
+	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL);
+	gtk_widget_show_all(mainWindow);
+
+	gtk_main();
+
+	return 0;
+}*/

