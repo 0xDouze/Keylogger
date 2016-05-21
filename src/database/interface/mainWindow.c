@@ -37,15 +37,15 @@ void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gchar *data) /
 			(GCallback) view_popup_menu_onDoSomething, treeview);
 	g_signal_connect(stop, "activate",
 			(GCallback) view_popup_menu_onDoSomething, treeview);
-	g_signal_connect_swapped(moreInfo, "activate", 
+	g_signal_connect_swapped(moreInfo, "activate",
 			(GCallback) infoClientWindow, (gpointer)data);
 
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), start);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), stop);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), moreInfo);
-	
+
 	gtk_widget_show_all(menu);
-	
+
 	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
       (event != NULL) ? event->button : 0,
       gdk_event_get_time((GdkEvent*)event));
@@ -96,14 +96,14 @@ static GtkTreeModel *create_fill_list_clients(void)
 
 	store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING);
 
-	//Ajout et remplissage d'une ligne 
+	//Ajout et remplissage d'une ligne
 	gtk_list_store_append (store, &iter);
 	gtk_list_store_set (store, &iter, COL_CLIENT, "Celine", -1);
 
 	gtk_list_store_append (store, &iter);
 	gtk_list_store_set (store, &iter, COL_CLIENT, "Emma", -1);
-	
-	// A supprimer plus tard 
+
+	// A supprimer plus tard
 	int i = 0;
 	for (i = 0; i < 100; i++)
 	{
@@ -111,7 +111,7 @@ static GtkTreeModel *create_fill_list_clients(void)
 		gtk_list_store_set (store, &iter, COL_CLIENT, "Kevin", -1);
 	}
 
-	return GTK_TREE_MODEL(store); 
+	return GTK_TREE_MODEL(store);
 }
 
 static GtkWidget *create_view_model (void)
@@ -135,65 +135,65 @@ static GtkWidget *create_view_model (void)
 	return view;
 }
 
-int main (int argc, char **argv)
-{
-	GtkWidget *boxV, *boxH;
-	GtkWidget *btnStartAll, *btnStopAll;
-	GtkWidget *listClients;
-	GtkWidget *mainWindow;
-	GtkWidget *text;
-	GtkWidget *research;
-	GtkWidget *scrollbar;
-	
-	gtk_init(&argc, &argv);
+/* int main (int argc, char **argv) */
+/* { */
+/* 	GtkWidget *boxV, *boxH; */
+/* 	GtkWidget *btnStartAll, *btnStopAll; */
+/* 	GtkWidget *listClients; */
+/* 	GtkWidget *mainWindow; */
+/* 	GtkWidget *text; */
+/* 	GtkWidget *research; */
+/* 	GtkWidget *scrollbar; */
 
-	// Creation de la fenetre principale
-	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
-	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
-	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
-	
-	// Creation de la liste des clients	
-	listClients = create_view_model();
-	scrollbar = gtk_scrolled_window_new(NULL, NULL);
+/* 	gtk_init(&argc, &argv); */
 
-	//Recherche d'un client (texte + zone de saisie)
-	text = gtk_label_new("Research client :");
-	research = gtk_entry_new();
-	
-	// Creation de la box
-	boxV = gtk_vbox_new(FALSE, 0);
-	boxH = gtk_hbox_new(TRUE, 0);
+/* 	// Creation de la fenetre principale */
+/* 	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL); */
+/*   gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger"); */
+/* 	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700); */
+/* 	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER); */
 
-        //Creation des boutons Start All et Stop All
-	btnStartAll = gtk_button_new_with_label("Start all");
-	btnStopAll = gtk_button_new_with_label("Stop all");
+/* 	// Creation de la liste des clients	 */
+/* 	listClients = create_view_model(); */
+/* 	scrollbar = gtk_scrolled_window_new(NULL, NULL); */
 
-	// Insertion des widgets
-	gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
-	gtk_container_add(GTK_CONTAINER(scrollbar), listClients);
-	
-	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20);
-	gtk_box_pack_start(GTK_BOX(boxH), btnStartAll, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
+/* 	//Recherche d'un client (texte + zone de saisie) */
+/* 	text = gtk_label_new("Research client :"); */
+/* 	research = gtk_entry_new(); */
 
-	// Gestion des detection des clics dans la liste des clients
-  g_signal_connect(listClients, "button-press-event", (GCallback) 
-		  view_onButtonPressed, NULL);
-  g_signal_connect(listClients, "popup-menu", (GCallback) 
-		  view_onPopupMenu, NULL);
+/* 	// Creation de la box */
+/* 	boxV = gtk_vbox_new(FALSE, 0); */
+/* 	boxH = gtk_hbox_new(TRUE, 0); */
 
-	
-	// Affichage et boucle evenementielle
-	g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
-		  G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL);
-	gtk_widget_show_all(mainWindow);
+/*         //Creation des boutons Start All et Stop All */
+/* 	btnStartAll = gtk_button_new_with_label("Start all"); */
+/* 	btnStopAll = gtk_button_new_with_label("Stop all"); */
 
-	gtk_main();
+/* 	// Insertion des widgets */
+/* 	gtk_container_add(GTK_CONTAINER(mainWindow), boxV); */
+/* 	gtk_container_add(GTK_CONTAINER(scrollbar), listClients); */
 
-	return 0;
-}
+/* 	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0); */
+/* 	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20); */
+/* 	gtk_box_pack_start(GTK_BOX(boxH), btnStartAll, FALSE, FALSE, 0); */
+/* 	gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0); */
+/* 	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0); */
+/* 	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0); */
+
+/* 	// Gestion des detection des clics dans la liste des clients */
+/*   g_signal_connect(listClients, "button-press-event", (GCallback)  */
+/* 		  view_onButtonPressed, NULL); */
+/*   g_signal_connect(listClients, "popup-menu", (GCallback)  */
+/* 		  view_onPopupMenu, NULL); */
+
+
+/* 	// Affichage et boucle evenementielle */
+/* 	g_signal_connect(G_OBJECT(mainWindow), "delete_event",  */
+/* 		  G_CALLBACK(gtk_main_quit), NULL); */
+/* 	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL); */
+/* 	gtk_widget_show_all(mainWindow); */
+
+/* 	gtk_main(); */
+
+/* 	return 0; */
+/* } */
