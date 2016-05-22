@@ -171,7 +171,7 @@ int main () {
   struct data *d= calloc(1, sizeof(struct data));
   pthread_t thread_window;
   
-  if(pthread_create(&thread_window, NULL, mainWindow, NULL) == -1) {
+  if(pthread_create(&thread_window, NULL, mainWindow, (void *)d) == -1) {
     perror("pthread create error\n");
     return EXIT_FAILURE;
   }
