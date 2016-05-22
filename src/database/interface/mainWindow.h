@@ -4,6 +4,7 @@
 #include "closeWindow.h"
 #include "infoClientWindow.h"
 #include "researchClient.h"
+#include "../database.h"
 
 void view_popup_menu_onDoSomething ();
 
