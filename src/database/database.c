@@ -8,11 +8,14 @@ char *itoa(int nb) {
 
 static int callback(void *data, int argc, char **argv, char **azColName){
   int i;
-  (void)data;
+  (void) data;
+  FILE *file= fopen("../../files/client_files/client_infos.txt", "a");
   for(i=0; i < argc; i++) {
-    // (char*)data[i]= argv[i];
-    printf("%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
+    //(char*)data[i]= argv[i];
+    printf("%d i\n", i);
+    fprintf(file, "%s= %s\n", azColName[i], argv[i] ? argv[i]: "NULL");
   }
+  fclose(file);
   return 0;
 }
 
@@ -30,39 +33,39 @@ void create_clients(sqlite3 *db, char mac_addr[25], char *name) {
   //printf("%s\n", res);
 
   if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
-    perror("SQL error create\n");
+    perror("SQL error create client\n");
   else
     printf("create client success\n");
   free(res);
 }
 
-int research_clients(sqlite3 *db, int id_client) { 
+void research_clients(sqlite3 *db, int id_client) { 
   char *sql= "SELECT * FROM clients "\
 	      "WHERE id= "; 
-   char *res= calloc(256, sizeof(char)); 
+  char *res= calloc(256, sizeof(char)); 
    strcat(res, sql); 
    strcat(res, itoa(id_client)); 
    strcat(res, ";"); 
    printf("%s\n", res);
-   if(sqlite3_exec(db, res, callback, 0, 0) == SQLITE_OK) {
-     perror("sql error research\n"); 
-     return 1;
+   if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) {
+     perror("sql error research client\n"); 
+     //return 1;
    }
    else {
-     printf("research client success\n");
-     return 0;
+     printf("research client %d successfully\n", id_client);
+     //return 0;
    }
    free(res);
  }
 
 void get_all_clients(sqlite3 *db) {
   char *sql= "SELECT mac_addr FROM clients;";
-  printf("%s\n", sql);
+  //printf("%s\n", sql);
 
   if(sqlite3_exec(db, sql, callback, 0, 0) != SQLITE_OK)
     perror("SQL error\n");
   else
-    printf("get all success\n");
+    printf("get all clients success\n");
 }
 
 void update_data(sqlite3 *db, char *data, int id_client) {
@@ -73,12 +76,13 @@ void update_data(sqlite3 *db, char *data, int id_client) {
   strcat(res, "' WHERE id_client= ");
   strcat(res, itoa(id_client));
   strcat(res, ";");
-  printf("%s\n", res);
+  //printf("%s\n", res);
 
   if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
     perror("SQL error\n");
-  else
-    printf("update success\n");
+  else {
+    printf("update data success\n");
+  }
   free(res);
 }
 
@@ -96,7 +100,7 @@ void create_data(sqlite3 *db, int id_server, int id_client, char *data) {
   //printf("%s\n", res);
 
   if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK)
-    perror("sqlite error data\n");
+    perror("sqlite error create data\n");
 
   else
     printf("create data success\n");
@@ -110,7 +114,7 @@ int research_data(sqlite3 *db, int id_client) {
   strcat(res, sql);
   strcat(res, itoa(id_client));
   strcat(res, ";");
-  printf("%s\n", res);
+  //printf("%s\n", res);
 
   if(sqlite3_exec(db, res, callback, 0, 0) != SQLITE_OK) {
     perror("sqlite error research data\n");
@@ -127,11 +131,11 @@ void delete_clients(sqlite3 *db, int id_client) {
    strcat(res, sql); 
    strcat(res, itoa(id_client)); 
    strcat(res, ";"); 
-   printf("%s\n", res); 
+   //printf("%s\n", res); 
 
    if(sqlite3_exec(db, res, NULL, 0, 0) != SQLITE_OK) 
      perror("SQL error\n"); 
-   else 
-     printf("delete success\n"); 
+   else
+     printf("delete client %d successfully\n", id_client);
    free(res);
  } 
