@@ -1,12 +1,3 @@
-//gcc mainWindow.c -o mainWindow $(pkg-config --libs --cflags gtk+-2.0)
-
-/*#include <gtk/gtk.h>
-#include <stdlib.h>
-
-#include "closeWindow.h"
-#include "infoClientWindow.h"
-#include "researchClient.h"*/
-
 #include "mainWindow.h"
 
 enum
@@ -139,10 +130,11 @@ GtkWidget *create_view_model (void)
 	return view;
 }
 
+
 void *mainWindow (void *arg)
 {
 	GtkWidget *boxV, *boxH;
-	GtkWidget *btnStartAll, *btnStopAll;
+	GtkWidget *btnGetAll;
 	GtkWidget *listClients;
 	GtkWidget *mainWindow;
 	GtkWidget *text;
@@ -171,8 +163,8 @@ void *mainWindow (void *arg)
 	boxH = gtk_hbox_new(TRUE, 0);
 
         //Creation des boutons Start All et Stop All
-	btnStartAll = gtk_button_new_with_label("Start all");
-	btnStopAll = gtk_button_new_with_label("Stop all");
+	btnGetAll = gtk_button_new_with_label("Get all client");
+	//btnStopAll = gtk_button_new_with_label("Stop all");
 
 	// Insertion des widgets
 	gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
@@ -180,8 +172,8 @@ void *mainWindow (void *arg)
 	
 	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20);
-	gtk_box_pack_start(GTK_BOX(boxH), btnStartAll, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(boxH), btnGetAll, FALSE, FALSE, 0);
+	//gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
 
@@ -196,71 +188,10 @@ void *mainWindow (void *arg)
 	g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
 		  G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL);
+	g_signal_connect(G_OBJECT(btnGetAll), "activate", G_CALLBACK(get_all_clients), NULL);
 	gtk_widget_show_all(mainWindow);
+
 
 	gtk_main();
 	return NULL;
 }
-
-/*int main (int argc, char **argv)
-{
-	GtkWidget *boxV, *boxH;
-	GtkWidget *btnStartAll, *btnStopAll;
-	GtkWidget *listClients;
-	GtkWidget *mainWindow;
-	GtkWidget *text;
-	GtkWidget *research;
-	GtkWidget *scrollbar;
-	
-	gtk_init(&argc, &argv);
-
-	// Creation de la fenetre principale
-	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title(GTK_WINDOW(mainWindow), "Keylogger");
-	gtk_window_set_default_size(GTK_WINDOW(mainWindow), 1000, 700);
-	gtk_window_set_position(GTK_WINDOW(mainWindow), GTK_WIN_POS_CENTER);
-	
-	// Creation de la liste des clients	
-	listClients = create_view_model();
-	scrollbar = gtk_scrolled_window_new(NULL, NULL);
-
-	//Recherche d'un client (texte + zone de saisie)
-	text = gtk_label_new("Research client :");
-	research = gtk_entry_new();
-	
-	// Creation de la box
-	boxV = gtk_vbox_new(FALSE, 0);
-	boxH = gtk_hbox_new(TRUE, 0);
-
-        //Creation des boutons Start All et Stop All
-	btnStartAll = gtk_button_new_with_label("Start all");
-	btnStopAll = gtk_button_new_with_label("Stop all");
-
-	// Insertion des widgets
-	gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
-	gtk_container_add(GTK_CONTAINER(scrollbar), listClients);
-	
-	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20);
-	gtk_box_pack_start(GTK_BOX(boxH), btnStartAll, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
-
-	// Gestion des detection des clics dans la liste des clients
-  g_signal_connect(listClients, "button-press-event", (GCallback) 
-		  view_onButtonPressed, NULL);
-  g_signal_connect(listClients, "popup-menu", (GCallback) 
-		  view_onPopupMenu, NULL);
-
-	
-	// Affichage et boucle evenementielle
-	g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
-		  G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL);
-	gtk_widget_show_all(mainWindow);
-
-	gtk_main();
-
-	return 0;
-}*/
