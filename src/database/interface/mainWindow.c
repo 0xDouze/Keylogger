@@ -141,8 +141,10 @@ void *mainWindow (void *arg)
 	GtkWidget *research;
 	GtkWidget *scrollbar;
 	
+	struct data *d = (struct data*) arg;
+	
 	gtk_init(0, NULL);
-	(void) arg;
+	//(void) arg;
 
 	// Creation de la fenetre principale
 	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -185,10 +187,14 @@ void *mainWindow (void *arg)
 
 	
 	// Affichage et boucle evenementielle
-	g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
-		  G_CALLBACK(gtk_main_quit), NULL);
+	if (g_signal_connect(G_OBJECT(mainWindow), "delete_event", 
+		  G_CALLBACK(gtk_main_quit), NULL) > 0)
+		printf("delete_event OK\n");
 	g_signal_connect(G_OBJECT(research), "activate", G_CALLBACK(research_client), NULL);
-	g_signal_connect(G_OBJECT(btnGetAll), "activate", G_CALLBACK(get_all_clients), NULL);
+	if (g_signal_connect(G_OBJECT(btnGetAll), "clicked", G_CALLBACK(get_all_clients), d) > 0)
+		printf("get_all_clients interface\n");
+	else
+		printf("get_all_clients interface failed");
 	gtk_widget_show_all(mainWindow);
 
 
