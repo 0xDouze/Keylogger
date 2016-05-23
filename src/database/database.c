@@ -59,7 +59,7 @@ void research_clients(sqlite3 *db, int id_client) {
  }
 
 void get_all_clients(sqlite3 *db) {
-  char *sql= "SELECT mac_addr FROM clients;";
+  char *sql= "SELECT * FROM clients;";
   //printf("%s\n", sql);
 
   if(sqlite3_exec(db, sql, callback, 0, 0) != SQLITE_OK)
