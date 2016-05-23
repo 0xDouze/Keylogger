@@ -273,8 +273,6 @@ int	main(void)
 	HANDLE thread_server;
 	SOCKET server_sock;
 
-	MacAddr();
-	return;
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
 	if ((thread_keepalive = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)keep_alive_client_and_init, NULL, 0, NULL)) == NULL)
 		return (-1);
@@ -299,6 +297,9 @@ int	main(void)
 	}
 	closesocket(my_sock);
 	TerminateThread(thread_keepalive, 0);
+	TerminateThread(thread_server, 0);
+	WaitForSingleObject(thread_keepalive, INFINITE);
+	WaitForSingleObject(thread_server, INFINITE);
 	WSACleanup();
 	return (msg.wParam);
 }
