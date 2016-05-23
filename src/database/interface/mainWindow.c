@@ -6,14 +6,12 @@ enum
 	NUM_COLS
 };
 
-void view_popup_menu_onDoSomething () //(GtkWidget *menuitem, gpointer userdata)
+void view_popup_menu_onDoSomething ()
 {
-  //GtkTreeView *treeview = GTK_TREE_VIEW(userdata);
-
   g_print ("Do something!\n");
 }
 
-void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gchar *data) //, gpointer userdata)
+void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gchar *data)
 {
 	GtkWidget *menu;
 	GtkWidget *moreInfo;
@@ -40,49 +38,46 @@ void view_popup_menu (GtkWidget *treeview, GdkEventButton *event, gchar *data) /
 	gtk_widget_show_all(menu);
 
 	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
-      (event != NULL) ? event->button : 0,
-      gdk_event_get_time((GdkEvent*)event));
+      			(event != NULL) ? event->button : 0,
+      	gdk_event_get_time((GdkEvent*)event));
 }
 
-gboolean view_onButtonPressed (GtkWidget *treeview, GdkEventButton *event) //, gpointer userdata)
+gboolean view_onButtonPressed (GtkWidget *treeview, GdkEventButton *event)
 {
 	GtkTreeModel *model;
 	GtkTreeIter iter;
-  gchar *data;
-  /* single click with the right mouse button? */
-  if (event->type == GDK_BUTTON_PRESS  &&  event->button == 3)
-  {
-    g_print ("Single right click on the tree view.\n");
+	gchar *data;
+	/* un seul clic droit */
+	if (event->type == GDK_BUTTON_PRESS  &&  event->button == 3)
+	{
+		g_print ("Single right click on the tree view.\n");
 
-    if (1)
-    {
-      GtkTreeSelection *selection;
-	    // recupere la ligne selectionnee
-      selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-      if (gtk_tree_selection_get_selected(selection, &model, &iter))
-	    {
-		    gtk_tree_model_get(model, &iter, COL_CLIENT, &data, -1);
-		    g_print("Row selected : %s\n", data);
-	    }
+		if (1)
+		{
+			GtkTreeSelection *selection;
+			// recupere la ligne selectionnee
+			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+ 			if (gtk_tree_selection_get_selected(selection, &model, &iter))
+			{
+				gtk_tree_model_get(model, &iter, COL_CLIENT, &data, -1);
+				g_print("Row selected : %s\n", data);
+			}
 
-    }
+		}
 
-    view_popup_menu(treeview, event, data); //, userdata);
-
-    return TRUE;
+		view_popup_menu(treeview, event, data);
+		return TRUE;
   }
 
-  return FALSE;
+  	return FALSE;
 }
 
-gboolean view_onPopupMenu (GtkWidget *treeview, gchar *data) //, gpointer userdata)
+gboolean view_onPopupMenu (GtkWidget *treeview, gchar *data)
 {
-  view_popup_menu(treeview, NULL, data); //, userdata);
-
-   return TRUE;
+	view_popup_menu(treeview, NULL, data);
+	return TRUE;
 }
 
-//static 
 GtkTreeModel *create_fill_list_clients(void)
 {
 	GtkListStore *store;
@@ -97,7 +92,6 @@ GtkTreeModel *create_fill_list_clients(void)
 	gtk_list_store_append (store, &iter);
 	gtk_list_store_set (store, &iter, COL_CLIENT, "Emma", -1);
 
-	// A supprimer plus tard
 	int i = 0;
 	for (i = 0; i < 100; i++)
 	{
@@ -108,7 +102,6 @@ GtkTreeModel *create_fill_list_clients(void)
 	return GTK_TREE_MODEL(store);
 }
 
-//static 
 GtkWidget *create_view_model (void)
 {
 	GtkCellRenderer *renderer;
@@ -144,7 +137,6 @@ void *mainWindow (void *arg)
 	struct data *d = (struct data*) arg;
 	
 	gtk_init(0, NULL);
-	//(void) arg;
 
 	// Creation de la fenetre principale
 	mainWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -166,7 +158,6 @@ void *mainWindow (void *arg)
 
         //Creation des boutons Start All et Stop All
 	btnGetAll = gtk_button_new_with_label("Get all client");
-	//btnStopAll = gtk_button_new_with_label("Stop all");
 
 	// Insertion des widgets
 	gtk_container_add(GTK_CONTAINER(mainWindow), boxV);
@@ -175,7 +166,6 @@ void *mainWindow (void *arg)
 	gtk_box_pack_start(GTK_BOX(boxV), scrollbar, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(boxV), boxH, FALSE, TRUE, 20);
 	gtk_box_pack_start(GTK_BOX(boxH), btnGetAll, FALSE, FALSE, 0);
-	//gtk_box_pack_start(GTK_BOX(boxH), btnStopAll, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(boxH), text, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(boxH), research, FALSE, FALSE, 0);
 

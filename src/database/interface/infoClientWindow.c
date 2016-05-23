@@ -27,7 +27,7 @@ void infoClientWindow (gchar *data)
   scrollbar = gtk_scrolled_window_new(NULL, NULL);
   
   // Temporaire
-  pLabel = gtk_label_new("Hello world erezrze zer zr zer zer zer zer zr zer zer rezrzerze ezr dddgdd gdffdfd d gfdfgfdd dfgdfgdf ggg g g g g g dgdfgdfg dgf test");
+  pLabel = gtk_label_new("Hello world!");
 
   //Creation des boutons
   btnDeleteClient = gtk_button_new_with_label("Delete client");
