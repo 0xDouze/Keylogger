@@ -199,5 +199,6 @@ void *mainWindow (void *arg)
 
 
 	gtk_main();
+	pthread_exit(NULL);
 	return NULL;
 }

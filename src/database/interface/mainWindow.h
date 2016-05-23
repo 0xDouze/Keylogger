@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <pthread.h>
 #include <stdlib.h>
 
 #include "closeWindow.h"
