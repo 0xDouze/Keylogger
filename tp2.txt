@@ -1,0 +1,167 @@
+#include <stdio.h>
+#include <math.h>
+
+unsigned int_width(int i)
+{
+  unsigned rez = 0;
+  if (i <= 0)
+    rez++;
+  while (i)
+  {
+    rez++;
+    i /= 10;
+  }
+  return rez;
+}
+
+unsigned ints_width(const int* tab, unsigned count)
+{
+  int min = tab[0];
+  int max = tab[0];
+  for (unsigned i = 1; i < count; i++)
+  {
+    if (tab[i] < min)
+      min = tab[i];
+    if (tab[i] > max)
+      max = tab[i];
+  }
+  max = int_width(max);
+  min = int_width(min);
+  if (max < min)
+    return min;
+  return max;
+}
+
+void print_int_array(FILE* out, const int* tab, unsigned count)
+{
+  unsigned before = int_width(count - 1) + 2;
+  unsigned cur = before;
+  unsigned ta = 1 + ints_width(tab, count);
+  char ind[before];
+  sprintf(ind, "[%d]", 0);
+  fprintf(out, "%*s", before, ind);
+  for (unsigned i = 0; i < count; i++)
+  {
+    if (cur + ta > 80)
+    {
+      sprintf(ind, "[%d]", i);
+      fprintf(out, "\n%*s", before, ind);
+      cur = before;
+    }
+    fprintf(out, "%*d", ta, tab[i]);
+    cur += ta;
+  }
+  fprintf(out, "\n");
+}
+
+void insert_sort(int* tab, unsigned count)
+{
+  for (unsigned i = 1; i < count; i++)
+  {
+    int key = tab[i];
+    int j = i - 1;
+    while (j >= 0 && tab[j] > key)
+    {
+      tab[j + 1] = tab[j];
+      j--;
+    }
+    tab[j + 1] = key;
+  }
+}
+
+void insert_sort_cmp(int* tab, unsigned count, int (*cmp)(int a, int b))
+{
+  for (unsigned i = 1; i < count; i++)
+  {
+    int key = tab[i];
+    int j = i - 1;
+    while (j >= 0 && cmp(tab[j], key) == 1)
+    {
+      tab[j + 1] = tab[j];
+      j--;
+    }
+    tab[j + 1] = key;
+  }
+}
+
+unsigned linear_search(const int* tab, unsigned count, int val, int (*cmp)(int
+a, int b))
+{
+  unsigned res = 0;
+  for (; res < count && cmp(tab[res], val) == -1; res++)
+    continue;
+  return res;
+}
+
+unsigned binary_search(int* tab, unsigned count, int val, int (*cmp)(int a, int
+b))
+{
+  unsigned a = 0;
+  unsigned b = count;
+  while (a < b)
+  {
+    unsigned mid = a + ((b - a) / 2);
+    int comp = cmp(val, tab[mid]);
+    if (!comp)
+      return mid;
+    else
+    {
+      if (comp == -1)
+        b = mid;
+      else
+       a = mid + 1;
+    }
+  }
+  return a;
+}
+
+void bs_insert_sort_cmp(int *tab, unsigned count, int (*cmp)(int a, int b))
+{
+  for (unsigned i = 1; i < count; i++)
+  {
+    int clef = tab[i];
+    unsigned res = binary_search(tab, i, clef, cmp);
+    for (unsigned k = i; k > res; k--)
+      tab[k] = tab[k - 1];
+    tab[res] = clef;
+  }
+}
+
+unsigned interpolate(int *tab, unsigned b, unsigned e, int val, int (*cmp)(int, int))
+{
+  cmp = cmp;
+  double end = e;
+  double beg = b;
+  double value = val;
+  double div_res = (end - beg) / (tab[e] - tab[b]);
+  double res =  beg + ((value - tab[b]) * div_res);
+  if (fmod(res, 1) >= 0.5)
+    res++;
+  if (res > e)
+    return e;
+  if (res < b)
+    return b;
+  return res;
+}
+
+unsigned interpolation_search(int *tab, unsigned count, int val, int (*cmp)(int
+a, int b))
+{
+  unsigned a = 0;
+  unsigned b = count;
+  while (a < b)
+  {
+    unsigned mid = interpolate(tab, a, b, val, cmp);
+    int comp = cmp(val, tab[mid]);
+    if (!comp)
+      return mid;
+    else
+    {
+      if (comp == -1)
+        b = mid;
+      else
+        a = mid + 1;
+    }
+  }
+  return a;
+}
